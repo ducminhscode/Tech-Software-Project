@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Iphone 16 ProMax",
+    "price": "46.000.000",
+    "image": "https://res.cloudinary.com/dy1unykph/image/upload/v1729238033/Apple-iPhone-16-Pro-hero-240909_inline.jpg.large_g7wiwb.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 2,
+    "name": "Iphone 13",
+    "price": "16.000.000",
+    "image": "https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-xanh-la-thumb-new-600x600.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 3,
+    "name": "Galaxy Z-fold",
+    "price": "5.000.000",
+    "image": "https://www.xtmobile.vn/vnt_upload/product/06_2024/Samsung-galaxy-z-fold-6-xtmobile.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 4,
+    "name": "Iphone 12 ProMax",
+    "price": "10.000.000",
+    "image": "https://cdn.xtmobile.vn/vnt_upload/product/08_2019/thumbs/(600x600)_crop_iphone-12-pro-max-512gb_1.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 5,
+    "name": "Iphone 15 Pro",
+    "price": "22.000.000",
+    "image": "https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-gold-thumbnew-600x600.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 6,
+    "name": "Samsung Galaxy Book3",
+    "price": "24.900.000",
+    "image": "https://laptopvang.com/wp-content/uploads/2023/10/galaxy-book3-360-2-in-1-768x768.jpg",
+    "category_id": 2
+  },
+  {
+    "id": 7,
+    "name": "Huawei MatePad",
+    "price": "4.990.000",
+    "image": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-tinh-bang-huawei-matepad-se-11-inch-co-but.png",
+    "category_id": 2
+  },
+  {
+    "id": 8,
+    "name": "Macbook Air M1",
+    "price": "17.790.000",
+    "image": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook-air-m1-2020-gold-600x600.jpg",
+    "category_id": 3
+  }
+]
