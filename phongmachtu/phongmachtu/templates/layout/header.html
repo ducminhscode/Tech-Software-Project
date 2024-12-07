@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="javascript:void(0)">Logo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            {%if current_user.is_authenticated%}
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Đặt lịch khám
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/booking_self">Đặt lịch khám cho bản thân</a></li>
+                        <li><a class="dropdown-item" href="/booking_other">Đặt lịch khám cho người khác</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item"><a class="nav-link" href="/">Kết quả đặt lịch khám</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Xem kết quả khám</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Lịch sử khám bệnh</a></li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="/login">
+                        <img src="{{current_user.avatar}}" width="25" class="rounded img-fluid">Chào
+                        {{current_user.name}}!</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="/logout">&#9940;Đăng xuất</a>
+                </li>
+            </ul>
+            {%else%}
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Giới thiệu</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Dịch vụ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Tin tức</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Liên hệ</a></li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="/login">&#128110; Đăng nhập</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="/register">&#128204; Đăng ký</a>
+                </li>
+            </ul>
+            {%endif%}
+
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,42 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt lịch khám{% endblock %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+<section>
+    <div class="container my-5">
+        <h1 class="mb-4 text-center">Đăng ký lịch khám</h1>
+
+        <form>
+            <!-- Chọn buổi khám -->
+            <div class="form-floating mb-3 mt-3">
+                <select class="form-control" id="buoiKham" aria-label="Chọn buổi khám">
+                    {% for t in time %}
+                    <option value="{{ t.id }}" name="time"> {{ t.period }}</option>
+                    {% endfor %}
+                </select>
+                <label for="buoiKham">Chọn buổi khám</label>
+            </div>
+
+            <!-- Ngày khám -->
+            <div class="form-floating mb-3 mt-3">
+                <input type="date" class="form-control" id="ngayKham" placeholder="Chọn ngày khám">
+                <label for="ngayKham">Ngày khám</label>
+            </div>
+
+            <!-- Button Xác nhận -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Xác nhận</button>
+            </div>
+        </form>
+    </div>
+
+    {% else %}
+    <div class="container">
+        <h3 class="text-center text-info"><a href="/login" class="text-decoration-none">ĐĂNG NHẬP ĐỂ ĐƯỢC ĐẶT LỊCH
+            KHÁM</a></h3>
+    </div>
+    {% endif %}
+    {% endblock %}
