@@ -26,7 +26,6 @@ def get_all_period():
     return periods
 
 
-
 def get_account_by_id(user_id):
     return Account.query.get(user_id)
 
