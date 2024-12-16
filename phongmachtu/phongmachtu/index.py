@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user
+from models import Books
 import dao
 
 
@@ -37,6 +38,30 @@ def booking_other():
 def booking_self():
     time = dao.get_all_period()
     return render_template('booking_self.html', time=time)
+
+
+@app.route('/register', methods=['get', 'post'])
+def register():
+    err_msg = None
+    if request.method.__eq__('POST'):
+        password = request.form.get("password")
+        confirm = request.form.get("confirm")
+        if password.__eq__(confirm):
+            username = request.form.get("username")
+            name = request.form.get("name")
+            avatar = request.files.get('avatar')
+
+            # avatar_path = None
+            # if avatar:
+            #     res = cloudinary.uploader.upload(avatar)
+            #     avatar_path = res['secure_url']
+
+            dao.add_account(name=name, username=username, password=password)
+            return redirect('/login')
+        else:
+            err_msg = "Mật khẩu không khớp!"
+
+    return render_template('register.html', err_msg=err_msg)
 
 
 @app.route('/logout')

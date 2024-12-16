@@ -34,7 +34,6 @@ class Patient(Account):
     phone = Column(String(10))
 
 
-
 class Cashier(Account):
     id = Column(Integer, ForeignKey(Account.id), primary_key=True)
     receipts = relationship('Receipt', backref='cashier', lazy=True)
