@@ -8,16 +8,16 @@ from flask import request
 admin = Admin(app, name="Quan Ly Phong Mach Tu", template_mode="bootstrap4")
 
 
-class AuthenticatedAdmin(ModelView):
+class AuthenticatedAdminModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.type == 'administrator'
 
-class AuthenticatedAdmin2(BaseView):
+class AuthenticatedAdminBaseView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.type == 'administrator'
 
 
-class AdministratorView(AuthenticatedAdmin):
+class AdministratorView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'joined_date': 'Ngày tham gia'}
     column_searchable_list = ['name']
@@ -28,7 +28,7 @@ class AdministratorView(AuthenticatedAdmin):
     page_size = 10
 
 
-class DoctorView(AuthenticatedAdmin):
+class DoctorView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'license', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'license': 'Chứng chỉ',
                      'joined_date': 'Ngày tham gia'}
@@ -40,7 +40,7 @@ class DoctorView(AuthenticatedAdmin):
     page_size = 10
 
 
-class NurseView(AuthenticatedAdmin):
+class NurseView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'phuTrachKhoa', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'phuTrachKhoa': 'Khoa phụ trách',
                      'joined_date': 'Ngày tham gia'}
@@ -52,7 +52,7 @@ class NurseView(AuthenticatedAdmin):
     page_size = 10
 
 
-class CashierView(AuthenticatedAdmin):
+class CashierView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'license', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'license': 'Chứng chỉ',
                      'joined_date': 'Ngày tham gia'}
@@ -64,7 +64,7 @@ class CashierView(AuthenticatedAdmin):
     page_size = 10
 
 
-class PatientView(AuthenticatedAdmin):
+class PatientView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'address', 'day_of_birth', 'gender', 'phone', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'address': 'Địa chỉ',
                      'day_of_birth': 'Ngày sinh',
@@ -77,7 +77,7 @@ class PatientView(AuthenticatedAdmin):
     page_size = 10
 
 
-class MedicineView(AuthenticatedAdmin):
+class MedicineView(AuthenticatedAdminModelView):
     column_display_pk = True
     column_labels = {'id': 'STT', 'name': 'Tên', 'unit': 'Đơn vị', 'price': 'Giá', 'usage': 'Cách sử dụng'}
     column_searchable_list = ['name']
@@ -89,7 +89,7 @@ class MedicineView(AuthenticatedAdmin):
     page_size = 10
 
 
-class TimesView(AuthenticatedAdmin):
+class TimesView(AuthenticatedAdminModelView):
     column_display_pk = True
     column_labels = {'id': 'STT', 'period': 'Giờ'}
     column_searchable_list = ['period']
@@ -100,7 +100,7 @@ class TimesView(AuthenticatedAdmin):
     page_size = 10
 
 
-class RulesView(AuthenticatedAdmin):
+class RulesView(AuthenticatedAdminModelView):
     column_list = ['id', 'change_date', 'name', 'value', 'administrator']
     column_labels = {'id': 'STT', 'change_date': 'Ngày thay đổi', 'name': 'Tên quy định', 'value': 'Trị số',
                      'administrator': 'Quản trị viên'}
@@ -113,7 +113,7 @@ class RulesView(AuthenticatedAdmin):
     page_size = 10
 
 
-class ReceiptView(AuthenticatedAdmin):
+class ReceiptView(AuthenticatedAdminModelView):
     column_display_pk = True
     column_list = ['id', 'patient', 'created_date', 'examines_price', 'total_price', 'cashier']
     column_labels = {'id': 'STT', 'patient': 'Bệnh nhân', 'created_date': 'Ngày tạo', 'examines_price': 'Tiền khám',
@@ -136,10 +136,10 @@ admin.add_view(RulesView(Rules, db.session, name="Quy định"))
 admin.add_view(ReceiptView(Receipt, db.session, name="Hóa đơn"))
 
 
-class MyStatsView(AuthenticatedAdmin2):
+class MyStatsView(AuthenticatedAdminBaseView):
     @expose('/')
     def index(self):
         month = request.args.get('month')
-        return self.render('admin/stats.html', rev=dao.revenue(month=month))
+        return self.render('admin/stats_revenue.html', rev=dao.revenue(month=month))
 
 admin.add_view(MyStatsView(name='Thống kê báo cáo'))
