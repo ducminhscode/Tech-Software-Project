@@ -1,13 +1,12 @@
 from flask import render_template, request, redirect
 from phongmachtu import app, login
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 import dao
 from phongmachtu.admin import *
 
 
 @app.route('/')
 def index():
-
     return render_template('index.html')
 
 

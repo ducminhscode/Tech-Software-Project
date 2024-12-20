@@ -1,0 +1,119 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+
+<head>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+</head>
+
+<h1>Thống Kê Tần Suất Sử Dụng Thuốc Phòng Mạch Tư</h1>
+
+<div class="row" style="margin:auto">
+    <div class="col-md-5 col-xs-12" style = "margin-top: 7%">
+        <table class="table">
+            <tr>
+                <th>STT</th>
+                <th>Tên thuốc</th>
+                <th>Đơn vị</th>
+                <th>Số lượng</th>
+            </tr>
+            {% for s in med %}
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ s[2] }}</td>
+                <td>{{ s[3] }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <form>
+            <div class="form-group">
+                <h4 class = "text-center" style = "margin-top: 5%">Lọc dữ liệu theo tháng</h4>
+                <input style = "margin-top: 5%" type="text" placeholder="Nhập tên thuốc" name="kw" class="form-control"/>
+            </div>
+            <div style = "display: flex; justify-content: space-between">
+                <div style="width: 45%" class="form-group">
+                    <label>Từ ngày:</label>
+                    <input type="date" name="from_date" class="form-control"/>
+                </div>
+                <div style="width: 45%" class="form-group">
+                    <label>Đến ngày:</label>
+                    <input type="date" name="to_date" class="form-control"/>
+                </div>
+            </div>
+            <div>
+                <input style = "margin-bottom: 10%" type="submit" value="Thống kê" class="btn btn-info"/>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="chart" style = "margin-bottom: 5%; width: 400px; height: 400px">
+    <canvas id="medicineChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/my-chart.js') }}"></script>
+<script>
+
+    let data = [], labels=[]
+    let borderColors = [], colors = []
+
+    {% for s in med %}
+
+        labels.push('{{ s[1] }}')
+        data.push({{ s[3] }})
+
+        let r = Math.random() * 255;
+        let g = Math.random() * 255;
+        let b = Math.random() * 255;
+
+        let newColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
+
+        colors.push(newColor);
+        borderColors.push(newColor)
+
+    {% endfor %}
+
+    window.onload = function() {
+        const ctx = document.getElementById('medicineChart').getContext('2d');
+        loadChart(ctx, labels, data, 'bar', colors, borderColors);
+    }
+    function loadChart(ctx, labels, data, type, colors, borderColors) {
+        new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Số lượng',
+                    data: data,
+                    borderWidth: 3,
+                    backgroundColor: colors,
+                    borderColor: borderColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white',
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

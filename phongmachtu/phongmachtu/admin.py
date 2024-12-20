@@ -5,8 +5,7 @@ from phongmachtu import app, db, dao
 from flask_login import current_user
 from flask import request
 
-admin = Admin(app, name="Quan Ly Phong Mach Tu", template_mode="bootstrap4")
-
+admin = Admin(app, name="Phòng Mạch Tư", template_mode="bootstrap4")
 
 class AuthenticatedAdminModelView(ModelView):
     def is_accessible(self):
@@ -136,10 +135,28 @@ admin.add_view(RulesView(Rules, db.session, name="Quy định"))
 admin.add_view(ReceiptView(Receipt, db.session, name="Hóa đơn"))
 
 
-class MyStatsView(AuthenticatedAdminBaseView):
+class StatsRevenueView(AuthenticatedAdminBaseView):
+
     @expose('/')
     def index(self):
         month = request.args.get('month')
-        return self.render('admin/stats_revenue.html', rev=dao.revenue(month=month))
+        return self.render('admin/stats_revenue.html', rev=dao.stats_revenue(month=month))
 
-admin.add_view(MyStatsView(name='Thống kê báo cáo'))
+
+class StatsFrequencyView(AuthenticatedAdminBaseView):
+    @expose('/')
+    def index(self):
+        month = request.args.get('month')
+        return self.render('admin/stats_frequency.html', frequency=dao.stats_frequency(month=month))
+
+
+class StatsMedicineView(AuthenticatedAdminBaseView):
+    @expose('/')
+    def index(self):
+        med = dao.stats_medicine(kw=request.args.get('kw'),
+                                 from_date=request.args.get('from_date'), to_date=request.args.get('to_date'))
+        return self.render('admin/stats_medicine.html', med=med)
+
+admin.add_view(StatsRevenueView(name='Doanh thu'))
+admin.add_view(StatsFrequencyView(name="Tần suất khám"))
+admin.add_view(StatsMedicineView(name="Tần suất sử dụng thuốc"))

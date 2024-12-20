@@ -6,24 +6,24 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </head>
 
-<h1>Thống Kê Doanh Thu Phòng Mạch Tư</h1>
+<h1>Thống Kê Tần Suất Khám Bệnh Phòng Mạch Tư</h1>
 
 <div class="row" style="margin:auto">
     <div class="col-md-6 col-xs-12" style = "margin-top: 7%">
         <table class="table">
             <tr>
                 <th>Tháng</th>
-                <th>Doanh thu</th>
+                <th>Tần suất khám</th>
             </tr>
 
-            {% for s in rev %}
+            {% for s in frequency %}
             <tr>
                 <td>{{ s[0] }}</td>
                 <td>
                     {% if s[1] %}
-                        {{ "{:,.0f}".format(s[1]) }} VND
+                        {{ "{:,.1f}".format(s[1]) }}%
                     {% else %}
-                        0 VND
+                        0%
                     {% endif %}
                 </td>
             </tr>
@@ -43,7 +43,7 @@
     </div>
 </div>
 <div class="chart" style = "margin-bottom: 5%; width: 400px; height: 400px">
-    <canvas id="revenueChart"></canvas>
+    <canvas id="frequencyChart"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
@@ -52,7 +52,7 @@
     let borderColors = [], colors = []
 
 
-    {% for s in rev %}
+    {% for s in frequency %}
         name.push('Tháng {{ s[0] }}')
         info.push({{ s[1] }})
 
@@ -67,7 +67,7 @@
     {% endfor %}
 
     window.onload = function() {
-        const ctx  = document.getElementById('revenueChart').getContext('2d');
+        const ctx  = document.getElementById('frequencyChart').getContext('2d');
         loadChart(ctx, name, info, 'doughnut', colors, borderColors);
     }
 
@@ -77,7 +77,7 @@
             data: {
                 labels: name,
                 datasets: [{
-                    label: 'Doanh thu',
+                    label: 'Tần suất',
                     data: info,
                     backgroundColor: colors,
                     borderColor: borderColors,

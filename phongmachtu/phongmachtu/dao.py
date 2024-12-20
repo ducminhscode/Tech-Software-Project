@@ -31,7 +31,7 @@ def get_account_by_id(user_id):
     return Account.query.get(user_id)
 
 
-def revenue(month):
+def stats_revenue(month):
     with app.app_context():
         query = db.session.query(
             extract('month', Receipt.created_date).label('Tháng'),
@@ -41,6 +41,38 @@ def revenue(month):
         results = query.all()
 
         return results
+
+def stats_frequency(month):
+    with app.app_context():
+        query = db.session.query(
+            extract('month', ExaminationForm.datetime).label('Tháng'),
+            (func.count(ExaminationForm.id) / 40*100).label('Tần suất khám')
+        ).group_by(extract('month', ExaminationForm.datetime))
+
+        results = query.all()
+
+        return results
+
+def stats_medicine(kw=None, from_date=None, to_date=None):
+    query = db.session.query(Medicine.id, Medicine.name, Medicine.unit,
+                             func.sum(Prescription.quantity)) \
+        .join(Medicine, Medicine.id.__eq__(Prescription.medicine_id), isouter=True)
+
+    if kw:
+        query = query.filter(Medicine.name.contains(kw))
+
+    if from_date:
+        query = query.filter(ExaminationForm.datetime.__ge__(from_date))
+
+    if to_date:
+        query = query.filter(ExaminationForm.datetime.__le__(to_date))
+
+    return query.group_by(Medicine.id).order_by(Medicine.id).all()
+
+
+
+
+
 
 
 # def load_book_by_id(book_id):
