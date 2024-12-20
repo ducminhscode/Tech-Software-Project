@@ -49,7 +49,7 @@ class Receipt(db.Model):
     receipt_details = relationship('ReceiptDetails', backref='receipt', lazy=True)
 
 
-class Time(db.Model):
+class Times(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     period = Column(String(20), nullable=False)
     books_times = relationship('Books', backref='time', lazy=True)
@@ -61,7 +61,7 @@ class Books(db.Model):
     patient_id = Column(Integer, ForeignKey(Patient.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     patient_name = Column(String(50), nullable=False)
     rel = Column(String(50), nullable=False) #Quan hệ voi nguoi dat lich kham
-    time_id = Column(Integer, ForeignKey(Time.id), nullable=False)
+    time_id = Column(Integer, ForeignKey(Times.id), nullable=False)
     desc = Column(String(500))
     lenLichKham = Column(Boolean, default=False)
     isKham = Column(Boolean, default=False)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
         time_periods = ["Sáng", "Chiều", "Tối"]
 
         for period in time_periods:
-            time = Time(period=period)
+            time = Times(period=period)
             db.session.add(time)
 
 

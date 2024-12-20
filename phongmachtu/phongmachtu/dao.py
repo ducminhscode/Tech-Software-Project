@@ -20,7 +20,7 @@ def auth_account(username, password):
 
 def get_all_period():
     # Truy vấn tất cả các giá trị period và id từ bảng Time
-    periods = Time.query.with_entities(Time.id, Time.period).all()
+    periods = Times.query.with_entities(Times.id, Times.period).all()
 
     # Trả về danh sách các tuple chứa (id, period)
     return periods
