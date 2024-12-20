@@ -1,0 +1,84 @@
+{%extends 'layout/base.html'%}
+
+
+{%block content%}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Hóa Đơn Thanh Toán</h2>
+
+    <form>
+        <div class="row mb-3">
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control" id="patientName" placeholder="Nhập tên bệnh nhân">
+                <label for="patientName">Tên Bệnh Nhân</label>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <h3 class="text-center mb-4">Bảng Toa Thuốc</h3>
+
+            <div class="table-responsive mb-3">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="text-center">
+                        <th>STT</th>
+                        <th>Tên Thuốc</th>
+                        <th>Số Lượng</th>
+                        <th>Đơn Vị Thuốc</th>
+                        <th>Giá Thuốc (1 đơn vị thuốc)</th>
+                        <th>Thành Tiền</th>
+                    </tr>
+                    </thead>
+                    <!--                    <tbody id="prescriptionTableBody">-->
+                    <!--                    <tr>-->
+                    <!--                        <td class="text-center">1</td>-->
+                    <!--                        <td><input type="text" class="form-control" placeholder="Tên thuốc" id="drugName1"></td>-->
+                    <!--                        <td><input type="number" class="form-control" placeholder="Số lượng" id="quantity1"></td>-->
+                    <!--                        <td><input type="text" class="form-control" placeholder="Đơn vị thuốc" id="unit1"></td>-->
+                    <!--                        <td><input type="number" class="form-control" placeholder="Giá thuốc" id="price1"-->
+                    <!--                                   oninput="calculateTotal(1)"></td>-->
+                    <!--                        <td><input type="text" class="form-control" placeholder="Thành tiền" id="total1" disabled></td>-->
+                    <!--                    </tr>-->
+                    <!--                    <tr>-->
+                    <!--                        <td class="text-center">2</td>-->
+                    <!--                        <td><input type="text" class="form-control" placeholder="Tên thuốc" id="drugName2"></td>-->
+                    <!--                        <td><input type="text" class="form-control" placeholder="Đơn vị thuốc" id="unit2"></td>-->
+                    <!--                        <td><input type="number" class="form-control" placeholder="Giá thuốc" id="price2"></td>-->
+                    <!--                        <td><input type="number" class="form-control" placeholder="Số lượng" id="quantity2"-->
+                    <!--                                   oninput="calculateTotal(2)"></td>-->
+                    <!--                        <td><input type="text" class="form-control" placeholder="Thành tiền" id="total2" disabled></td>-->
+                    <!--                    </tr>-->
+                    <!--                    &lt;!&ndash; Thêm hàng theo yêu cầu &ndash;&gt;-->
+                    <!--                    </tbody>-->
+                </table>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="mb-3">
+                <!-- Label hiển thị Tổng Tiền, không cho phép nhập -->
+                <label for="total" class="form-label">Tổng Tiền</label>
+                <div class="input-group">
+                    <span class="input-group-text">VND</span>
+                    <span id="total" class="form-control">0</span> <!-- Chỉ hiển thị giá trị, không cho nhập -->
+                </div>
+            </div>
+
+            <div class="col-md-6 form-floating">
+                <select class="form-select" id="paymentStatus">
+                    <option selected>Chọn trạng thái...</option>
+                    <option value="paid">Đã thanh toán</option>
+                    <option value="unpaid">Chưa thanh toán</option>
+                </select>
+                <label for="paymentStatus">Trạng Thái Thanh Toán</label>
+            </div>
+        </div>
+
+
+        <div class="text-center">
+            <button type="button" class="btn btn-primary me-3">Xuất Hóa Đơn</button>
+            <button type="submit" class="btn btn-success">Lưu</button>
+        </div>
+    </form>
+</div>
+
+{%endblock%}

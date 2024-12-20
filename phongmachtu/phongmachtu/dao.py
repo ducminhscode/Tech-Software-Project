@@ -15,8 +15,20 @@ def auth_account(username, password):
 
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
 
+
     return Account.query.filter(Account.username.__eq__(username),
                              Account.password.__eq__(password)).first()
+
+
+def get_user_type(username, password):
+    account = Account.query.filter_by(username=username).first()
+
+    if account and password:
+        if account.type == 'patient':
+            return 'patient'
+        return account.type
+    return None
+
 
 
 def get_all_period():

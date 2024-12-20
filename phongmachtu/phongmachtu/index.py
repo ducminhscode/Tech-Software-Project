@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session, url_for
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
 import dao
@@ -15,29 +15,42 @@ def login_my_user():
     if current_user.is_authenticated:
         return redirect("/")
 
+
     err_msg = None
     if request.method.__eq__('POST'):
         username = request.form.get('username')
         password = request.form.get('password')
+
         user = dao.auth_account(username,password)
+
         if user:
             login_user(user)
-            return redirect('/')
+            if user.type == "patient":
+                return redirect('/')
+            elif user.type == "doctor":
+                return redirect('/')
+            elif user.type == 'nurse':
+                return redirect('/')
+            elif user.type == "administrator":
+                return redirect('/')
+            else:
+                return redirect('/cash')
+
         else:
             err_msg = "Tài khoản hoặc mật khẩu không đúng!"
 
     return render_template('login.html', err_msg=err_msg)
 
 
-@app.route('/booking_other')
-def booking_other():
-    time = dao.get_all_period()
-    return render_template('booking_other.html', time=time)
-
-@app.route('/booking_self')
+@app.route('/booking')
 def booking_self():
     time = dao.get_all_period()
-    return render_template('booking_self.html', time=time)
+    return render_template('booking.html', time=time)
+
+
+@app.route('/receipt-list')
+def receipt_list():
+    return render_template('receipt-list.html')
 
 
 @app.route('/register', methods=['get', 'post'])
@@ -57,6 +70,11 @@ def register():
             err_msg = "Mật khẩu không khớp!"
 
     return render_template('register.html', err_msg=err_msg)
+
+
+@app.route('/cash')
+def cashing():
+    return render_template('cash.html')
 
 
 @app.route('/logout')

@@ -6,23 +6,22 @@
         </button>
         <div class="collapse navbar-collapse" id="mynavbar">
             {%if current_user.is_authenticated%}
+            {%if current_user.type=="patient"%}
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Đặt lịch khám
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/booking_self">Đặt lịch khám cho bản thân</a></li>
-                        <li><a class="dropdown-item" href="/booking_other">Đặt lịch khám cho người khác</a></li>
-                    </ul>
-                </li>
-
+                <li class="nav-item"><a class="nav-link" href="/booking">Đặt lịch khám</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">Kết quả đặt lịch khám</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">Xem kết quả khám</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">Lịch sử khám bệnh</a></li>
             </ul>
+            {%elif current_user.type=="cashier"%}
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cash">Thanh toán</a></li>
+                <li class="nav-item"><a class="nav-link" href="/receipt-list">Tra cứu hóa đơn</a></li>
+            </ul>
+
+            {%endif%}
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link text-info" href="/login">
@@ -33,7 +32,7 @@
                     <a class="nav-link text-info" href="/logout">&#9940;Đăng xuất</a>
                 </li>
             </ul>
-            {%else%}
+            {%else %}
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">Giới thiệu</a></li>
@@ -49,6 +48,7 @@
                     <a class="nav-link text-info" href="/register">&#128204; Đăng ký</a>
                 </li>
             </ul>
+
             {%endif%}
 
         </div>

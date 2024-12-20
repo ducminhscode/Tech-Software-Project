@@ -32,11 +32,13 @@
             </div>
         </form>
     </div>
+</section>
+{% else %}
+<div class="container">
+    <h3 class="text-center text-info"><a href="/login" class="text-decoration-none">ĐĂNG NHẬP ĐỂ ĐƯỢC ĐẶT LỊCH
+        KHÁM</a></h3>
+</div>
+{% endif %}
 
-    {% else %}
-    <div class="container">
-        <h3 class="text-center text-info"><a href="/login" class="text-decoration-none">ĐĂNG NHẬP ĐỂ ĐƯỢC ĐẶT LỊCH
-            KHÁM</a></h3>
-    </div>
-    {% endif %}
-    {% endblock %}
+
+{% endblock %}

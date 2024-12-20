@@ -1,0 +1,84 @@
+{%extends 'layout/base.html'%}
+
+
+{%block content%}
+<div class="container my-5">
+    <h3 class="text-center mb-4">Tra cứu hóa đơn</h3>
+
+    <!-- Form Tìm kiếm -->
+    <div class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="patientName" class="form-label">Tên bệnh nhân</label>
+                <input type="text" class="form-control" id="patientName" placeholder="Nhập tên bệnh nhân">
+            </div>
+            <div class="col-md-4">
+                <label for="invoiceCode" class="form-label">Mã hóa đơn</label>
+                <input type="text" class="form-control" id="invoiceCode" placeholder="Nhập mã hóa đơn">
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary w-100" id="searchBtn">Tìm kiếm</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="table-responsive" id="invoiceTable" >
+        <h4 class="mb-3">Bảng thống kê Hóa đơn</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Mã Hóa đơn</th>
+                    <th scope="col">Tên Bệnh nhân</th>
+                    <th scope="col">Ngày Khám</th>
+                    <th scope="col">Tổng Tiền</th>
+                    <th scope="col">Trạng Thái Thanh Toán</th>
+                </tr>
+            </thead>
+<!--            <tbody>-->
+<!--                <tr>-->
+<!--                    <td>HD001</td>-->
+<!--                    <td>Nguyễn Văn A</td>-->
+<!--                    <td>2024-12-21</td>-->
+<!--                    <td>1.000.000 VND</td>-->
+<!--                    <td>Chưa thanh toán</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>HD002</td>-->
+<!--                    <td>Trần Thị B</td>-->
+<!--                    <td>2024-12-20</td>-->
+<!--                    <td>500.000 VND</td>-->
+<!--                    <td>Đã thanh toán</td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+        </table>
+    </div>
+
+    <!-- Bảng Toa thuốc (ẩn mặc định) -->
+    <div class="table-responsive" id="prescriptionTable" style="display:none;">
+        <h4 class="mb-3">Toa Thuốc</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Tên Thuốc</th>
+                    <th scope="col">Số Lượng</th>
+                    <th scope="col">Tiền Thuốc</th>
+                </tr>
+            </thead>
+<!--            <tbody>-->
+<!--                &lt;!&ndash; Ví dụ dữ liệu &ndash;&gt;-->
+<!--                <tr>-->
+<!--                    <td>Paracetamol</td>-->
+<!--                    <td>10 viên</td>-->
+<!--                    <td>50.000 VND</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>Amoxicillin</td>-->
+<!--                    <td>20 viên</td>-->
+<!--                    <td>100.000 VND</td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+        </table>
+    </div>
+</div>
+{%endblock%}
