@@ -2,6 +2,7 @@ import json
 import hashlib
 from models import *
 from phongmachtu import db
+from sqlalchemy import extract, func
 
 def add_account(name, username, password):
     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
@@ -28,6 +29,18 @@ def get_all_period():
 
 def get_account_by_id(user_id):
     return Account.query.get(user_id)
+
+
+def revenue(month):
+    with app.app_context():
+        query = db.session.query(
+            extract('month', Receipt.created_date).label('Tháng'),
+            func.sum(Receipt.total_price).label('Doanh thu')
+        ).group_by(extract('month', Receipt.created_date))
+
+        results = query.all()
+
+        return results
 
 
 # def load_book_by_id(book_id):

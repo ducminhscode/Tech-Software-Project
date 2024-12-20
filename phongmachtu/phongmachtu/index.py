@@ -50,12 +50,7 @@ def register():
         if password.__eq__(confirm):
             username = request.form.get("username")
             name = request.form.get("name")
-            avatar = request.files.get('avatar')
 
-            # avatar_path = None
-            # if avatar:
-            #     res = cloudinary.uploader.upload(avatar)
-            #     avatar_path = res['secure_url']
 
             dao.add_account(name=name, username=username, password=password)
             return redirect('/login')
