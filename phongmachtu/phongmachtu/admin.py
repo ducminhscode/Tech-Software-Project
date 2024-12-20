@@ -8,14 +8,15 @@ admin = Admin(app, name="Quan Ly Account", template_mode="bootstrap4")
 
 
 class MyAccountView(ModelView):
-    column_list = ['id', 'name', 'username', 'active']
-    column_searchable_list = ['id', 'name']
+    column_list = ['name', 'username', 'active']
+    column_searchable_list = ['name']
 
 
 class MyEmployeeView(ModelView):
-    column_searchable_list = ['id', 'name', 'start_date']
-    column_filters = ['id', 'name']
+    column_searchable_list = ['name', 'start_date']
+    column_filters = ['name']
 
 
 admin.add_view(MyAccountView(Account, db.session))
-admin.add_view(MyEmployeeView(Doctor, Nurse, db.session))
+admin.add_view(MyEmployeeView(Doctor, db.session))
+admin.add_view(MyEmployeeView(Nurse, db.session))

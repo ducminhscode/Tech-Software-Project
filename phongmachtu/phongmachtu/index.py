@@ -2,6 +2,7 @@ from flask import render_template, request, redirect
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user
 import dao
+from phongmachtu.admin import *
 
 
 @app.route('/')
