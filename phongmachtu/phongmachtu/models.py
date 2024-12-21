@@ -12,7 +12,7 @@ class Account(db.Model, UserMixin):
     password = Column(String(50), nullable=False)
     joined_date = Column(DateTime, default=datetime.now)
 
-    type = Column(String(10), nullable=False, default='patient')
+    type = Column(String(20), nullable=False, default='patient')
 
     __mapper_args__ = {
         'polymorphic_identity': 'user',
@@ -23,7 +23,7 @@ class Account(db.Model, UserMixin):
 class Administrator(Account):
     id = Column(Integer, ForeignKey(Account.id), primary_key=True)
 
-    rules = relationship('Rules', backref='administrator', lazy=True)
+    regulations = relationship('Regulations', backref='administrator', lazy=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'administrator'
@@ -67,7 +67,7 @@ class Patient(Account):
     gender = Column(String(10), nullable=False)
     phone = Column(String(10))
 
-    books = relationship('Books', cascade="all,delete", backref='patient', lazy=True)
+    registration_form = relationship('RegistrationForm', cascade="all,delete", backref='patient', lazy=True)
     examination_forms = relationship('ExaminationForm', backref='patient', lazy=True)
     receipts = relationship('Receipt', backref='patient', lazy=True)
     history_disease = relationship('MedicalHistory', backref='patient', lazy=True)
@@ -109,10 +109,10 @@ class Times(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     period = Column(String(20), nullable=False)
 
-    books = relationship('Books', backref='time', lazy=True)
+    registration_form = relationship('RegistrationForm', backref='time', lazy=True)
 
 
-class Books(db.Model):
+class RegistrationForm(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     booked_date = Column(DateTime, default=datetime.now)
     desc = Column(String(500))
@@ -201,7 +201,7 @@ class ReceiptDetails(db.Model):
     prescription_id = Column(Integer, ForeignKey(Prescription.id), nullable=False)
 
 
-class Rules(db.Model):
+class Regulations(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     change_date = Column(Date, default=datetime.now)
     name = Column(String(50), nullable=False)
@@ -263,8 +263,8 @@ if __name__ == "__main__":
         # db.session.add(m3)
         # db.session.add(m4)
         #
-        # b = Books(patient_id=5, desc='czxmcoa', lenLichKham=True, isKham=False, time_id=2)
-        # b2 = Books(patient_id=6, desc='czxzxcpfsdfa', lenLichKham=True, isKham=False, time_id=6)
+        # b = RegistrationForm(patient_id=5, desc='czxmcoa', lenLichKham=True, isKham=False, time_id=2)
+        # b2 = RegistrationForm(patient_id=6, desc='czxzxcpfsdfa', lenLichKham=True, isKham=False, time_id=6)
         #
         # db.session.add(b)
         # db.session.add(b2)
@@ -293,8 +293,8 @@ if __name__ == "__main__":
         # db.session.add(rd)
         # db.session.add(rd2)
         #
-        # ru = Rules(name='minh', value='200000', admin_id=1)
-        # ru2 = Rules(name='zoen', value='900000', admin_id=1)
+        # ru = Regulations(name='minh', value='200000', admin_id=1)
+        # ru2 = Regulations(name='zoen', value='900000', admin_id=1)
         #
         # db.session.add(ru)
         # db.session.add(ru2)

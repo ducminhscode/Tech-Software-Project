@@ -101,7 +101,7 @@ class TimesView(AuthenticatedAdminModelView):
     page_size = 10
 
 
-class RulesView(AuthenticatedAdminModelView):
+class RegulationsView(AuthenticatedAdminModelView):
     column_list = ['id', 'change_date', 'name', 'value', 'administrator']
     column_labels = {'id': 'STT', 'change_date': 'Ngày thay đổi', 'name': 'Tên quy định', 'value': 'Trị số',
                      'administrator': 'Quản trị viên'}
@@ -133,7 +133,7 @@ admin.add_view(CashierView(Cashier, db.session, name="Thu ngân"))
 admin.add_view(PatientView(Patient, db.session, name="Bệnh nhân"))
 admin.add_view(MedicineView(Medicine, db.session, name="Thuốc"))
 admin.add_view(TimesView(Times, db.session, name="Khung giờ"))
-admin.add_view(RulesView(Rules, db.session, name="Quy định"))
+admin.add_view(RegulationsView(Regulations, db.session, name="Quy định"))
 admin.add_view(ReceiptView(Receipt, db.session, name="Hóa đơn"))
 
 
