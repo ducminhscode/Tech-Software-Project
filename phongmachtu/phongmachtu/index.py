@@ -54,10 +54,25 @@ def login_my_user():
     return render_template('login.html', err_msg=err_msg)
 
 
-@app.route('/booking')
-def booking_self():
+@app.route('/patient/booking', methods=['GET', 'POST'])
+def booking():
+    err_msg = None
+
+    if request.method == 'POST':
+        selected_time = request.form.get('time')
+        selected_date = request.form.get('date')
+
+        if not selected_time or not selected_date:
+            err_msg = "Vui lòng chọn đầy đủ buổi khám và ngày khám."
+        else:
+            try:
+                dao.save_booking(selected_time, selected_date)
+                return redirect('/patient/booking')
+            except Exception as e:
+                err_msg = f"Có lỗi xảy ra: {e}"
+
     time = dao.get_all_period()
-    return render_template('booking.html', time=time)
+    return render_template('patient/booking.html', time=time, err_msg=err_msg)
 
 
 @app.route('/cashier/receipt-list')
@@ -114,9 +129,20 @@ def examination_form():
     return render_template('/doctor/examination-form.html')
 
 
-@app.route('/doctor/patient-list')
-def patinent_list():
-    return render_template('/doctor/patient-list.html')
+
+@app.route('/nurse/confirm-registration')
+def confirm_registration():
+    return render_template('/nurse/confirm-registration.html')
+
+@app.route('/nurse/regis-patient')
+def regis_patient():
+    return render_template('/nurse/regis-patient.html')
+
+
+
+@app.route('/nurse/patient-list')
+def patient_list():
+    return render_template('/nurse/patient-list.html')
 
 
 @app.route('/logout')

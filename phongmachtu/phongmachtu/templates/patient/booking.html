@@ -9,7 +9,7 @@
     <div class="container my-5">
         <h1 class="mb-4 text-center">Đăng ký lịch khám</h1>
 
-        <form>
+        <form method="post" action="/booking" enctype="multipart/form-data">
             <!-- Chọn buổi khám -->
             <div class="form-floating mb-3 mt-3">
                 <select class="form-control" id="buoiKham" aria-label="Chọn buổi khám">
@@ -22,11 +22,11 @@
 
             <!-- Ngày khám -->
             <div class="form-floating mb-3 mt-3">
-                <input type="date" class="form-control" id="ngayKham" placeholder="Chọn ngày khám">
+                <input type="date" class="form-control" id="ngayKham" name="date" placeholder="Chọn ngày khám">
                 <label for="ngayKham">Ngày khám</label>
             </div>
 
-            <!-- Button Xác nhận -->
+
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Xác nhận</button>
             </div>

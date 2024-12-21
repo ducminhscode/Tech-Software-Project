@@ -117,3 +117,8 @@ def stats_medicine(kw=None, from_date=None, to_date=None):
 #         query = query.filter(Books.name.contains(q))
 #
 #     return query.all()
+
+
+
+def save_booking(selected_time, selected_date):
+    return None

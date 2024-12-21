@@ -1,0 +1,27 @@
+{%extends 'layout/base.html'%}
+
+{%block content%}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Danh sách bệnh nhân</h2>
+        <div class="row">
+            <!-- Calendar View -->
+            <div class="col-md-4">
+                <div class="calendar-container border rounded p-3">
+                    <h5 class="text-center">Chọn ngày</h5>
+                    <input type="date" class="form-control mb-3" id="selectedDate" />
+                    <button class="btn btn-primary w-100" id="confirmDate">Xác nhận</button>
+                </div>
+            </div>
+
+            <!-- Info View -->
+            <div class="col-md-8">
+                <div class="info-view">
+                    <h5>Thông tin bệnh nhân</h5>
+                    <div id="patient-info">
+                        <p>Chọn ngày trong lịch và nhấn "Xác nhận" để xem thông tin bệnh nhân.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endblock%}
