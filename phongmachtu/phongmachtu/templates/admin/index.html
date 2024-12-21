@@ -3,26 +3,24 @@
 {% block body %}
 
 <head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet"/>
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </head>
 
 {% if current_user.is_authenticated %}
 
 <h1>CHÀO MỪNG ĐẾN TRANG QUẢN TRỊ</h1>
-<h2 class="text-danger">Chào {{current_user.name}}</h2>
 
-<div class="row">
+<div class="row" style="margin-top: 5%">
     <div class="col-md-5">
         <div>
-            <h2 class="d-inline-block text-uppercase text-primary h1 font-weight-bold">ADMIN DASHBOARD</h2>
+            <h2 class="d-inline-block text-uppercase text-primary h1 font-weight-bold">BẢNG ĐIỀU KHIỂN</h2>
              <p class="lead">Chào mừng bạn đến với bảng điều khiển quản trị. Quản lý hoạt động của bệnh viện, theo dõi và truy cập dữ liệu quan trọng.</p>
              <p>Hãy thoải mái khám phá các tính năng và chức năng khác nhau có sẵn cho bạn.</p>
         </div>
     </div>
     <div class="col-md-7">
         <img class="" style="width: 100%"
-             src="/static/images/temp.png"
+             src="/static/images/temp.jpg"
              alt="doctors">
     </div>
 </div>
@@ -32,15 +30,19 @@
 {% else %}
 <h1>ĐĂNG NHẬP QUẢN TRỊ</h1>
 <form method="post" action="/login-admin">
-    <div class="mb-3 mt-3">
-        <label for="email" class="form-label">Tên đăng nhập:</label>
-        <input type="text" class="form-control" id="email" placeholder="Nhập tên đăng nhập" name="username">
+
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" id="username" placeholder="Tài khoản" name="username" pattern="[A-Za-z0-9]*" required>
     </div>
-    <div class="mb-3">
-        <label for="pwd" class="form-label">Mật khẩu:</label>
-        <input type="password" class="form-control" id="pwd" placeholder="Nhập mật khẩu" name="password">
+
+    <div class="form-floating mt-3 mb-3">
+        <input type="password" class="form-control" id="password" placeholder="Mật khẩu" name="password" required>
     </div>
-    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+
+    <div class="form-floating mt-3 mb-3">
+      <button class="btn btn-success" type="submit">Đăng nhập</button>
+    </div>
+
 </form>
 {% endif %}
 
