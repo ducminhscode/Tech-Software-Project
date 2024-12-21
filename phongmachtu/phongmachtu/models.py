@@ -215,95 +215,96 @@ class Rules(db.Model):
 if __name__ == "__main__":
     with app.app_context():
         import hashlib
+        #
+        # a = Administrator(name="Admin", username="admin",
+        #                   password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="administrator")
+        #
+        # d = Doctor(name="Doctor", username="doctor",
+        #            password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="doctor",
+        #            license="Giấy phép hành nghề")
+        #
+        # n = Nurse(name='Nurse', username="nurse",
+        #           password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="nurse", phuTrachKhoa="A")
+        #
+        # c = Cashier(name='Cashier', username="cashier",
+        #             password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="cashier",
+        #             license="Giấy phép hành nghề")
+        #
+        # p1 = Patient(name='Patient1', username="patient1",
+        #              password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
+        #              address='GV, HCM', day_of_birth="2003", gender='Nam', phone="0123456789",)
+        #
+        # p2 = Patient(name='Patient2', username="patient2",
+        #              password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
+        #              address='Nha Be, HCM', day_of_birth="2003", gender='Nữ', phone="0987654321")
+        #
+        # db.session.add(a)
+        # db.session.add(d)
+        # db.session.add(n)
+        # db.session.add(c)
+        # db.session.add(p1)
+        # db.session.add(p2)
+        #
+        # time_periods = ["07:00 - 08:00", "08:00 - 09:00", "09:00 - 10:00",
+        #                 "10:00 - 11:00", "11:00 - 12:00", "13:00 - 14:00",
+        #                 "14:00 - 15:00", "15:00 - 16:00", "16:00 - 17:00"]
+        #
+        # for period in time_periods:
+        #     time = Times(period=period)
+        #     db.session.add(time)
+        #
+        # m1 = Medicine(name='Panadol', unit='Vỉ', price=25000, usage='Thuốc giảm đau, hạ sốt')
+        # m2 = Medicine(name='Becberin', unit='Lọ', price=20000, usage='Thuốc tiêu hóa')
+        # m3 = Medicine(name='Paracetamol', unit='Vỉ', price=30000, usage='Thuốc hạ sốt, cảm cúm')
+        # m4 = Medicine(name='Thuốc ho Prospan', unit='Chai', price=30000, usage='Thuốc giảm ho, trị ho dai ho có đờm')
+        #
+        # db.session.add(m1)
+        # db.session.add(m2)
+        # db.session.add(m3)
+        # db.session.add(m4)
+        #
+        # b = Books(patient_id=5, desc='czxmcoa', lenLichKham=True, isKham=False, time_id=2)
+        # b2 = Books(patient_id=6, desc='czxzxcpfsdfa', lenLichKham=True, isKham=False, time_id=6)
+        #
+        # db.session.add(b)
+        # db.session.add(b2)
+        #
+        # r = Receipt(examines_price='20000', total_price='100000', cashier_id=4, patient_id=5)
+        # r2 = Receipt(examines_price='30000', total_price='200000', cashier_id=4, patient_id=6)
+        #
+        # db.session.add(r)
+        # db.session.add(r2)
+        #
+        # e = ExaminationForm(disease='qwoiqep', description='qweqdxcmz', doctor_id=2, patient_id=5)
+        # e1 = ExaminationForm(disease='pcoasqwicx', description='xzcmlaskdq', doctor_id=2, patient_id=6)
+        #
+        # db.session.add(e)
+        # db.session.add(e1)
+        #
+        # p = Prescription(quantity=20, guide='aqowie', medicine_id=2, examinationForm_id=1)
+        # p2 = Prescription(quantity=10, guide='czxcaqeqwe', medicine_id=3, examinationForm_id=2)
+        #
+        # db.session.add(p)
+        # db.session.add(p2)
+        #
+        # rd = ReceiptDetails(medicines_price='4000', receipt_id=1, prescription_id=1)
+        # rd2 = ReceiptDetails(medicines_price='6000', receipt_id=2, prescription_id=2)
+        #
+        # db.session.add(rd)
+        # db.session.add(rd2)
+        #
+        # ru = Rules(name='minh', value='200000', admin_id=1)
+        # ru2 = Rules(name='zoen', value='900000', admin_id=1)
+        #
+        # db.session.add(ru)
+        # db.session.add(ru2)
+        #
+        # h = MedicalHistory(patient_id=5, disease='dqwidasdpad')
+        # h2 = MedicalHistory(patient_id=6, disease='qwdoasdqw')
+        #
+        # db.session.add(h)
+        # db.session.add(h2)
 
-        a = Administrator(name="Admin", username="admin",
-                          password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="administrator")
-
-        d = Doctor(name="Doctor", username="doctor",
-                   password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="doctor",
-                   license="Giấy phép hành nghề")
-
-        n = Nurse(name='Nurse', username="nurse",
-                  password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="nurse", phuTrachKhoa="A")
-
-        c = Cashier(name='Cashier', username="cashier",
-                    password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="cashier",
-                    license="Giấy phép hành nghề")
-
-        p1 = Patient(name='Patient1', username="patient1",
-                     password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
-                     address='GV, HCM', day_of_birth="2003", gender='Nam', phone="0123456789",)
-
-        p2 = Patient(name='Patient2', username="patient2",
-                     password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
-                     address='Nha Be, HCM', day_of_birth="2003", gender='Nữ', phone="0987654321")
-
-        db.session.add(a)
-        db.session.add(d)
-        db.session.add(n)
-        db.session.add(c)
-        db.session.add(p1)
-        db.session.add(p2)
-
-        time_periods = ["07:00 - 08:00", "08:00 - 09:00", "09:00 - 10:00",
-                        "10:00 - 11:00", "11:00 - 12:00", "13:00 - 14:00",
-                        "14:00 - 15:00", "15:00 - 16:00", "16:00 - 17:00"]
-
-        for period in time_periods:
-            time = Times(period=period)
-            db.session.add(time)
-
-        m1 = Medicine(name='Panadol', unit='Vỉ', price=25000, usage='Thuốc giảm đau, hạ sốt')
-        m2 = Medicine(name='Becberin', unit='Lọ', price=20000, usage='Thuốc tiêu hóa')
-        m3 = Medicine(name='Paracetamol', unit='Vỉ', price=30000, usage='Thuốc hạ sốt, cảm cúm')
-        m4 = Medicine(name='Thuốc ho Prospan', unit='Chai', price=30000, usage='Thuốc giảm ho, trị ho dai ho có đờm')
-
-        db.session.add(m1)
-        db.session.add(m2)
-        db.session.add(m3)
-        db.session.add(m4)
-
-        b = Books(patient_id=5, desc='czxmcoa', lenLichKham=True, isKham=False, time_id=2)
-        b2 = Books(patient_id=6, desc='czxzxcpfsdfa', lenLichKham=True, isKham=False, time_id=6)
-
-        db.session.add(b)
-        db.session.add(b2)
-
-        r = Receipt(examines_price='20000', total_price='100000', cashier_id=4, patient_id=5)
-        r2 = Receipt(examines_price='30000', total_price='200000', cashier_id=4, patient_id=6)
-
-        db.session.add(r)
-        db.session.add(r2)
-
-        e = ExaminationForm(disease='qwoiqep', description='qweqdxcmz', doctor_id=2, patient_id=5)
-        e1 = ExaminationForm(disease='pcoasqwicx', description='xzcmlaskdq', doctor_id=2, patient_id=6)
-
-        db.session.add(e)
-        db.session.add(e1)
-
-        p = Prescription(quantity=20, guide='aqowie', medicine_id=2, examinationForm_id=1)
-        p2 = Prescription(quantity=10, guide='czxcaqeqwe', medicine_id=3, examinationForm_id=2)
-
-        db.session.add(p)
-        db.session.add(p2)
-
-        rd = ReceiptDetails(medicines_price='4000', receipt_id=1, prescription_id=1)
-        rd2 = ReceiptDetails(medicines_price='6000', receipt_id=2, prescription_id=2)
-
-        db.session.add(rd)
-        db.session.add(rd2)
-
-        ru = Rules(name='minh', value='200000', admin_id=1)
-        ru2 = Rules(name='zoen', value='900000', admin_id=1)
-
-        db.session.add(ru)
-        db.session.add(ru2)
-
-        h = MedicalHistory(patient_id=5, disease='dqwidasdpad')
-        h2 = MedicalHistory(patient_id=6, disease='qwdoasdqw')
-
-        db.session.add(h)
-        db.session.add(h2)
 
         db.create_all()
         db.session.commit()

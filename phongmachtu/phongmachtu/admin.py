@@ -1,3 +1,5 @@
+from calendar import month
+
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from models import *
@@ -139,15 +141,14 @@ class StatsRevenueView(AuthenticatedAdminBaseView):
 
     @expose('/')
     def index(self):
-        month = request.args.get('month')
-        return self.render('admin/stats_revenue.html', rev=dao.stats_revenue(month=month))
-
+        rev = dao.stats_revenue(month=request.args.get('month'))
+        return self.render('admin/stats_revenue.html', rev=rev)
 
 class StatsFrequencyView(AuthenticatedAdminBaseView):
     @expose('/')
     def index(self):
-        month = request.args.get('month')
-        return self.render('admin/stats_frequency.html', frequency=dao.stats_frequency(month=month))
+        fre = dao.stats_frequency(year=request.args.get('year'))
+        return self.render('admin/stats_frequency.html', fre=fre)
 
 
 class StatsMedicineView(AuthenticatedAdminBaseView):

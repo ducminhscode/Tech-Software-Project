@@ -1,4 +1,4 @@
-{% extends '/admin/base.html' %}
+{% extends 'admin/master.html' %}
 
 {% block body %}
 
@@ -7,102 +7,73 @@
 </head>
 
 <h1>Thống Kê Doanh Thu Phòng Mạch Tư</h1>
-
 <div class="row" style="margin:auto">
-    <div class="col-md-6 col-xs-12" style = "margin-top: 7%">
+    <div class="col-md-6 col-xs-12" style="margin-top: 7%">
         <table class="table">
             <tr>
-                <th>Tháng</th>
+                <th>Ngày</th>
+                <th>Số lượng</th>
                 <th>Doanh thu</th>
             </tr>
 
             {% for s in rev %}
             <tr>
-                <td>{{ s[0] }}</td>
-                <td>
-                    {% if s[1] %}
-                        {{ "{:,.0f}".format(s[1]) }} VND
-                    {% else %}
-                        0 VND
-                    {% endif %}
-                </td>
+                <td>{{ s[0].strftime('%d/%m/%Y') }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ "{:,.0f}".format(s[2]) }} VND</td>
             </tr>
             {% endfor %}
 
         </table>
+        <table class="table" style="margin-top: 7%">
+            <tr>
+                <th>Tổng doanh thu</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th id="sumRevenue"></th>
+            </tr>
+
+        </table>
+
     </div>
     <div class="col-md-6 col-xs-12">
         <form>
             <div class="form-group">
-                <h4 class = "text-center" style = "margin-top: 5%">Lọc dữ liệu theo tháng</h4>
-                <input style = "margin-top: 5%" type="month" placeholder="Nhập tháng" class="form-control" name="month" min="1" max="12"/>
+                <h4 class="text-center" style="margin-top: 5%">Lọc dữ liệu theo tháng</h4>
+                <input style="margin-top: 5%" type="month" class="form-control" name="month"
+                       min="1" max="12"/>
             </div>
 
-            <input style = "margin-bottom: 10%" type="submit" value="Thống kê" class="btn btn-info" />
+            <div>
+                <input style="margin-bottom: 10%" type="submit" value="Thống kê" class="btn btn-info"/>
+            </div>
         </form>
+        <div class="chart" style="margin-bottom: 5%; width: 400px; height: 400px">
+            <canvas id="revenueChart"></canvas>
+        </div>
     </div>
-</div>
-<div class="chart" style = "margin-bottom: 5%; width: 400px; height: 400px">
-    <canvas id="revenueChart"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 <script>
-    let name = [], info = []
-    let borderColors = [], colors = []
-
+    let data = [], labels=[]
 
     {% for s in rev %}
-        name.push('Tháng {{ s[0] }}')
-        info.push({{ s[1] }})
-
-        let r = Math.random() * 255;
-        let g = Math.random() * 255;
-        let b = Math.random() * 255;
-
-        let newColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
-
-        colors.push(newColor);
-        borderColors.push(newColor)
+        data.push({{ s[2] }})
+        labels.push('Ngày {{ s[0].strftime('%d') }}')
     {% endfor %}
 
     window.onload = function() {
-        const ctx  = document.getElementById('revenueChart').getContext('2d');
-        loadChart(ctx, name, info, 'doughnut', colors, borderColors);
+        drawRevenueStats(labels, data)
     }
+    var sum = 0;
+    for (var i = 0; i < data.length; i++) {
+        sum += data[i];
+    }
+    document.getElementById("sumRevenue").innerHTML = sum + " VND";
 
-    function loadChart(ctx, labels, data, type, colors, borderColors) {
-        new Chart(ctx, {
-            type: type,
-            data: {
-                labels: name,
-                datasets: [{
-                    label: 'Doanh thu',
-                    data: info,
-                    backgroundColor: colors,
-                    borderColor: borderColors,
-                    borderWidth: 3
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: 'white',
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        ticks: {
-                            color: 'white'
-                        },
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
 </script>
 {% endblock %}

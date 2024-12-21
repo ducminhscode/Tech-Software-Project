@@ -1,12 +1,16 @@
 import json
 import hashlib
+
+from click.decorators import R
+
 from models import *
 from phongmachtu import db
 from sqlalchemy import extract, func
 
+
 def add_account(name, username, password, type):
     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
-    u = Account(name=name, username=username, password=password,type=type)
+    u = Account(name=name, username=username, password=password, type=type)
     db.session.add(u)
     db.session.commit()
 
@@ -30,12 +34,10 @@ def add_cashier(license):
 
 
 def auth_account(username, password):
-
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
 
     return Account.query.filter(Account.username.__eq__(username),
-                             Account.password.__eq__(password)).first()
-
+                                Account.password.__eq__(password)).first()
 
 
 def get_user_type(username, password):
@@ -60,28 +62,26 @@ def get_account_by_id(user_id):
     return Account.query.get(user_id)
 
 
-def stats_revenue(month):
-    with app.app_context():
-        query = db.session.query(
-            extract('month', Receipt.created_date).label('Tháng'),
-            func.sum(Receipt.total_price).label('Doanh thu')
-        ).group_by(extract('month', Receipt.created_date))
+def stats_revenue(month=None):
+    query = db.session.query(Receipt.created_date, func.count(Patient.id), func.sum(Receipt.total_price)).join(Receipt,
+                                                                                                               Receipt.patient_id.__eq__(
+                                                                                                                   Patient.id))
+    if month:
+        query = query.filter(Receipt.created_date.contains(month))
 
-        results = query.all()
-
-        return results
+    return query.group_by(Receipt.created_date).all()
 
 
-def stats_frequency(month):
-    with app.app_context():
-        query = db.session.query(
-            extract('month', ExaminationForm.datetime).label('Tháng'),
-            (func.count(ExaminationForm.id) / 40*100).label('Tần suất khám')
-        ).group_by(extract('month', ExaminationForm.datetime))
+def stats_frequency(year=None):
+    query = db.session.query(extract('month', ExaminationForm.datetime).label('Tháng'),
+                             (func.count(ExaminationForm.id) / 40 * 100).label('Tần suất khám')).group_by(extract('month', ExaminationForm.datetime))
 
-        results = query.all()
+    if year:
+        query = query.filter(ExaminationForm.datetime.contains(year))
 
-        return results
+    results = query.all()
+
+    return results
 
 
 def stats_medicine(kw=None, from_date=None, to_date=None):
@@ -99,7 +99,6 @@ def stats_medicine(kw=None, from_date=None, to_date=None):
         query = query.filter(ExaminationForm.datetime.__le__(to_date))
 
     return query.group_by(Medicine.id).order_by(Medicine.id).all()
-
 
 # def load_books():
 #     query = Books.query
