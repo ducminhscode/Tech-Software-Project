@@ -64,7 +64,7 @@ def register():
             name = request.form.get("name")
 
 
-            dao.add_account(name=name, username=username, password=password)
+            dao.add_account(name=name, username=username, password=password, type=type)
             return redirect('/login')
         else:
             err_msg = "Mật khẩu không khớp!"

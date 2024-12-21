@@ -4,9 +4,9 @@ from models import *
 from phongmachtu import db
 from sqlalchemy import extract, func
 
-def add_account(name, username, password):
+def add_account(name, username, password, type):
     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
-    u = Patient(name=name, username=username, password=password)
+    u = Patient(name=name, username=username, password=password,type=type)
     db.session.add(u)
     db.session.commit()
 
@@ -14,7 +14,6 @@ def add_account(name, username, password):
 def auth_account(username, password):
 
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
-
 
     return Account.query.filter(Account.username.__eq__(username),
                              Account.password.__eq__(password)).first()
