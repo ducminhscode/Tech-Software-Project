@@ -157,6 +157,7 @@ class StatsMedicineView(AuthenticatedAdminBaseView):
                                  from_date=request.args.get('from_date'), to_date=request.args.get('to_date'))
         return self.render('admin/stats_medicine.html', med=med)
 
+
 admin.add_view(StatsRevenueView(name='Doanh thu'))
 admin.add_view(StatsFrequencyView(name="Tần suất khám"))
 admin.add_view(StatsMedicineView(name="Tần suất sử dụng thuốc"))

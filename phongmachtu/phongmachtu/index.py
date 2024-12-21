@@ -34,7 +34,7 @@ def login_my_user():
             elif user.type == "administrator":
                 return redirect('/')
             else:
-                return redirect('/cash')
+                return redirect('/cashier/cash')
 
         else:
             err_msg = "Tài khoản hoặc mật khẩu không đúng!"
@@ -48,9 +48,9 @@ def booking_self():
     return render_template('booking.html', time=time)
 
 
-@app.route('/receipt-list')
+@app.route('/cashier/receipt-list')
 def receipt_list():
-    return render_template('receipt-list.html')
+    return render_template('cashier/receipt-list.html')
 
 
 @app.route('/register', methods=['get', 'post'])
@@ -63,18 +63,48 @@ def register():
             username = request.form.get("username")
             name = request.form.get("name")
 
+            _type = request.form.get("type")
 
-            dao.add_account(name=name, username=username, password=password, type=type)
-            return redirect('/login')
+            dao.add_account(name=name, username=username, password=password, type=_type)
+            return redirect('login')
         else:
             err_msg = "Mật khẩu không khớp!"
 
     return render_template('register.html', err_msg=err_msg)
 
 
-@app.route('/cash')
+# @app.route('/register-detail', methods=['get', 'post'])
+# def register_detail():
+#     err_msg = None
+#     account = Account.id
+#     if request.method.__eq__('POST'):
+#         if account.type == "patient":
+#             address = request.form.get("address")
+#             day_of_birth = request.form.get("day_of_birth")
+#             phone =  request.form.get("phone")
+#             dao.add_patient(address=address, day_of_birth=day_of_birth, phone=phone)
+#             return redirect('/login')
+#         else:
+#             _license = request.form.get("license")
+#             dao.add_doctor_cashier(_license=_license)
+#             return redirect('/login')
+#
+#     return render_template('register-detail.html', err_msg=err_msg)
+
+
+@app.route('/cashier/cash')
 def cashing():
-    return render_template('cash.html')
+    return render_template('cashier/cash.html')
+
+
+@app.route('/doctor/examination-form')
+def examination_form():
+    return render_template('/doctor/examination-form.html')
+
+
+@app.route('/doctor/patient-list')
+def patinent_list():
+    return render_template('/doctor/patient-list.html')
 
 
 @app.route('/logout')

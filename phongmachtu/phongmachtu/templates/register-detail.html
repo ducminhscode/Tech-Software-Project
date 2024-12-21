@@ -1,0 +1,49 @@
+{%extends 'layout/base.html'%}
+
+{%block title%} Đăng ký {%endblock%}
+
+{%block content%}
+<h1 class="text-center text-info mt-1">ĐĂNG KÝ THÔNG TIN CHI TIẾT</h1>
+{%if err_msg%}
+<div class="alert alert-danger">{{err_msg}}</div>
+{%endif%}
+<form method="post" action="/register-detail" enctype="multipart/form-data">
+    {%if current_user.is_authenticated%}
+    {%if current_user.type=="patient"%}
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ" name="address">
+        <label for="address">Địa chỉ:</label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" id="day_of_birth" placeholder="Nhập ngày sinh" name="day_of_birth"
+               pattern="[0-9]*" required>
+        <label for="day_of_birth">Ngày Sinh: </label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" id="gender" placeholder="Nhập giới tính" name="gender">
+        <label for="gender">Giới tính: </label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" id="phone" placeholder="Nhập số điện thoại:" name="phone" required>
+        <label for="phone">Số điện thoại: </label>
+    </div>
+
+    {%elif current_user.type=="cashier"%}
+    <div class="navbar-nav me-auto">
+        <div class="form-floating mb-3 mt-3">
+            <input type="text" class="form-control" id="license" name="license" required>
+            <label for="license">Giấy phép: </label>
+        </div>
+    </div>
+
+    {%elif current_user.type=="doctor"%}
+    <div class="navbar-nav me-auto">
+        <div class="form-floating mb-3 mt-3">
+            <input type="text" class="form-control" id="license" name="license" required>
+            <label for="license">Giấy phép: </label>
+        </div>
+    </div>
+    {%endif%}
+    {%endif%}
+</form>
+{%endblock%}

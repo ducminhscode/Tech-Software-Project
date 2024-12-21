@@ -1,0 +1,66 @@
+{%extends 'layout/base.html'%}
+
+
+{%block content%}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Hóa Đơn Thanh Toán</h2>
+
+    <form>
+        <div class="row mb-3">
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control" id="patientName" placeholder="Nhập tên bệnh nhân">
+                <label for="patientName">Tên Bệnh Nhân</label>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <h3 class="text-center mb-4">Phiếu khám bệnh</h3>
+            <div class="table-responsive table-sm mb-3">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>Họ và tên: </th>
+                        <td>Chương</td>
+                    </tr>
+                    <tr>
+                        <th>Ngày khám: </th>
+                        <td>20/12/2024</td>
+                    </tr>
+                    <tr>
+                        <th>Triệu chứng: </th>
+                        <td>Sốt, ho</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-floating mt-3 mb-3">
+                <input type="text" class="form-control" id="pathology" placeholder="Nhập lại mật khẩu" name="pathology"
+                       required>
+                <label for="pathology">Dự đoán bệnh: </label>
+            </div>
+
+
+            <div class="table-responsive mb-3">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="text-center">
+                        <th>STT</th>
+                        <th>Tên Thuốc</th>
+                        <th>Số Lượng</th>
+                        <th>Đơn Vị</th>
+                        <th>Cách Dùng</th>
+                    </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-success">Lưu phiếu khám</button>
+        </div>
+
+    </form>
+</div>
+
+{%endblock%}

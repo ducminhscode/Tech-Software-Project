@@ -12,7 +12,7 @@ class Account(db.Model, UserMixin):
     password = Column(String(50), nullable=False)
     joined_date = Column(DateTime, default=datetime.now)
 
-    type = Column(String(10), nullable=False, default='user')
+    type = Column(String(10), nullable=False, default='patient')
 
     __mapper_args__ = {
         'polymorphic_identity': 'user',
@@ -37,7 +37,6 @@ class Administrator(Account):
 class Doctor(Account):
     id = Column(Integer, ForeignKey(Account.id), primary_key=True)
     license = Column(String(200), nullable=False)
-
     examination_forms = relationship('ExaminationForm', backref='doctor', lazy=True)
 
     __mapper_args__ = {
@@ -175,7 +174,6 @@ class Prescription(db.Model):
     __mapper_args__ = {
         'polymorphic_identity': 'cashier'
     }
-
 
 
 class Receipt(db.Model):

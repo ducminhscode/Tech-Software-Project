@@ -6,7 +6,25 @@ from sqlalchemy import extract, func
 
 def add_account(name, username, password, type):
     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
-    u = Patient(name=name, username=username, password=password,type=type)
+    u = Account(name=name, username=username, password=password,type=type)
+    db.session.add(u)
+    db.session.commit()
+
+
+def add_patient(address, day_of_birth, gender, phone):
+    u = Patient(address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+    db.session.add(u)
+    db.session.commit()
+
+
+def add_doctor(license):
+    u = Doctor(license=license)
+    db.session.add(u)
+    db.session.commit()
+
+
+def add_cashier(license):
+    u = Cashier(license=license)
     db.session.add(u)
     db.session.commit()
 
@@ -19,6 +37,7 @@ def auth_account(username, password):
                              Account.password.__eq__(password)).first()
 
 
+
 def get_user_type(username, password):
     account = Account.query.filter_by(username=username).first()
 
@@ -27,7 +46,6 @@ def get_user_type(username, password):
             return 'patient'
         return account.type
     return None
-
 
 
 def get_all_period():
@@ -53,6 +71,7 @@ def stats_revenue(month):
 
         return results
 
+
 def stats_frequency(month):
     with app.app_context():
         query = db.session.query(
@@ -63,6 +82,7 @@ def stats_frequency(month):
         results = query.all()
 
         return results
+
 
 def stats_medicine(kw=None, from_date=None, to_date=None):
     query = db.session.query(Medicine.id, Medicine.name, Medicine.unit,
@@ -81,39 +101,18 @@ def stats_medicine(kw=None, from_date=None, to_date=None):
     return query.group_by(Medicine.id).order_by(Medicine.id).all()
 
 
-
-
-
-
-
-# def load_book_by_id(book_id):
-#     with open('data/books.json', encoding='utf-8') as f:
-#         books = json.load(f)
-#         for p in books:
-#             if p["id"] == id:
-#                 return p
+# def load_books():
+#     query = Books.query
+#     return query.all()
 #
 #
-
-# def load_products(q=None, cate_id=None, page=None):
-#     # with open('data/products.json', encoding='utf-8') as f:
-#     #     products = json.load(f)
-#     #     if q:
-#     #         products = [p for p in products if p["name"].find(q)>=0]
-#     #     if cate_id:
-#     #         products = [p for p in products if p["category_id"].__eq__(int(cate_id))]
-#     #     return products
+# def load_book_patient_id(q=None):
 #
-#     query = Product.query
+#     query = db.session.query(Patient.id,
+#                              func.sum(Books.booked_date)) \
+#             .join(Patient, Patient.id.__eq__(Books.patient_id), isouter=True)
 #
 #     if q:
-#         query = query.filter(Product.name.contains(q))
-#     if cate_id:
-#         query = query.filter(Product.category_id.__eq__(cate_id))
-#
-#     if page:
-#         page_size = app.config['PAGE_SIZE']
-#         start = (int(page)-1)*page_size
-#         query = query.slice(start, start+page_size)
+#         query = query.filter(Books.name.contains(q))
 #
 #     return query.all()

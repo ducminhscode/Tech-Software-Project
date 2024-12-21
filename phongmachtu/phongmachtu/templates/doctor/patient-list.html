@@ -1,0 +1,61 @@
+{%extends 'layout/base.html'%}
+
+{%block content%}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Hóa Đơn Thanh Toán</h2>
+
+    <form>
+        <div class="row mb-3">
+            <div class="col-md-6 form-floating">
+                <input type="text" class="form-control" id="patientName" placeholder="Nhập tên bệnh nhân">
+                <label for="patientName">Tên Bệnh Nhân</label>
+            </div>
+        </div>
+
+        <div class="row">
+<!--            <ul class="col-md-4 mb-3"> -->
+<!--                {%for c in Books%} -->
+<!--                <li class="card"> -->
+<!--                    <div class="examination"> -->
+<!--                        <h5 class="card-title">Họ và Tên: {{c.id}}</h5> -->
+<!--                        <p class="card-text">Ngày khám: {{c.booked_date}}</p> -->
+<!--                        <p class="card-text">Triệu chứng: {{c.desc}}</p> -->
+<!--                    </div> -->
+<!--                </li> -->
+<!--                {%endfor%} -->
+<!--            </ul> -->
+
+
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Chương</h5>
+                        <p class="card-text">Ngày khám: 20/12/2024</p>
+                        <p class="card-text">Triệu chứng: Sốt, ho</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Linh</h5>
+                        <p class="card-text">Ngày khám: 21/12/2024</p>
+                        <p class="card-text">Triệu chứng: Đau đầu, mệt mỏi</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Anh</h5>
+                        <p class="card-text">Ngày khám: 22/12/2024</p>
+                        <p class="card-text">Triệu chứng: Ho khan, đau họng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+{%endblock%}

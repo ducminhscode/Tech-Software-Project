@@ -10,7 +10,7 @@
 <form method="post" action="/register" enctype="multipart/form-data">
     <div class="form-floating mb-3 mt-3">
         <input type="text" class="form-control" id="name" placeholder="Nhập họ tên" name="name" required>
-        <label for="name">Họ tên</label>
+        <label for="name">Họ và Tên</label>
     </div>
     <div class="form-floating mb-3 mt-3">
         <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản" name="username" pattern="[A-Za-z0-9]*" required>
@@ -24,11 +24,16 @@
         <input type="password" class="form-control" id="confirm" placeholder="Nhập lại mật khẩu" name="confirm" required>
         <label for="confirm">Nhập lại mật khẩu</label>
     </div>
-    <div class="form-floating mt-3 mb-3">
-        <input type="text" class="form-control" id="type" placeholder="Vai trò" name="type">
-        <label for="type">Vai trò</label>
+    <div class="col-md-6 form-floating">
+        <select class="form-select" id="type" name="type">
+            <option value="patient" selected>Bệnh Nhân</option>
+            <option value="doctor">Bác sĩ</option>
+            <option value="nurse">Y tá</option>
+            <option value="cashier">Thu ngân</option>
+            <option value="admin">Quản trị viên</option>
+        </select>
+        <label for="type">Vai trò: </label>
     </div>
-
     <div class="form-floating mt-3 mb-3">
         <input type="file" class="form-control" id="avatar" name="avatar">
         <label for="avatar">Ảnh đại diện</label>
