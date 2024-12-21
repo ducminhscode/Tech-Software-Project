@@ -4,8 +4,8 @@ from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from models import *
 from phongmachtu import app, db, dao
-from flask_login import current_user
-from flask import request
+from flask_login import current_user, logout_user
+from flask import request, redirect
 
 admin = Admin(app, name="Phòng Mạch Tư", template_mode="bootstrap4")
 
@@ -162,3 +162,11 @@ class StatsMedicineView(AuthenticatedAdminBaseView):
 admin.add_view(StatsRevenueView(name='Doanh thu'))
 admin.add_view(StatsFrequencyView(name="Tần suất khám"))
 admin.add_view(StatsMedicineView(name="Tần suất sử dụng thuốc"))
+
+class LogoutView(AuthenticatedAdminBaseView):
+    @expose('/')
+    def index(self):
+        logout_user()
+        return redirect('/admin')
+
+admin.add_view(LogoutView(name="Đăng xuất"))

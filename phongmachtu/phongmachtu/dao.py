@@ -33,11 +33,13 @@ def add_cashier(license):
     db.session.commit()
 
 
-def auth_account(username, password):
+def auth_account(username, password, type=None):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
-
-    return Account.query.filter(Account.username.__eq__(username),
-                                Account.password.__eq__(password)).first()
+    query = Account.query.filter(Account.username.__eq__(username),
+                         Account.password.__eq__(password))
+    if type:
+        query = query.filter(Account.type.__eq__(type))
+    return query.first()
 
 
 def get_user_type(username, password):

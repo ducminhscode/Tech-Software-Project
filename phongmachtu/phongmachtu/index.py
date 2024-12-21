@@ -9,12 +9,24 @@ from phongmachtu.admin import *
 def index():
     return render_template('index.html')
 
+@app.route('/login-admin', methods=['post'])
+def login_admin_process():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    user = dao.auth_account(username=username, password=password, type='administrator')
+    if user:
+        login_user(user)
+        if current_user.type == 'administrator':
+            return redirect('/admin')
+    return redirect('/admin')
+
+
 
 @app.route('/login', methods=['get', 'post'])
 def login_my_user():
     if current_user.is_authenticated:
         return redirect("/")
-
 
     err_msg = None
     if request.method.__eq__('POST'):
