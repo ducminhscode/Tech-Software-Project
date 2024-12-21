@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ s[0].strftime('%d/%m/%Y') }}</td>
                 <td>{{ s[1] }}</td>
-                <td>{{ "{:,.0f}".format(s[2]) }} VND</td>
+                <td>{{ "{:,.0f}".format(s[2]).replace(',', '.') }} VND</td>
             </tr>
             {% endfor %}
 
@@ -73,7 +73,10 @@
     for (var i = 0; i < data.length; i++) {
         sum += data[i];
     }
-    document.getElementById("sumRevenue").innerHTML = sum + " VND";
+
+    let formattedSum = new Intl.NumberFormat('vi-VN').format(sum);
+
+    document.getElementById("sumRevenue").innerHTML = formattedSum + " VND";
 
 </script>
 {% endblock %}
