@@ -3,7 +3,8 @@ from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
 import dao
 from phongmachtu.admin import *
-from datetime import datetime
+
+from phongmachtu.dao import get_patient_id
 
 
 @app.route('/')
@@ -135,11 +136,13 @@ def examination_form():
         disease = request.args.get('disease')
         description = request.args.get('description')
         doctor_id = current_user.id  # Lấy ID của người dùng đang đăng nhập
-        patient_id = dao.load_patient(request.args.get('name'))
+        patient_name= request.args.get('name')
+        patient_id = get_patient_id(patient_name)
+
 
         # Thêm phiếu khám bệnh vào cơ sở dữ liệu
         dao.add_examination_form(disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
-        return redirect('/doctor/examination-form')
+        return redirect('/doctor/patient-list')
 
 
     kw = request.args.get('keyword')

@@ -130,11 +130,13 @@ def load_examination_form(kw=None):
 def load_doctor():
     return Doctor.query.all()
 
+
 def add_examination_form(description, disease, doctor_id, patient_id):
     now = datetime.now()
     u = ExaminationForm(datetime=now, disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
     db.session.add(u)
     db.session.commit()
+
 
 def list_examination_by_doctor(doctor_id):
     query = (
