@@ -3,7 +3,6 @@ import hashlib
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import Select2Widget
-from werkzeug.security import generate_password_hash
 from wtforms.fields.choices import SelectField
 
 from models import *
@@ -47,7 +46,7 @@ class AdministratorView(AuthenticatedAdminModelView):
 
     form_args = {
         'type': {
-            'choices': [('administrator', 'Administrator')],
+            'choices': [('administrator', 'Quản trị viên')],
             'widget': Select2Widget()
         }
     }
@@ -72,7 +71,7 @@ class DoctorView(AuthenticatedAdminModelView):
 
     form_args = {
         'type': {
-            'choices': [('doctor', 'Doctor')],
+            'choices': [('doctor', 'Bác sĩ')],
             'widget': Select2Widget()
         }
     }
@@ -97,7 +96,7 @@ class NurseView(AuthenticatedAdminModelView):
 
     form_args = {
         'type': {
-            'choices': [('nurse', 'Nurse')],
+            'choices': [('nurse', 'Y tá')],
             'widget': Select2Widget()
         }
     }
@@ -122,7 +121,7 @@ class CashierView(AuthenticatedAdminModelView):
 
     form_args = {
         'type': {
-            'choices': [('cashier', 'Cashier')],
+            'choices': [('cashier', 'Thu ngân')],
             'widget': Select2Widget()
         }
     }
@@ -148,7 +147,7 @@ class PatientView(AuthenticatedAdminModelView):
 
     form_args = {
         'type': {
-            'choices': [('patient', 'Patient')],
+            'choices': [('patient', 'Bệnh nhân')],
             'widget': Select2Widget()
         }
     }
