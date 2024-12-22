@@ -28,12 +28,13 @@
         {%if patients%}
         <ul class="badge">
             {%for patient in patients%}
-            <li class="container border border-4 rounded-pill bg-secondary" style="list-style-type:None">
+            <li class="container border border-4  rounded-pill bg-secondary" style="list-style-type:None">
                 <a>{{patient.name}}</a>
                 <p>
                     <a>Ngày sinh:{{patient.day_of_birth}}</a>
                     <a>Giới tính: {{patient.gender}}</a>
                     <a>SDT: {{patient.phone}}</a>
+                    <button href="/doctor/examination-form">Khám Bệnh</button>
                 </p>
             </li>
             <p/>
