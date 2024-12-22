@@ -1,11 +1,10 @@
-import json
 import hashlib
-
+from datetime import datetime
 from click.decorators import R
 
 from models import *
 from phongmachtu import db
-from sqlalchemy import extract, func
+from sqlalchemy import extract, func, nullsfirst
 
 
 def add_account(name, username, password, type):
@@ -36,7 +35,7 @@ def add_cashier(license):
 def auth_account(username, password, type=None):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
     query = Account.query.filter(Account.username.__eq__(username),
-                         Account.password.__eq__(password))
+                                 Account.password.__eq__(password))
     if type:
         query = query.filter(Account.type.__eq__(type))
     return query.first()
@@ -64,6 +63,7 @@ def get_account_by_id(user_id):
     return Account.query.get(user_id)
 
 
+# ================================= ADMIN ============================================
 def stats_revenue(month=None):
     query = db.session.query(Receipt.created_date, func.count(Patient.id), func.sum(Receipt.total_price)).join(Receipt,
                                                                                                                Receipt.patient_id.__eq__(
@@ -76,7 +76,8 @@ def stats_revenue(month=None):
 
 def stats_frequency(year=None):
     query = db.session.query(extract('month', ExaminationForm.datetime).label('Tháng'),
-                             (func.count(ExaminationForm.id) / 40 * 100).label('Tần suất khám')).group_by(extract('month', ExaminationForm.datetime))
+                             (func.count(ExaminationForm.id) / 40 * 100).label('Tần suất khám')).group_by(
+        extract('month', ExaminationForm.datetime))
 
     if year:
         query = query.filter(ExaminationForm.datetime.contains(year))
@@ -102,23 +103,57 @@ def stats_medicine(kw=None, from_date=None, to_date=None):
 
     return query.group_by(Medicine.id).order_by(Medicine.id).all()
 
-# def load_books():
-#     query = Books.query
-#     return query.all()
-#
-#
-# def load_book_patient_id(q=None):
-#
-#     query = db.session.query(Patient.id,
-#                              func.sum(Books.booked_date)) \
-#             .join(Patient, Patient.id.__eq__(Books.patient_id), isouter=True)
-#
-#     if q:
-#         query = query.filter(Books.name.contains(q))
-#
-#     return query.all()
+
+# =================================Patient============================================
+def load_patient():
+    return Patient.query.all()
 
 
+def get_patient_id(kw=None):
+    if not kw:  # Nếu không có từ khóa, trả về None hoặc []
+        return []  # Hoặc return []
 
+    query = Patient.query.filter(Patient.name.contains(kw))
+    return query.all()
+
+
+def load_examination_form(kw=None):
+    query = ExaminationForm.query
+    if kw:
+        query = (db.session.query(ExaminationForm.datetime, ExaminationForm.description)
+                 .join(Patient, Patient.id == ExaminationForm.patient_id)
+                 .filter(Patient.name.contains(kw)))
+
+    return query.all()
+
+# =================================Doctor============================================
+def load_doctor():
+    return Doctor.query.all()
+
+def add_examination_form(description, disease, doctor_id, patient_id):
+    now = datetime.now()
+    u = ExaminationForm(datetime=now, disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
+    db.session.add(u)
+    db.session.commit()
+
+def list_examination_by_doctor(doctor_id):
+    query = (
+        db.session.query(Patient.name, Patient.day_of_birth, Patient.gender, Patient.phone)
+        .join(ExaminationForm, Patient.id == ExaminationForm.patient_id)  # Patient~~ExaminationForm
+        .filter(ExaminationForm.doctor_id == doctor_id)
+    )
+    return query.all()
+
+
+def examination_form_by_patient_id(patient_id=None):
+    query = (
+        db.session.query(Patient.name, Patient.day_of_birth, Patient.gender)
+        .join(ExaminationForm, Patient.id == ExaminationForm.patient_id)  # Patient~~ExaminationForm
+        .filter(ExaminationForm.patient_id == patient_id))
+
+    return query.first()
+
+
+# ================================= BOOKS ============================================
 def save_booking(selected_time, selected_date):
     return None

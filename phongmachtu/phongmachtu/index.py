@@ -3,12 +3,15 @@ from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
 import dao
 from phongmachtu.admin import *
+from datetime import datetime
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
+# =================================LOGIN============================================
 @app.route('/login-admin', methods=['post'])
 def login_admin_process():
     username = request.form.get('username')
@@ -20,7 +23,6 @@ def login_admin_process():
         if current_user.type == 'administrator':
             return redirect('/admin')
     return redirect('/admin')
-
 
 
 @app.route('/login', methods=['get', 'post'])
@@ -54,6 +56,7 @@ def login_my_user():
     return render_template('login.html', err_msg=err_msg)
 
 
+# =================================PATIENT============================================
 @app.route('/patient/booking', methods=['GET', 'POST'])
 def booking():
     err_msg = None
@@ -75,31 +78,6 @@ def booking():
     return render_template('patient/booking.html', time=time, err_msg=err_msg)
 
 
-@app.route('/cashier/receipt-list')
-def receipt_list():
-    return render_template('cashier/receipt-list.html')
-
-
-@app.route('/register', methods=['get', 'post'])
-def register():
-    err_msg = None
-    if request.method.__eq__('POST'):
-        password = request.form.get("password")
-        confirm = request.form.get("confirm")
-        if password.__eq__(confirm):
-            username = request.form.get("username")
-            name = request.form.get("name")
-
-            _type = request.form.get("type")
-
-            dao.add_account(name=name, username=username, password=password, type=_type)
-            return redirect('login')
-        else:
-            err_msg = "Mật khẩu không khớp!"
-
-    return render_template('register.html', err_msg=err_msg)
-
-
 # @app.route('/register-detail', methods=['get', 'post'])
 # def register_detail():
 #     err_msg = None
@@ -119,20 +97,68 @@ def register():
 #     return render_template('register-detail.html', err_msg=err_msg)
 
 
+# =================================REGISTER============================================
+@app.route('/register', methods=['get', 'post'])
+def register():
+    err_msg = None
+    if request.method.__eq__('POST'):
+        password = request.form.get("password")
+        confirm = request.form.get("confirm")
+        if password.__eq__(confirm):
+            username = request.form.get("username")
+            name = request.form.get("name")
+
+            _type = request.form.get("type")
+
+            dao.add_account(name=name, username=username, password=password, type=_type)
+            return redirect('/login')
+        else:
+            err_msg = "Mật khẩu không khớp!"
+
+    return render_template('register.html', err_msg=err_msg)
+
+
+# =================================CASHIER============================================
+@app.route('/cashier/receipt-list')
+def receipt_list():
+    return render_template('cashier/receipt-list.html')
+
 @app.route('/cashier/cash')
 def cashing():
     return render_template('cashier/cash.html')
 
-
-@app.route('/doctor/examination-form')
+# =================================DOCTOR============================================
+@app.route('/doctor/examination-form', methods=['get', 'post'])
+@login_required  # Chỉ cho phép người dùng đã đăng nhập truy cập
 def examination_form():
-    return render_template('/doctor/examination-form.html')
+    if request.method == 'POST':
+        disease = request.args.get('disease')
+        description = request.args.get('description')
+        doctor_id = current_user.id  # Lấy ID của người dùng đang đăng nhập
+        patient_id = dao.load_patient(request.args.get('name'))
+
+        # Thêm phiếu khám bệnh vào cơ sở dữ liệu
+        dao.add_examination_form(disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
+        return redirect('/doctor/examination-form')
 
 
+    kw = request.args.get('keyword')
+    patient = dao.get_patient_id(kw)
 
+    return render_template('doctor/examination-form.html', patient=patient)
+
+
+@app.route('/doctor/patient-list')
+def patient_list_doctor():
+    list_patient = dao.list_examination_by_doctor(Doctor.id)
+
+    return render_template('nurse/patient-list.html', patients=list_patient)
+
+# =================================NURSE============================================
 @app.route('/nurse/confirm-registration')
 def confirm_registration():
     return render_template('/nurse/confirm-registration.html')
+
 
 @app.route('/nurse/regis-patient')
 def regis_patient():
@@ -141,10 +167,11 @@ def regis_patient():
 
 
 @app.route('/nurse/patient-list')
-def patient_list():
+def patient_list_nurse():
     return render_template('/nurse/patient-list.html')
 
 
+# =================================LOGOUT============================================
 @app.route('/logout')
 def logout_my_user():
     logout_user()

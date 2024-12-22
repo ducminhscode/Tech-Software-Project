@@ -2,65 +2,71 @@
 
 
 {%block content%}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Hóa Đơn Thanh Toán</h2>
-
-    <form>
-        <div class="row mb-3">
-            <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="patientName" placeholder="Nhập tên bệnh nhân">
-                <label for="patientName">Tên Bệnh Nhân</label>
-            </div>
-        </div>
-
-        <div class="container my-5">
-            <h3 class="text-center mb-4">Phiếu khám bệnh</h3>
-            <div class="table-responsive table-sm mb-3">
-                <table class="table table-bordered">
-                    <tbody>
-                    <tr>
-                        <th>Họ và tên: </th>
-                        <td>Chương</td>
-                    </tr>
-                    <tr>
-                        <th>Ngày khám: </th>
-                        <td>20/12/2024</td>
-                    </tr>
-                    <tr>
-                        <th>Triệu chứng: </th>
-                        <td>Sốt, ho</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="form-floating mt-3 mb-3">
-                <input type="text" class="form-control" id="pathology" placeholder="Nhập lại mật khẩu" name="pathology"
-                       required>
-                <label for="pathology">Dự đoán bệnh: </label>
-            </div>
-
-
-            <div class="table-responsive mb-3">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr class="text-center">
-                        <th>STT</th>
-                        <th>Tên Thuốc</th>
-                        <th>Số Lượng</th>
-                        <th>Đơn Vị</th>
-                        <th>Cách Dùng</th>
-                    </tr>
-                    </thead>
-
-                </table>
-            </div>
-        </div>
-
-        <div class="text-center">
-            <button type="submit" class="btn btn-success">Lưu phiếu khám</button>
-        </div>
-
+<form>
+    <h2 class="bg-primary" style="text-align:center">Tìm kiếm thông tin bệnh nhân:</h2>
+    <form class="d-flex" action="/{{patient.id}}">
+        <input type="text" class="form-control me-2" name="keyword" placeholder="Nhập tên Bệnh Nhân">
+        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
     </form>
-</div>
+    {%if patient%}
+    <div class="container my-5">
+        <h3 class="text-center mb-4">Phiếu khám bệnh</h3>
+
+        <div class="table-responsive table-sm mb-3">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>Họ và tên:</th>
+                    <td>
+                        {% for p in patient %}
+                        <input type="text" class="form-control" id="name"
+                               placeholder="{{p.name}}" name="name" required>
+                        {%endfor%}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Ngày khám:</th>
+                    <td>
+                        <input type="text" class="form-control" id="name"
+                               placeholder="" name="name" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Triệu chứng:</th>
+                    <td><input type="text" class="form-control" id="description" placeholder="Triệu chứng"
+                               name="description"
+                               required></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-floating mt-3 mb-3">
+            <input type="text" class="form-control" id="disease" placeholder="Nhập lại mật khẩu" name="disease"
+                   required>
+            <label for="disease">Dự đoán bệnh: </label>
+        </div>
+
+        <div class="table-responsive mb-3">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="text-center">
+                    <th>STT</th>
+                    <th>Tên Thuốc</th>
+                    <th>Số Lượng</th>
+                    <th>Đơn Vị</th>
+                    <th>Cách Dùng</th>
+                </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+    {%endif%}
+    <div class="text-center">
+        <button type="submit" class="btn btn-success">Lưu phiếu khám</button>
+    </div>
+
+</form>
 
 {%endblock%}

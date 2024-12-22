@@ -215,7 +215,7 @@ class Regulations(db.Model):
 if __name__ == "__main__":
     with app.app_context():
         import hashlib
-        #
+
         # a = Administrator(name="Admin", username="admin",
         #                   password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="administrator")
         #
