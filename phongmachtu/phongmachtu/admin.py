@@ -1,7 +1,11 @@
 from calendar import month
-
+import hashlib
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.form import Select2Widget
+from werkzeug.security import generate_password_hash
+from wtforms.fields.choices import SelectField
+
 from models import *
 from phongmachtu import app, db, dao
 from flask_login import current_user, logout_user
@@ -12,6 +16,13 @@ admin = Admin(app, name="Phòng Mạch Tư", template_mode="bootstrap4")
 class AuthenticatedAdminModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.type == 'administrator'
+
+    def on_model_change(self, form, model, is_created):
+        # Kiểm tra nếu có mật khẩu mới trong form
+        if 'password' in form and form.password.data:
+            # Băm mật khẩu trước khi lưu
+            model.password = str(hashlib.md5(model.password.encode('utf-8')).hexdigest())
+        super().on_model_change(form, model, is_created)
 
 class AuthenticatedAdminBaseView(BaseView):
     def is_accessible(self):
@@ -26,56 +37,121 @@ class AdministratorView(AuthenticatedAdminModelView):
     column_sortable_list = ['name', 'joined_date']
     can_view_details = True
     can_export = True
+    edit_modal = True
+    details_modal = True
     page_size = 10
+
+    form_overrides = {
+        'type': SelectField
+    }
+
+    form_args = {
+        'type': {
+            'choices': [('administrator', 'Administrator')],
+            'widget': Select2Widget()
+        }
+    }
 
 
 class DoctorView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'license', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'license': 'Chứng chỉ',
-                     'joined_date': 'Ngày tham gia'}
+                     'joined_date': 'Ngày tham gia', 'type': 'Vai trò'}
     column_searchable_list = ['name']
     column_filters = ['name']
     column_sortable_list = ['name', 'joined_date']
     can_view_details = True
+    edit_modal = True
+    details_modal = True
     can_export = True
     page_size = 10
+
+    form_overrides = {
+        'type': SelectField
+    }
+
+    form_args = {
+        'type': {
+            'choices': [('doctor', 'Doctor')],
+            'widget': Select2Widget()
+        }
+    }
 
 
 class NurseView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'phuTrachKhoa', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'phuTrachKhoa': 'Khoa phụ trách',
-                     'joined_date': 'Ngày tham gia'}
+                     'joined_date': 'Ngày tham gia', 'type': 'Vai trò'}
     column_searchable_list = ['name', 'phuTrachKhoa']
     column_filters = ['name', 'phuTrachKhoa']
     column_sortable_list = ['name', 'phuTrachKhoa', 'joined_date']
     can_view_details = True
     can_export = True
+    edit_modal = True
+    details_modal = True
     page_size = 10
+
+    form_overrides = {
+        'type': SelectField
+    }
+
+    form_args = {
+        'type': {
+            'choices': [('nurse', 'Nurse')],
+            'widget': Select2Widget()
+        }
+    }
 
 
 class CashierView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'license', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'license': 'Chứng chỉ',
-                     'joined_date': 'Ngày tham gia'}
+                     'joined_date': 'Ngày tham gia', 'type': 'Vai trò'}
     column_searchable_list = ['name']
     column_filters = ['name']
     column_sortable_list = ['name', 'joined_date']
     can_view_details = True
     can_export = True
+    edit_modal = True
+    details_modal = True
     page_size = 10
+
+    form_overrides = {
+        'type': SelectField
+    }
+
+    form_args = {
+        'type': {
+            'choices': [('cashier', 'Cashier')],
+            'widget': Select2Widget()
+        }
+    }
 
 
 class PatientView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'address', 'day_of_birth', 'gender', 'phone', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'address': 'Địa chỉ',
                      'day_of_birth': 'Ngày sinh',
-                     'gender': 'Giới tính', 'phone': 'Số điện thoại', 'joined_date': 'Ngày tham gia'}
+                     'gender': 'Giới tính', 'phone': 'Số điện thoại', 'joined_date': 'Ngày tham gia', 'type': 'Vai trò'}
     column_searchable_list = ['name', 'phone']
     column_filters = ['name', 'address', 'phone', 'day_of_birth']
     column_sortable_list = ['name', 'joined_date', 'day_of_birth']
     can_view_details = True
     can_export = True
+    edit_modal = True
+    details_modal = True
     page_size = 10
+
+    form_overrides = {
+        'type': SelectField
+    }
+
+    form_args = {
+        'type': {
+            'choices': [('patient', 'Patient')],
+            'widget': Select2Widget()
+        }
+    }
 
 
 class MedicineView(AuthenticatedAdminModelView):
@@ -87,6 +163,8 @@ class MedicineView(AuthenticatedAdminModelView):
     column_editable_list = ['usage']
     can_view_details = True
     can_export = True
+    edit_modal = True
+    details_modal = True
     page_size = 10
 
 
@@ -98,6 +176,8 @@ class TimesView(AuthenticatedAdminModelView):
     column_editable_list = ['period']
     can_view_details = True
     can_export = True
+    edit_modal = True
+    details_modal = True
     page_size = 10
 
 
@@ -111,6 +191,8 @@ class RegulationsView(AuthenticatedAdminModelView):
     column_editable_list = ['name', 'value']
     can_view_details = True
     can_export = True
+    edit_modal = True
+    details_modal = True
     page_size = 10
 
 
@@ -123,6 +205,8 @@ class ReceiptView(AuthenticatedAdminModelView):
     column_sortable_list = ['created_date', 'total_price']
     can_view_details = True
     can_export = True
+    can_edit = False
+    details_modal = True
     page_size = 10
 
 
