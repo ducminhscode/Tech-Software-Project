@@ -4,6 +4,8 @@ from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import Select2Widget
 from wtforms.fields.choices import SelectField
+from wtforms.fields.simple import PasswordField
+from wtforms.validators import DataRequired
 
 from models import *
 from phongmachtu import app, db, dao
@@ -11,6 +13,7 @@ from flask_login import current_user, logout_user
 from flask import request, redirect
 
 admin = Admin(app, name="Phòng Mạch Tư", template_mode="bootstrap4")
+
 
 class AuthenticatedAdminModelView(ModelView):
     def is_accessible(self):
@@ -23,6 +26,7 @@ class AuthenticatedAdminModelView(ModelView):
             model.password = str(hashlib.md5(model.password.encode('utf-8')).hexdigest())
         super().on_model_change(form, model, is_created)
 
+
 class AuthenticatedAdminBaseView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.type == 'administrator'
@@ -30,7 +34,8 @@ class AuthenticatedAdminBaseView(BaseView):
 
 class AdministratorView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'joined_date']
-    column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'password': 'Mật khẩu', 'joined_date': 'Ngày tham gia', 'type': 'Vai trò'}
+    column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'password': 'Mật khẩu',
+                     'joined_date': 'Ngày tham gia', 'type': 'Vai trò'}
     column_searchable_list = ['name']
     column_filters = ['name']
     column_sortable_list = ['name', 'joined_date']
@@ -39,6 +44,12 @@ class AdministratorView(AuthenticatedAdminModelView):
     edit_modal = True
     details_modal = True
     page_size = 10
+
+    form_columns = ['name', 'username', 'password', 'type']
+
+    form_extra_fields = {
+        'password': PasswordField('Mật khẩu',validators=[DataRequired()])
+    }
 
     form_overrides = {
         'type': SelectField
@@ -65,6 +76,12 @@ class DoctorView(AuthenticatedAdminModelView):
     can_export = True
     page_size = 10
 
+    form_columns = ['name', 'username', 'password', 'type', 'license']
+
+    form_extra_fields = {
+        'password': PasswordField('Mật khẩu',validators=[DataRequired()])
+    }
+
     form_overrides = {
         'type': SelectField
     }
@@ -89,6 +106,12 @@ class NurseView(AuthenticatedAdminModelView):
     edit_modal = True
     details_modal = True
     page_size = 10
+
+    form_columns = ['name', 'username', 'password', 'type', 'phuTrachKhoa']
+
+    form_extra_fields = {
+        'password': PasswordField('Mật khẩu',validators=[DataRequired()])
+    }
 
     form_overrides = {
         'type': SelectField
@@ -115,6 +138,12 @@ class CashierView(AuthenticatedAdminModelView):
     details_modal = True
     page_size = 10
 
+    form_columns = ['name', 'username', 'password', 'type', 'license']
+
+    form_extra_fields = {
+        'password': PasswordField('Mật khẩu',validators=[DataRequired()])
+    }
+
     form_overrides = {
         'type': SelectField
     }
@@ -140,6 +169,12 @@ class PatientView(AuthenticatedAdminModelView):
     edit_modal = True
     details_modal = True
     page_size = 10
+
+    form_columns = ['name', 'username', 'password', 'type', 'address', 'day_of_birth', 'gender', 'phone']
+
+    form_extra_fields = {
+        'password': PasswordField('Mật khẩu',validators=[DataRequired()])
+    }
 
     form_overrides = {
         'type': SelectField
@@ -188,25 +223,40 @@ class RegulationsView(AuthenticatedAdminModelView):
     column_filters = ['change_date']
     column_sortable_list = ['change_date']
     column_editable_list = ['name', 'value']
+    form_columns = ['name', 'value']
+
     can_view_details = True
     can_export = True
     edit_modal = True
     details_modal = True
     page_size = 10
 
+    def on_model_change(self, form, model, is_created):
+        if is_created:
+            model.admin_id = current_user.id
+        return super().on_model_change(form, model, is_created)
+
 
 class ReceiptView(AuthenticatedAdminModelView):
     column_display_pk = True
-    column_list = ['id', 'patient', 'created_date', 'examines_price', 'total_price', 'cashier']
+    column_list = ['id', 'patient', 'created_date', 'examines_price', 'medicines_price', 'total_price', 'cashier']
     column_labels = {'id': 'STT', 'patient': 'Bệnh nhân', 'created_date': 'Ngày tạo', 'examines_price': 'Tiền khám',
-                     'total_price': 'Tổng tiền', 'cashier': 'Thu ngân'}
+                     'total_price': 'Tổng tiền', 'cashier': 'Thu ngân', 'medicines_price': 'Tiền thuốc'}
     column_searchable_list = ['created_date']
     column_sortable_list = ['created_date', 'total_price']
     can_view_details = True
     can_export = True
     can_edit = False
+    can_create = False
     details_modal = True
     page_size = 10
+
+    def display_medicine_prices(view, context, model, name):
+        return ', '.join(str(detail.medicines_price) for detail in model.receipt_details)
+
+    column_formatters = {
+        'medicines_price': display_medicine_prices
+    }
 
 
 admin.add_view(AdministratorView(Administrator, db.session, name="Quản trị viên"))
@@ -227,6 +277,7 @@ class StatsRevenueView(AuthenticatedAdminBaseView):
         rev = dao.stats_revenue(month=request.args.get('month'))
         return self.render('admin/stats_revenue.html', rev=rev)
 
+
 class StatsFrequencyView(AuthenticatedAdminBaseView):
     @expose('/')
     def index(self):
@@ -246,10 +297,12 @@ admin.add_view(StatsRevenueView(name='Doanh thu'))
 admin.add_view(StatsFrequencyView(name="Tần suất khám"))
 admin.add_view(StatsMedicineView(name="Tần suất sử dụng thuốc"))
 
+
 class LogoutView(AuthenticatedAdminBaseView):
     @expose('/')
     def index(self):
         logout_user()
         return redirect('/admin')
+
 
 admin.add_view(LogoutView(name="Đăng xuất"))
