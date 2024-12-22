@@ -8,27 +8,11 @@ from phongmachtu import db
 from sqlalchemy import extract, func, nullsfirst
 
 
-def add_account(name, username, password, type):
-    password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
-    u = Account(name=name, username=username, password=password, type=type)
-    db.session.add(u)
-    db.session.commit()
 
 
-def add_patient(address, day_of_birth, gender, phone):
-    u = Patient(address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
-    db.session.add(u)
-    db.session.commit()
-
-
-def add_doctor(license):
-    u = Doctor(license=license)
-    db.session.add(u)
-    db.session.commit()
-
-
-def add_cashier(license):
-    u = Cashier(license=license)
+def add_patient(name, username, password, address, day_of_birth, gender, phone):
+    password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
+    u = Patient(name = name, username = username, password = password, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
     db.session.add(u)
     db.session.commit()
 
@@ -53,10 +37,9 @@ def get_user_type(username, password):
 
 
 def get_all_period():
-    # Truy vấn tất cả các giá trị period và id từ bảng Time
     periods = Times.query.with_entities(Times.id, Times.period).all()
 
-    # Trả về danh sách các tuple chứa (id, period)
+
     return periods
 
 

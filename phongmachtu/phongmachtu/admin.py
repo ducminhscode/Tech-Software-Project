@@ -20,7 +20,7 @@ class AuthenticatedAdminBaseView(BaseView):
 
 class AdministratorView(AuthenticatedAdminModelView):
     column_list = ['id', 'name', 'username', 'joined_date']
-    column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'joined_date': 'Ngày tham gia'}
+    column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'password': 'Mật khẩu', 'joined_date': 'Ngày tham gia', 'type': 'Vai trò'}
     column_searchable_list = ['name']
     column_filters = ['name']
     column_sortable_list = ['name', 'joined_date']

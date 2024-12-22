@@ -12,7 +12,7 @@ class Account(db.Model, UserMixin):
     password = Column(String(50), nullable=False)
     joined_date = Column(DateTime, default=datetime.now)
 
-    type = Column(String(20), nullable=False, default='patient')
+    type = Column(String(20), nullable=False)
 
     __mapper_args__ = {
         'polymorphic_identity': 'user',

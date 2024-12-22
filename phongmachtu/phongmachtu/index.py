@@ -43,12 +43,13 @@ def login_my_user():
                 return redirect('/')
             elif user.type == "doctor":
                 return redirect('/')
-            elif user.type == 'nurse':
+            elif user.type == "nurse":
                 return redirect('/')
-            elif user.type == "administrator":
-                return redirect('/')
-            else:
+            elif user.type == "cashier":
                 return redirect('/cashier/cash')
+            else:
+                err_msg = "Tài khoản hoặc mật khẩu không đúng!"
+                logout_my_user()
 
         else:
             err_msg = "Tài khoản hoặc mật khẩu không đúng!"
@@ -78,74 +79,39 @@ def booking():
     return render_template('patient/booking.html', time=time, err_msg=err_msg)
 
 
-# =================================REGISTER============================================
-# @app.route('/register', methods=['get', 'post'])
-# def register():
-#     err_msg = None
-#     if request.method.__eq__('POST'):
-#         password = request.form.get("password")
-#         confirm = request.form.get("confirm")
-#         if password.__eq__(confirm):
-#             username = request.form.get("username")
-#             name = request.form.get("name")
-#             type = request.form.get("type")
-#
-#             dao.add_account(name=name, username=username, password=password, type=type)
-#             return redirect('/login')
-#         else:
-#             err_msg = "Mật khẩu không khớp!"
-#
-#     return render_template('register.html', err_msg=err_msg)
 
-
-@app.route('/register-detail', methods=['GET', 'POST'])
-def register_detail():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
     err_msg = None
-    if request.method == 'POST':
+    if request.method.__eq__('POST'):
+        password = request.form.get('password')
+        confirm = request.form.get('confirm')
 
-        password = request.form.get("password")
-        confirm = request.form.get("confirm")
-        if password.__eq__(confirm):
+        if not password.__eq__(confirm):
             err_msg = "Mật khẩu không khớp!"
-            return render_template('register-detail.html', err_msg=err_msg)
+            return render_template('register.html', err_msg=err_msg)
+        else:
+            username = request.form.get('username')
+            name = request.form.get('name')
+            address = request.form.get('address')
+            day_of_birth = request.form.get('day_of_birth')
+            gender = request.form.get('gender')
+            phone = request.form.get('phone')
+            dao.add_patient(name=name, username=username, password=password, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+            return redirect('/login')
+    return render_template('register.html', err_msg=err_msg)
 
-
-        username = request.args.get('username')
-        name = request.args.get('name')
-        _type = request.args.get('type')
-
-
-        # Thêm tài khoản cơ bản
-        dao.add_account(name=name, username=username, password=password, type=_type)
-
-        if _type.__eq__('patient'):
-            address = request.args.get("address")
-            day_of_birth = request.args.get("day_of_birth")
-            gender = request.args.get("gender")
-            phone = request.args.get("phone")
-            dao.add_patient(address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
-
-        elif _type.__eq__('doctor'):
-            license = request.args.get("license")
-            dao.add_doctor(license=license)
-
-        elif _type == 'cashier':
-            license = request.args.get("license")
-            dao.add_cashier(license=license)
-
-        # Chuyển hướng về trang đăng nhập sau khi đăng ký thành công
-        return redirect('/login')
-
-    return render_template('register-detail.html', err_msg=err_msg)
 
 # =================================CASHIER============================================
 @app.route('/cashier/receipt-list')
 def receipt_list():
     return render_template('cashier/receipt-list.html')
 
+
 @app.route('/cashier/cash')
 def cashing():
     return render_template('cashier/cash.html')
+
 
 # =================================DOCTOR============================================
 @app.route('/doctor/examination-form', methods=['get', 'post'])
