@@ -3,7 +3,6 @@ from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
 import dao
 from phongmachtu.admin import *
-
 from phongmachtu.dao import get_patient_id
 
 
@@ -79,45 +78,65 @@ def booking():
     return render_template('patient/booking.html', time=time, err_msg=err_msg)
 
 
-# @app.route('/register-detail', methods=['get', 'post'])
-# def register_detail():
+# =================================REGISTER============================================
+# @app.route('/register', methods=['get', 'post'])
+# def register():
 #     err_msg = None
-#     account = Account.id
 #     if request.method.__eq__('POST'):
-#         if account.type == "patient":
-#             address = request.form.get("address")
-#             day_of_birth = request.form.get("day_of_birth")
-#             phone =  request.form.get("phone")
-#             dao.add_patient(address=address, day_of_birth=day_of_birth, phone=phone)
+#         password = request.form.get("password")
+#         confirm = request.form.get("confirm")
+#         if password.__eq__(confirm):
+#             username = request.form.get("username")
+#             name = request.form.get("name")
+#             type = request.form.get("type")
+#
+#             dao.add_account(name=name, username=username, password=password, type=type)
 #             return redirect('/login')
 #         else:
-#             _license = request.form.get("license")
-#             dao.add_doctor_cashier(_license=_license)
-#             return redirect('/login')
+#             err_msg = "Mật khẩu không khớp!"
 #
-#     return render_template('register-detail.html', err_msg=err_msg)
+#     return render_template('register.html', err_msg=err_msg)
 
 
-# =================================REGISTER============================================
-@app.route('/register', methods=['get', 'post'])
-def register():
+@app.route('/register-detail', methods=['GET', 'POST'])
+def register_detail():
     err_msg = None
-    if request.method.__eq__('POST'):
+    if request.method == 'POST':
+
         password = request.form.get("password")
         confirm = request.form.get("confirm")
         if password.__eq__(confirm):
-            username = request.form.get("username")
-            name = request.form.get("name")
-
-            _type = request.form.get("type")
-
-            dao.add_account(name=name, username=username, password=password, type=_type)
-            return redirect('/login')
-        else:
             err_msg = "Mật khẩu không khớp!"
+            return render_template('register-detail.html', err_msg=err_msg)
 
-    return render_template('register.html', err_msg=err_msg)
 
+        username = request.args.get('username')
+        name = request.args.get('name')
+        _type = request.args.get('type')
+
+
+        # Thêm tài khoản cơ bản
+        dao.add_account(name=name, username=username, password=password, type=_type)
+
+        if _type.__eq__('patient'):
+            address = request.args.get("address")
+            day_of_birth = request.args.get("day_of_birth")
+            gender = request.args.get("gender")
+            phone = request.args.get("phone")
+            dao.add_patient(address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+
+        elif _type.__eq__('doctor'):
+            license = request.args.get("license")
+            dao.add_doctor(license=license)
+
+        elif _type == 'cashier':
+            license = request.args.get("license")
+            dao.add_cashier(license=license)
+
+        # Chuyển hướng về trang đăng nhập sau khi đăng ký thành công
+        return redirect('/login')
+
+    return render_template('register-detail.html', err_msg=err_msg)
 
 # =================================CASHIER============================================
 @app.route('/cashier/receipt-list')
@@ -135,7 +154,7 @@ def examination_form():
     if request.method == 'POST':
         disease = request.args.get('disease')
         description = request.args.get('description')
-        doctor_id = current_user.id  # Lấy ID của người dùng đang đăng nhập
+        doctor_id = current_user.id
         patient_name= request.args.get('name')
         patient_id = get_patient_id(patient_name)
 

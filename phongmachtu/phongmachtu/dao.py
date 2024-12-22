@@ -2,6 +2,7 @@ import hashlib
 from datetime import datetime
 from click.decorators import R
 
+import phongmachtu
 from models import *
 from phongmachtu import db
 from sqlalchemy import extract, func, nullsfirst
