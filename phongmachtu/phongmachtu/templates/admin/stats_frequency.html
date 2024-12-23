@@ -9,23 +9,25 @@
 <h1>Thống Kê Tần Suất Khám Bệnh Phòng Mạch Tư</h1>
 
 <div class="row" style="margin:auto">
-    <div class="col-md-6 col-xs-12" style = "margin-top: 7%">
+    <div class="col-md-6 col-xs-12" style="margin-top: 7%">
         <table class="table">
             <tr>
-                <th>Tháng</th>
+                <th>Ngày</th>
                 <th>Tần suất khám</th>
+                <th>Số lượng</th>
             </tr>
 
             {% for s in fre %}
             <tr>
-                <td>{{ s[0] }}</td>
+                <td>{{ s[0] }}/{{ s[3] }}/{{ s[4] }}</td>
                 <td>
                     {% if s[1] %}
-                        {{ "{:,.1f}".format(s[1]) }}%
+                    {{ "{:,.1f}".format(s[1]) }}%
                     {% else %}
-                        0%
+                    0%
                     {% endif %}
                 </td>
+                <td>{{ s[2] }}</td>
             </tr>
             {% endfor %}
 
@@ -34,14 +36,15 @@
     <div class="col-md-6 col-xs-12">
         <form>
             <div class="form-group">
-                <h4 class = "text-center" style = "margin-top: 5%">Lọc dữ liệu theo năm</h4>
-                <input style = "margin-top: 5%" type="number" placeholder="Nhập năm" class="form-control" name="year" min="10" max="9999"/>
+                <h4 class="text-center" style="margin-top: 5%">Lọc dữ liệu theo tháng</h4>
+                <input style="margin-top: 5%" type="month" placeholder="Nhập tháng" class="form-control" name="month"
+                       min="1" max="12"/>
             </div>
 
-            <input style = "margin-bottom: 10%" type="submit" value="Thống kê" class="btn btn-info" />
+            <input style="margin-bottom: 10%" type="submit" value="Thống kê" class="btn btn-info"/>
         </form>
 
-        <div class="chart" style = "margin-bottom: 5%; width: 400px; height: 400px">
+        <div class="chart" style="margin-bottom: 5%; width: 400px; height: 400px">
             <canvas id="frequencyChart"></canvas>
         </div>
     </div>
@@ -53,7 +56,7 @@
     let data = [], labels = []
 
     {% for s in fre %}
-        labels.push('Tháng {{ s[0] }}')
+        labels.push('{{ s[0] }}/{{ s[3] }}/{{ s[4] }}')
         data.push({{ s[1] }})
     {% endfor %}
 

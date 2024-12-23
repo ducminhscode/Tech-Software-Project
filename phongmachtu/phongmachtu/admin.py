@@ -281,7 +281,7 @@ class StatsRevenueView(AuthenticatedAdminBaseView):
 class StatsFrequencyView(AuthenticatedAdminBaseView):
     @expose('/')
     def index(self):
-        fre = dao.stats_frequency(year=request.args.get('year'))
+        fre = dao.stats_frequency(month=request.args.get('month'))
         return self.render('admin/stats_frequency.html', fre=fre)
 
 

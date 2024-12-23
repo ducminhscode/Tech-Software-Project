@@ -8,11 +8,10 @@ from phongmachtu import db
 from sqlalchemy import extract, func, nullsfirst
 
 
-
-
 def add_patient(name, username, password, address, day_of_birth, gender, phone):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
-    u = Patient(name = name, username = username, password = password, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+    u = Patient(name=name, username=username, password=password, address=address, day_of_birth=day_of_birth,
+                gender=gender, phone=phone)
     db.session.add(u)
     db.session.commit()
 
@@ -39,7 +38,6 @@ def get_user_type(username, password):
 def get_all_period():
     periods = Times.query.with_entities(Times.id, Times.period).all()
 
-
     return periods
 
 
@@ -49,22 +47,33 @@ def get_account_by_id(user_id):
 
 # ================================= ADMIN ============================================
 def stats_revenue(month=None):
-    query = db.session.query(Receipt.created_date, func.count(Patient.id), func.sum(Receipt.total_price)).join(Receipt,
-                                                                                                               Receipt.patient_id.__eq__(
-                                                                                                                   Patient.id))
+    query = (db.session.query(extract('day',Receipt.created_date).label('Ngày'),
+                             func.count(Patient.id).label('Số lượt khám'),
+                             func.sum(Receipt.total_price).label('Doanh thu'),
+                             extract('month',Receipt.created_date).label('Tháng'),
+                             extract('year',Receipt.created_date).label('Năm'))
+             .join(Receipt,Receipt.patient_id.__eq__(Patient.id))).group_by(extract('day',Receipt.created_date),
+                                                                            extract('month',Receipt.created_date),
+                                                                            extract('year',Receipt.created_date))
     if month:
         query = query.filter(Receipt.created_date.contains(month))
 
-    return query.group_by(Receipt.created_date).all()
+    return query.all()
 
 
-def stats_frequency(year=None):
-    query = db.session.query(extract('month', ExaminationForm.datetime).label('Tháng'),
-                             (func.count(ExaminationForm.id) / 40 * 100).label('Tần suất khám')).group_by(
-        extract('month', ExaminationForm.datetime))
+def stats_frequency(month=None):
+    query = db.session.query(extract('day', ExaminationForm.datetime).label('Ngày'),
+                             (func.count(ExaminationForm.id) / 40 * 100).label('Tần suất khám'),
+                             func.count(ExaminationForm.id).label('Số lượng'),
+                             extract('month', ExaminationForm.datetime).label('Tháng'),
+                             extract('year', ExaminationForm.datetime).label('Năm')
+                             ).group_by(
+        extract('day', ExaminationForm.datetime),
+    extract('month', ExaminationForm.datetime),
+    extract('year', ExaminationForm.datetime))
 
-    if year:
-        query = query.filter(ExaminationForm.datetime.contains(year))
+    if month:
+        query = query.filter(ExaminationForm.datetime.contains(month))
 
     results = query.all()
 
@@ -110,6 +119,7 @@ def load_examination_form(kw=None):
 
     return query.all()
 
+
 # =================================Doctor============================================
 def load_doctor():
     return Doctor.query.all()
@@ -117,7 +127,8 @@ def load_doctor():
 
 def add_examination_form(description, disease, doctor_id, patient_id):
     now = datetime.now()
-    u = ExaminationForm(datetime=now, disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
+    u = ExaminationForm(datetime=now, disease=disease, description=description, doctor_id=doctor_id,
+                        patient_id=patient_id)
     db.session.add(u)
     db.session.commit()
 

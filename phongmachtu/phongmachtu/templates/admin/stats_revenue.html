@@ -12,13 +12,13 @@
         <table class="table">
             <tr>
                 <th>Ngày</th>
-                <th>Số lượng</th>
+                <th>Số lượt khám</th>
                 <th>Doanh thu</th>
             </tr>
 
             {% for s in rev %}
             <tr>
-                <td>{{ s[0].strftime('%d/%m/%Y') }}</td>
+                <td>{{ s[0] }}/{{ s[3] }}/{{ s[4] }}</td>
                 <td>{{ s[1] }}</td>
                 <td>{{ "{:,.0f}".format(s[2]).replace(',', '.') }} VND</td>
             </tr>
@@ -63,7 +63,7 @@
 
     {% for s in rev %}
         data.push({{ s[2] }})
-        labels.push('Ngày {{ s[0].strftime('%d') }}')
+        labels.push('{{ s[0] }}/{{ s[3] }}/{{ s[4] }}')
     {% endfor %}
 
     window.onload = function() {
