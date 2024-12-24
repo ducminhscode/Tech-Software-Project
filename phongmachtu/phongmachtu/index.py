@@ -3,7 +3,7 @@ from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
 import dao
 from phongmachtu.admin import *
-from phongmachtu.dao import get_patient_id
+from phongmachtu.dao import *
 
 
 @app.route('/')
@@ -35,7 +35,7 @@ def login_my_user():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        user = dao.auth_account(username,password)
+        user = dao.auth_account(username, password)
 
         if user:
             login_user(user)
@@ -79,7 +79,6 @@ def booking():
     return render_template('patient/booking.html', time=time, err_msg=err_msg)
 
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     err_msg = None
@@ -97,7 +96,8 @@ def register():
             day_of_birth = request.form.get('day_of_birth')
             gender = request.form.get('gender')
             phone = request.form.get('phone')
-            dao.add_patient(name=name, username=username, password=password, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+            dao.add_patient(name=name, username=username, password=password, address=address, day_of_birth=day_of_birth,
+                            gender=gender, phone=phone)
             return redirect('/login')
     return render_template('register.html', err_msg=err_msg)
 
@@ -121,14 +121,12 @@ def examination_form():
         disease = request.args.get('disease')
         description = request.args.get('description')
         doctor_id = current_user.id
-        patient_name= request.args.get('name')
+        patient_name = request.args.get('name')
         patient_id = get_patient_id(patient_name)
-
 
         # Thêm phiếu khám bệnh vào cơ sở dữ liệu
         dao.add_examination_form(disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
         return redirect('/doctor/patient-list')
-
 
     kw = request.args.get('keyword')
     patient = dao.get_patient_id(kw)
@@ -142,10 +140,14 @@ def patient_list_doctor():
 
     return render_template('nurse/patient-list.html', patients=list_patient)
 
+
 # =================================NURSE============================================
 @app.route('/nurse/confirm-registration')
 def confirm_registration():
-    return render_template('/nurse/confirm-registration.html')
+    a = registration_form_false()
+    b = load_patient()
+    c = load_times()
+    return render_template('/nurse/confirm-registration.html', books=a, patient=b, time=c)
 
 
 @app.route('/nurse/regis-patient')
@@ -153,10 +155,19 @@ def regis_patient():
     return render_template('/nurse/regis-patient.html')
 
 
-
 @app.route('/nurse/patient-list')
 def patient_list_nurse():
-    return render_template('/nurse/patient-list.html')
+    date_str = request.args.get('selectedDate')
+    if date_str:
+        # Chuyển String nhận được thành Date
+        date_str = datetime.strptime(date_str, '%Y-%m-%d').date()
+    else:
+        # Nếu không có giá trị, sẽ hiện danh sách hôm nay
+        date_str = datetime.now().date()
+
+
+    list_patient = registration_form_date(date_str)
+    return render_template('/nurse/patient-list.html', registration_from=list_patient)
 
 
 # =================================LOGOUT============================================

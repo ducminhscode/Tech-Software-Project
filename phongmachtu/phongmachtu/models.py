@@ -261,10 +261,12 @@ if __name__ == "__main__":
         # db.session.add(m3)
         # db.session.add(m4)
         #
-        # b = RegistrationForm(patient_id=5, desc='czxmcoa', lenLichKham=True, isKham=False, time_id=2)
+        b = RegistrationForm(patient_id=7, desc='Sôt Ho', lenLichKham=False, isKham=False, time_id=3)
+        # b1 = RegistrationForm(patient_id=7, desc='Sôt Ho', lenLichKham=False, isKham=False, time_id=3)
         # b2 = RegistrationForm(patient_id=6, desc='czxzxcpfsdfa', lenLichKham=True, isKham=False, time_id=6)
         #
-        # db.session.add(b)
+        db.session.add(b)
+        # db.session.add(b1)
         # db.session.add(b2)
         #
         # r = Receipt(examines_price='20000', total_price='100000', cashier_id=4, patient_id=5)
@@ -302,9 +304,9 @@ if __name__ == "__main__":
         #
         # db.session.add(h)
         # db.session.add(h2)
-
-        r2 = Receipt(examines_price='90000', total_price='110000', cashier_id=4, patient_id=6)
-        db.session.add(r2)
+        #
+        # r2 = Receipt(examines_price='90000', total_price='110000', cashier_id=4, patient_id=6)
+        # db.session.add(r2)
 
         db.create_all()
         db.session.commit()

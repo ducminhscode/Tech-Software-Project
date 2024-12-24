@@ -1,6 +1,7 @@
 import hashlib
 from datetime import datetime
 from click.decorators import R
+from flask import render_template
 
 import phongmachtu
 from models import *
@@ -47,14 +48,14 @@ def get_account_by_id(user_id):
 
 # ================================= ADMIN ============================================
 def stats_revenue(month=None):
-    query = (db.session.query(extract('day',Receipt.created_date).label('Ngày'),
-                             func.count(Patient.id).label('Số lượt khám'),
-                             func.sum(Receipt.total_price).label('Doanh thu'),
-                             extract('month',Receipt.created_date).label('Tháng'),
-                             extract('year',Receipt.created_date).label('Năm'))
-             .join(Receipt,Receipt.patient_id.__eq__(Patient.id))).group_by(extract('day',Receipt.created_date),
-                                                                            extract('month',Receipt.created_date),
-                                                                            extract('year',Receipt.created_date))
+    query = (db.session.query(extract('day', Receipt.created_date).label('Ngày'),
+                              func.count(Patient.id).label('Số lượt khám'),
+                              func.sum(Receipt.total_price).label('Doanh thu'),
+                              extract('month', Receipt.created_date).label('Tháng'),
+                              extract('year', Receipt.created_date).label('Năm'))
+             .join(Receipt, Receipt.patient_id.__eq__(Patient.id))).group_by(extract('day', Receipt.created_date),
+                                                                             extract('month', Receipt.created_date),
+                                                                             extract('year', Receipt.created_date))
     if month:
         query = query.filter(Receipt.created_date.contains(month))
 
@@ -69,8 +70,8 @@ def stats_frequency(month=None):
                              extract('year', ExaminationForm.datetime).label('Năm')
                              ).group_by(
         extract('day', ExaminationForm.datetime),
-    extract('month', ExaminationForm.datetime),
-    extract('year', ExaminationForm.datetime))
+        extract('month', ExaminationForm.datetime),
+        extract('year', ExaminationForm.datetime))
 
     if month:
         query = query.filter(ExaminationForm.datetime.contains(month))
@@ -151,6 +152,40 @@ def examination_form_by_patient_id(patient_id=None):
     return query.first()
 
 
+# ================================= NURSE ============================================
+def load_registration_form():
+    return RegistrationForm.query.all()
+
+
+def registration_form_false():
+    today = datetime.now().date()
+
+    query = RegistrationForm.query.filter(
+        RegistrationForm.lenLichKham == False,
+        db.func.date(RegistrationForm.booked_date) == today)  # So sánh theo ngày
+
+    return query.all()
+
+
+def registration_form_date(date):
+    query = (db.session.query(RegistrationForm)
+        .join(Patient, RegistrationForm.patient_id == Patient.id)
+        .join(Times, RegistrationForm.time_id == Times.id)
+        .filter(db.func.date(RegistrationForm.booked_date) == date)
+        .with_entities(
+            Patient.name.label('name'),  # Tên bệnh nhân
+            RegistrationForm.booked_date.label('booked_date'),  # Ngày đã đặt
+            Times.period.label('period')  # Khung giờ khám
+        ).order_by(Times.period)
+    )
+
+
+    return query.all()
+
+
 # ================================= BOOKS ============================================
 def save_booking(selected_time, selected_date):
     return None
+
+def load_times():
+    return Times.query.all()
