@@ -157,14 +157,13 @@ def regis_patient():
 
 @app.route('/nurse/patient-list')
 def patient_list_nurse():
-    date_str = request.args.get('selectedDate')
+    date_str = request.form.get('selectedDate')
     if date_str:
         # Chuyển String nhận được thành Date
         date_str = datetime.strptime(date_str, '%Y-%m-%d').date()
     else:
         # Nếu không có giá trị, sẽ hiện danh sách hôm nay
         date_str = datetime.now().date()
-
 
     list_patient = registration_form_date(date_str)
     return render_template('/nurse/patient-list.html', registration_from=list_patient)

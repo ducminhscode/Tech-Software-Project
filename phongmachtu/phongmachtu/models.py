@@ -261,11 +261,9 @@ if __name__ == "__main__":
         # db.session.add(m3)
         # db.session.add(m4)
         #
-        b = RegistrationForm(patient_id=7, desc='Sôt Ho', lenLichKham=False, isKham=False, time_id=3)
-        # b1 = RegistrationForm(patient_id=7, desc='Sôt Ho', lenLichKham=False, isKham=False, time_id=3)
-        # b2 = RegistrationForm(patient_id=6, desc='czxzxcpfsdfa', lenLichKham=True, isKham=False, time_id=6)
+        # b1 = RegistrationForm(patient_id=5, desc='Sốt, Ho', lenLichKham=False, isKham=False, time_id=2)
+        # b2 = RegistrationForm(patient_id=6, desc='Cảm', lenLichKham=True, isKham=False, time_id=6)
         #
-        db.session.add(b)
         # db.session.add(b1)
         # db.session.add(b2)
         #

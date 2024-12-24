@@ -169,16 +169,15 @@ def registration_form_false():
 
 def registration_form_date(date):
     query = (db.session.query(RegistrationForm)
-        .join(Patient, RegistrationForm.patient_id == Patient.id)
-        .join(Times, RegistrationForm.time_id == Times.id)
-        .filter(db.func.date(RegistrationForm.booked_date) == date)
-        .with_entities(
-            Patient.name.label('name'),  # Tên bệnh nhân
-            RegistrationForm.booked_date.label('booked_date'),  # Ngày đã đặt
-            Times.period.label('period')  # Khung giờ khám
-        ).order_by(Times.period)
-    )
-
+             .join(Patient, RegistrationForm.patient_id == Patient.id)
+             .join(Times, RegistrationForm.time_id == Times.id)
+             .filter(db.func.date(RegistrationForm.booked_date) == date)
+             .with_entities(
+        Patient.name.label('name'),  # Tên bệnh nhân
+        RegistrationForm.booked_date.label('booked_date'),  # Ngày đã đặt
+        Times.period.label('period')  # Khung giờ khám
+    ).order_by(Times.period)
+             )
 
     return query.all()
 
@@ -186,6 +185,7 @@ def registration_form_date(date):
 # ================================= BOOKS ============================================
 def save_booking(selected_time, selected_date):
     return None
+
 
 def load_times():
     return Times.query.all()
