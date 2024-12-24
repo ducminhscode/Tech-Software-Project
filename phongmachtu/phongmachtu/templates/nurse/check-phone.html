@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Kiểm tra số điện thoại{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Kiểm tra số điện thoại</h2>
+
+    <form method="POST" id="phone-check-form">
+        <div class="form-floating mb-3">
+            <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Số điện thoại"
+                   required>
+            <label for="phone_number">Số điện thoại</label>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary" id="submit-button">Kiểm tra</button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    document.getElementById('phone-check-form').addEventListener('submit', function(event) {
+        document.getElementById('result-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+    });
+</script>
+{% endblock %}

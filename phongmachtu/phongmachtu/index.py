@@ -10,9 +10,11 @@ from phongmachtu.dao import *
 def index():
     return render_template('index.html')
 
+
 @app.route('/introduce')
 def introduce():
     return render_template('introduce.html')
+
 
 @app.route('/service')
 def service():
@@ -42,7 +44,6 @@ def login_my_user():
     if request.method.__eq__('POST'):
         username = request.form.get('username')
         password = request.form.get('password')
-
         user = dao.auth_account(username, password)
 
         if user:
@@ -69,19 +70,18 @@ def login_my_user():
 @app.route('/patient/booking', methods=['GET', 'POST'])
 def booking():
     err_msg = None
-
-    if request.method == 'POST':
+    if request.method.__eq__('POST'):
         selected_time = request.form.get('time')
         selected_date = request.form.get('date')
+        symptom = request.form.get('symptom')
 
-        if not selected_time or not selected_date:
-            err_msg = "Vui lòng chọn đầy đủ buổi khám và ngày khám."
+        patient_id = current_user.id
+
+        if not selected_time or not selected_date or not symptom:
+            err_msg = "Vui lòng chọn đầy đủ thông tin."
         else:
-            try:
-                dao.save_booking(selected_time, selected_date)
-                return redirect('/patient/booking')
-            except Exception as e:
-                err_msg = f"Có lỗi xảy ra: {e}"
+            dao.save_booking(selected_date, symptom, patient_id, selected_time)
+            err_msg = "Đăng kí thành công."
 
     time = dao.get_all_period()
     return render_template('patient/booking.html', time=time, err_msg=err_msg)
@@ -150,31 +150,86 @@ def patient_list_doctor():
 
 
 # =================================NURSE============================================
-@app.route('/nurse/confirm-registration')
-def confirm_registration():
-    a = registration_form_false()
-    b = load_patient()
-    c = load_times()
-    return render_template('/nurse/confirm-registration.html', books=a, patient=b, time=c)
+@app.route('/nurse/check-phone', methods=['GET', 'POST'])
+def check_phone():
+    msg = None
+    if request.method == 'POST':
+        phone_number = request.form.get('phone_number')
+        patient = dao.check_phone(phone_number)
+
+        if patient:
+            msg = "Số điện thoại tồn tại."
+            return redirect(url_for('patient_booking', patient_id=patient.id, patient_name=patient.name, msg=msg))
+        else:
+            msg = "Số điện thoại không tồn tại, đăng kí bệnh nhân mới."
+            return redirect(url_for('regis_patient', msg = msg))
+
+    return render_template('/nurse/check-phone.html')
 
 
-@app.route('/nurse/regis-patient')
+@app.route('/nurse/patient-booking', methods=['GET', 'POST'])
+def patient_booking():
+    patient_id = request.args.get('patient_id')
+    patient_name = request.args.get('patient_name')
+    msg = request.args.get('msg')
+    if msg is None:
+        msg = ""
+
+    err_msg = None
+    if request.method.__eq__('POST'):
+        selected_time = request.form.get('time')
+        selected_date = request.form.get('date')
+        symptom = request.form.get('symptom')
+
+        if not selected_time or not selected_date or not symptom:
+            err_msg = "Vui lòng chọn đầy đủ thông tin."
+        else:
+            dao.save_booking(selected_date, symptom, patient_id, selected_time)
+            err_msg = "Đăng kí thành công."
+            return redirect('/nurse/patient-list')
+
+    time = dao.get_all_period()
+    return render_template('/nurse/patient-booking.html', msg=msg, time=time, err_msg=err_msg,patient_name=patient_name)
+
+
+@app.route('/nurse/regis-patient', methods=['GET', 'POST'])
 def regis_patient():
-    return render_template('/nurse/regis-patient.html')
+    msg = request.args.get('msg')
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        address = request.form.get('address')
+        day_of_birth = request.form.get('day_of_birth')
+        gender = request.form.get('gender')
+        phone = request.form.get('phone')
+        patient = dao.add_patient_by_nurse(name=name, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+        return redirect(url_for('patient_booking', patient_id=patient.id, patient_name=patient.name))
+
+    return render_template('/nurse/regis-patient.html', msg = msg)
 
 
-@app.route('/nurse/patient-list')
+@app.route('/nurse/confirm-registration', methods=['GET', 'POST'])
+def confirm_registration():
+    registrations = load_registration_form()
+
+    reg_id = request.form.get('registration_id')
+    if reg_id:
+        if dao.confirm_registration(reg_id):
+            return redirect('/nurse/patient-list')
+
+    return render_template('/nurse/confirm-registration.html', reg = registrations)
+
+
+@app.route('/nurse/patient-list', methods=['GET', 'POST'])
 def patient_list_nurse():
     date_str = request.form.get('selectedDate')
     if date_str:
-        # Chuyển String nhận được thành Date
         date_str = datetime.strptime(date_str, '%Y-%m-%d').date()
     else:
-        # Nếu không có giá trị, sẽ hiện danh sách hôm nay
         date_str = datetime.now().date()
 
     list_patient = registration_form_date(date_str)
-    return render_template('/nurse/patient-list.html', registration_from=list_patient)
+    return render_template('/nurse/patient-list.html', reg=list_patient)
 
 
 # =================================LOGOUT============================================

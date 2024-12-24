@@ -10,8 +10,10 @@
         <div class="col-md-4">
             <div class="calendar-container border rounded p-3">
                 <h5 class="text-center">Chọn ngày</h5>
-                <input type="date" class="form-control mb-3" id="selectedDate" name="selectedDate"/>
-                <button class="btn btn-primary w-100" id="confirmDate" name="confirmDate" type="submit">Xác nhận</button>
+                <form method="POST">
+                    <input type="date" class="form-control mb-3" id="selectedDate" name="selectedDate"/>
+                    <button class="btn btn-primary w-100" id="confirmDate" name="confirmDate" type="submit">Xác nhận</button>
+                </form>
             </div>
         </div>
 
@@ -19,53 +21,29 @@
         <div class="col-md-8">
             <div class="info-view">
                 <h5>Thông tin bệnh nhân</h5>
-                <div id="patient-info">
-                    {%if registration_from%}
-                    {%for p in registration_from%}
-                    <div class="container-fluid mt-3">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-sm-4 bg-primary text-white">
-                                    Tên: {{p.name}}
-                                </div>
-                                <div class="col-sm-4 bg-light text-black">
-                                    Ngày đặt: {{p.booked_date}}
-                                </div>
-                                <div class="col-sm-4 bg-dark text-white">
-                                    Khung giờ: {{p.period}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {%endfor%}
-                    {%else%}
-                    <p>Chọn ngày trong lịch và nhấn "Xác nhận" để xem thông tin bệnh nhân.</p>
-                    {%endif%}
-                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Tên bệnh nhân</th>
+                        <th>Ngày đặt</th>
+                        <th>Khung giờ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for r in reg %}
+                    <tr>
+                        <td>{{ r.patient.name }}</td>
+                        <td>{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ r.time.period }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>
-
-    {%if current_user.type=="doctor"%}
-    {%if patients%}
-    <ul class="badge">
-        {%for patient in patients%}
-        <li class="container border border-4  rounded-pill bg-secondary" style="list-style-type:None">
-            <a>{{patient.name}}</a>
-            <p>
-                <a>Ngày sinh:{{patient.day_of_birth}}</a>
-                <a>Giới tính: {{patient.gender}}</a>
-                <a>SDT: {{patient.phone}}</a>
-                <button href="/doctor/examination-form">Khám Bệnh</button>
-            </p>
-        </li>
-        <p/>
-        {%endfor%}
-    </ul>
-    {%else%}
-    <div>Không có</div>
-    {%endif%}
-    {%endif%}
 </div>
 
 {%endblock%}

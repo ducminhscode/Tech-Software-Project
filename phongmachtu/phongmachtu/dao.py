@@ -1,7 +1,7 @@
 import hashlib
 from datetime import datetime
 from click.decorators import R
-from flask import render_template
+from flask import render_template, Flask
 
 import phongmachtu
 from models import *
@@ -36,10 +36,6 @@ def get_user_type(username, password):
     return None
 
 
-def get_all_period():
-    periods = Times.query.with_entities(Times.id, Times.period).all()
-
-    return periods
 
 
 def get_account_by_id(user_id):
@@ -153,39 +149,67 @@ def examination_form_by_patient_id(patient_id=None):
 
 
 # ================================= NURSE ============================================
+def add_patient_by_nurse(name, address, day_of_birth, gender, phone):
+    u = Patient(name=name, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+    db.session.add(u)
+    db.session.commit()
+    return u
+
+def check_phone(phone_number):
+    return Patient.query.filter_by(phone=phone_number).first()
+
+
 def load_registration_form():
-    return RegistrationForm.query.all()
+    return RegistrationForm.query.filter_by(lenLichKham=False).all()
 
 
-def registration_form_false():
-    today = datetime.now().date()
-
-    query = RegistrationForm.query.filter(
-        RegistrationForm.lenLichKham == False,
-        db.func.date(RegistrationForm.booked_date) == today)  # So sánh theo ngày
-
-    return query.all()
+def confirm_registration(reg_id):
+    try:
+        registration = RegistrationForm.query.get(reg_id)
+        if registration:
+            registration.lenLichKham = True
+            db.session.commit()
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"Lỗi khi xác nhận lịch khám: {e}")
+        db.session.rollback()
+        return False
 
 
 def registration_form_date(date):
-    query = (db.session.query(RegistrationForm)
-             .join(Patient, RegistrationForm.patient_id == Patient.id)
-             .join(Times, RegistrationForm.time_id == Times.id)
-             .filter(db.func.date(RegistrationForm.booked_date) == date)
-             .with_entities(
-        Patient.name.label('name'),  # Tên bệnh nhân
-        RegistrationForm.booked_date.label('booked_date'),  # Ngày đã đặt
-        Times.period.label('period')  # Khung giờ khám
-    ).order_by(Times.period)
-             )
-
-    return query.all()
+    return RegistrationForm.query.filter_by(booked_date=date, lenLichKham = True).all()
 
 
 # ================================= BOOKS ============================================
-def save_booking(selected_time, selected_date):
-    return None
+def save_booking(selected_date, symptom, patient_id, selected_time):
+    u = RegistrationForm(
+        booked_date=selected_date,
+        desc=symptom,
+        patient_id=patient_id,
+        time_id=selected_time
+    )
+    db.session.add(u)
+    db.session.commit()
 
+def save_booking_by_nurse(selected_date, symptom, patient_id, selected_time):
+    u = RegistrationForm(
+        booked_date=selected_date,
+        desc=symptom,
+        patient_id=patient_id,
+        time_id=selected_time,
+        lenLichKham = True
+    )
+    db.session.add(u)
+    db.session.commit()
 
-def load_times():
-    return Times.query.all()
+# def load_times():
+#     return Times.query.all()
+
+def get_time_by_period(selected_time):
+    return Times.query.filter_by(period=selected_time).first()
+
+def get_all_period():
+    periods = Times.query.with_entities(Times.id, Times.period).all()
+    return periods

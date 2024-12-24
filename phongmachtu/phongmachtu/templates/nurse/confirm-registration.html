@@ -8,9 +8,6 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between">
         <h1>Danh sách bệnh nhân đăng ký</h1>
-        <button class="book-btn btn btn-primary" type="button" onclick="window.location.href='/nurse/regis-patient'">
-            Đăng ký lịch khám cho bệnh nhân
-        </button>
     </div>
     <div class="danger alert-danger" id="message-container"></div>
     <table class="table table-striped mt-3">
@@ -18,33 +15,24 @@
         <tr>
             <th scope="col">Họ và tên</th>
             <th scope="col">Giờ đặt lịch</th>
+            <th scope="col">Ngày đặt</th>
             <th scope="col">Mô tả bệnh</th>
             <th scope="col">Thao tác</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        {% for b in books %}
-        <tr>
+        {% for r in reg %}
+        <tr name={{r.id}}>
+            <td>{{ r.patient.name }}</td>
+            <td>{{ r.time.period }}</td>
+            <td>{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
+            <td>{{ r.desc }}</td>
             <td>
-                {% for p in patient %}
-                    {% if p.id == b.patient_id %}
-                        {{ p.name }}
-                    {% endif %}
-                {% endfor %}
-            </td>
-            <td>
-                {% for t in time %}
-                    {% if t.id == b.time_id %}
-                        {{ t.period }}
-                    {% endif %}
-                {% endfor %}
-            </td>
-            <td>{{ b.desc }}</td>
-            <td>
-                <button class="book-btn btn btn-success" data-book-id="{{ b.id }}"
-                        onclick="lenlich(this.getAttribute('data-book-id'))"> Xác nhận
-                </button>
+                <form method="POST">
+                    <input type="hidden" name="registration_id" value="{{ r.id }}">
+                    <button type="submit" class="book-btn btn btn-success">Xác nhận</button>
+                </form>
             </td>
         </tr>
         {% endfor %}
