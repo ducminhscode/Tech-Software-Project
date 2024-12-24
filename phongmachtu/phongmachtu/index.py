@@ -10,6 +10,14 @@ from phongmachtu.dao import *
 def index():
     return render_template('index.html')
 
+@app.route('/introduce')
+def introduce():
+    return render_template('introduce.html')
+
+@app.route('/service')
+def service():
+    return render_template('service.html')
+
 
 # =================================LOGIN============================================
 @app.route('/login-admin', methods=['post'])

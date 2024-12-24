@@ -1,48 +1,14 @@
 {%extends 'layout/base.html'%}
 
+{% block title %}Dịch vụ{% endblock %}
 
 {%block content%}
+
 <header>
     <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet"/>
 </header>
+
 <body>
-
-<section class="hero-section">
-    <div class="container">
-        <h1 class="display-3">Chào Mừng Đến Với Phòng Khám ABC</h1>
-        <p class="lead">Chăm sóc sức khỏe của bạn là ưu tiên hàng đầu của chúng tôi</p>
-        <a href="/services" class="btn btn-primary btn-lg">Khám Phá Dịch Vụ</a>
-    </div>
-</section>
-
-<section class="container my-5">
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Về Phòng Khám ABC</h2>
-            <p>Phòng khám ABC là nơi cung cấp dịch vụ y tế chất lượng cao với đội ngũ bác sĩ giàu kinh nghiệm và cơ sở
-                vật chất hiện đại. Chúng tôi cam kết đem lại sự chăm sóc tận tình và hiệu quả cho mọi bệnh nhân.</p>
-        </div>
-        <div class="col-md-6">
-            <img src="https://via.placeholder.com/500x300" class="img-fluid" alt="Phòng khám">
-        </div>
-    </div>
-</section>
-
-<section class="benefits">
-    <h2>Lợi Ích Khi Đến Với Chúng Tôi</h2>
-    <ul>
-        <li><strong>Chất lượng dịch vụ hàng đầu:</strong> Đội ngũ bác sĩ giàu kinh nghiệm, thiết bị y tế hiện đại.</li>
-        <li><strong>Thời gian phục vụ linh hoạt:</strong> Chúng tôi mở cửa từ 8:00 AM đến 5:00 PM mỗi ngày, kể cả vào
-            cuối tuần.
-        </li>
-        <li><strong>Dịch vụ chăm sóc toàn diện:</strong> Chúng tôi cung cấp nhiều dịch vụ y tế từ khám bệnh, xét nghiệm
-            đến điều trị chuyên sâu.
-        </li>
-        <li><strong>Giá cả hợp lý:</strong> Chúng tôi cam kết cung cấp dịch vụ y tế chất lượng với chi phí hợp lý cho
-            mọi bệnh nhân.
-        </li>
-    </ul>
-</section>
 
 <section class="container my-5">
     <h2 class="text-center mb-4">Dịch Vụ Chúng Tôi</h2>
