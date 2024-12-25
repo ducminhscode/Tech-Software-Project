@@ -151,8 +151,19 @@ def examination_form():
         dao.add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units, usages)
         dao.change_isKham(patient_id)
 
-
     return render_template('doctor/examination-form.html', reg = registrations, medicines = medicines)
+
+@app.route('/doctor/history-examination', methods=['get', 'post'])
+def history_examination():
+    patient_history = None
+
+    if request.method.__eq__('POST'):
+        patient_id = request.form.get('patient_id')
+        if patient_id:
+            patient_history = dao.get_information_examination(patient_id)
+
+    return render_template('/doctor/history-examination.html', patient_history = patient_history)
+
 
 
 

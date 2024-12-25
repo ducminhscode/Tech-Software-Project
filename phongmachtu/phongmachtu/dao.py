@@ -241,3 +241,28 @@ def get_time_by_period(selected_time):
 def get_all_period():
     periods = Times.query.with_entities(Times.id, Times.period).all()
     return periods
+
+
+def get_information_examination(patient_id):
+    examinations = ExaminationForm.query.filter_by(patient_id=patient_id).all()
+
+    result = []
+    for exam in examinations:
+        result.append({
+            "id": exam.id,
+            "datetime": exam.datetime.strftime('%Y-%m-%d'),
+            "disease": exam.disease,
+            "doctor_name": Doctor.query.get(exam.doctor_id).name if Doctor.query.get(exam.doctor_id) else None,
+            "prescriptions": [
+                {
+                    "medicine_name": pres_med.medicine.name,
+                    "quantity": pres_med.quantity,
+                    "unit": pres_med.medicine.unit,
+                    "guide": pres_med.guide
+                }
+                for pres in exam.prescription
+                for pres_med in pres.prescription_medicines
+            ]
+        })
+
+    return result
