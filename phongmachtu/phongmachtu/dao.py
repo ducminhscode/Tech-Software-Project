@@ -157,10 +157,8 @@ def registration_form_date(date):
     return RegistrationForm.query.filter_by(booked_date=date, lenLichKham = True).all()
 
 # ================================= CASHIER ============================================
-def receipt():
-
-    return None
-
+def load_receipt(kw):
+    return Receipt.query.filter_by(patient_id = kw).all()
 
 
 # ================================= BOOKS ============================================

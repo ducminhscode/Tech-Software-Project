@@ -111,9 +111,19 @@ def register():
 
 
 # =================================CASHIER============================================
-@app.route('/cashier/receipt-list')
+@app.route('/cashier/receipt-list', methods=['GET', 'POST'])
 def receipt_list():
-    return render_template('cashier/receipt-list.html')
+    msg =None
+    kw = request.form.get('patientPhone')
+    patient = dao.check_phone(kw)
+    if patient:
+        # msg = "Số điện thoại có tồn tại."
+        receipts = dao.load_receipt(patient.id)
+    else:
+        # msg = "Số điện thoại có tồn tại."
+        receipts = []
+
+    return render_template('cashier/receipt-list.html', receipts=receipts, err_msg=msg)
 
 
 @app.route('/cashier/cash')
