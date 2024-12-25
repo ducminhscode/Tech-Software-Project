@@ -175,7 +175,7 @@ class Receipt(db.Model):
     isPaid = Column(Boolean, default=False)
 
     receipt_details = relationship('ReceiptDetails', backref='receipt', lazy=True)
-    cashier_id = Column(Integer, ForeignKey(Cashier.id), nullable=False)
+    cashier_id = Column(Integer, ForeignKey(Cashier.id))
     patient_id = Column(Integer, ForeignKey(Patient.id), nullable=False)
 
     def __repr__(self):

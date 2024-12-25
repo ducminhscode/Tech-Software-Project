@@ -115,9 +115,11 @@ def load_examination_form(kw=None):
 def load_doctor():
     return Doctor.query.all()
 
+
 def load_medicine():
     medicines = Medicine.query.with_entities(Medicine.name, Medicine.unit).all()
     return medicines
+
 
 def add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units, usages):
     today_date = datetime.today().date()
@@ -153,6 +155,8 @@ def add_examination_form(doctor_id, patient_id, disease, medicine_names, quantit
             db.session.add(prescription_medicine)
             db.session.commit()
 
+    return prescription.id
+
 
 def change_isKham(patient_id):
     today_date = datetime.today().date()
@@ -161,10 +165,10 @@ def change_isKham(patient_id):
     if registration:
         registration.isKham = True
         db.session.commit()
-
-        return True  # Trả về True nếu cập nhật thành công
+        return True
     else:
-        return False  # Trả về False nếu không tìm thấy bản ghi
+        return False
+
 
 
 def load_registration_form_by_day(today):
@@ -203,6 +207,46 @@ def registration_form_date(date):
 
 
 # ================================= CASHIER ============================================
+def set_receipt(prescription_id, patient_id, medicine_names, quantities):
+    try:
+        new_receipt = Receipt(
+            created_date=datetime.now(),
+            examines_price=100000,
+            isPaid=False,
+            patient_id=patient_id
+        )
+
+        db.session.add(new_receipt)
+        db.session.flush()
+
+        total_price = 0
+        for name, quantity in zip(medicine_names, quantities):
+            medicine = Medicine.query.filter_by(name=name).first()
+            if not medicine:
+                raise ValueError(f"Medicine with name {name} not found.")
+
+            quantity = float(quantity)
+            medicines_price = quantity * medicine.price
+            total_price += medicines_price
+
+        new_detail = ReceiptDetails(
+            medicines_price=total_price,
+            receipt_id=new_receipt.id,
+            prescription_id=prescription_id
+        )
+
+        db.session.add(new_detail)
+        new_receipt.total_price = total_price + new_receipt.examines_price
+        db.session.commit()
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error: {e}")
+        return None
+
+def get_receipt_by_id_and_time(patient_code):
+    return Receipt.query.filter_by(patient_id = patient_code, isPaid = False).first()
+
 def load_receipt(kw):
     return Receipt.query.filter_by(patient_id=kw).all()
 
@@ -266,3 +310,5 @@ def get_information_examination(patient_id):
         })
 
     return result
+
+

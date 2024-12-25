@@ -1,3 +1,5 @@
+import datetime
+
 from flask import render_template, request, redirect, session, url_for
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
@@ -124,10 +126,17 @@ def receipt_list():
     return render_template('cashier/receipt-list.html', receipts=receipts, err_msg=msg)
 
 
-@app.route('/cashier/cash')
+@app.route('/cashier/cash', methods=['GET', 'POST'])
 def cashing():
-    return render_template('cashier/cash.html')
+    patient_code = None
+    receipt = None
+    if request.method == 'POST':
+        patient_code = request.form.get('invoiceCode')
+        receipt = dao.get_receipt_by_id_and_time(patient_code)
+        if receipt:
+            return render_template('cashier/cash.html', receipt = receipt)
 
+    return render_template('cashier/cash.html', receipt = receipt)
 
 # =================================DOCTOR============================================
 @app.route('/doctor/examination-form', methods=['get', 'post'])
@@ -148,8 +157,9 @@ def examination_form():
         units = request.form.getlist('unit')
         usages = request.form.getlist('usage')
 
-        dao.add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units, usages)
+        prescription_id = dao.add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units, usages)
         dao.change_isKham(patient_id)
+        dao.set_receipt(prescription_id, patient_id,medicine_names, quantities)
 
     return render_template('doctor/examination-form.html', reg = registrations, medicines = medicines)
 
