@@ -125,27 +125,27 @@ def cashing():
 @app.route('/doctor/examination-form', methods=['get', 'post'])
 @login_required  # Chỉ cho phép người dùng đã đăng nhập truy cập
 def examination_form():
-    if request.method == 'POST':
-        disease = request.args.get('disease')
-        description = request.args.get('description')
-        doctor_id = current_user.id
-        patient_name = request.args.get('name')
-        patient_id = get_patient_id(patient_name)
+    kw = request.args.get('phone')
+    patient = dao.check_phone(kw)
+    if patient:
+        patient_name = patient.name
+        if request.method == 'POST':
+            disease = request.form.get('disease')
+            description = request.form.get('description')
+            doctor_id = current_user.id
+            patient_id = patient.id
 
-        # Thêm phiếu khám bệnh vào cơ sở dữ liệu
-        dao.add_examination_form(disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
-        return redirect('/doctor/patient-list')
+            # Thêm phiếu khám bệnh vào cơ sở dữ liệu
+            dao.add_examination_form(disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
+            return redirect('/doctor/patient-list')
+    else:
+        patient_name = None
 
-    kw = request.args.get('keyword')
-    patient = dao.get_patient_id(kw)
-
-    return render_template('doctor/examination-form.html', patient=patient)
+    return render_template('doctor/examination-form.html', patient=patient_name)
 
 
 @app.route('/doctor/patient-list')
 def patient_list_doctor():
-    list_patient = dao.list_examination_by_doctor(Doctor.id)
-
     return render_template('nurse/patient-list.html', patients=list_patient)
 
 

@@ -99,12 +99,8 @@ def load_patient():
     return Patient.query.all()
 
 
-def get_patient_id(kw=None):
-    if not kw:  # Nếu không có từ khóa, trả về None hoặc []
-        return []  # Hoặc return []
-
-    query = Patient.query.filter(Patient.name.contains(kw))
-    return query.all()
+def check_phone(phone_number):
+    return Patient.query.filter_by(phone=phone_number).first()
 
 
 def load_examination_form(kw=None):
@@ -130,33 +126,12 @@ def add_examination_form(description, disease, doctor_id, patient_id):
     db.session.commit()
 
 
-def list_examination_by_doctor(doctor_id):
-    query = (
-        db.session.query(Patient.name, Patient.day_of_birth, Patient.gender, Patient.phone)
-        .join(ExaminationForm, Patient.id == ExaminationForm.patient_id)  # Patient~~ExaminationForm
-        .filter(ExaminationForm.doctor_id == doctor_id)
-    )
-    return query.all()
-
-
-def examination_form_by_patient_id(patient_id=None):
-    query = (
-        db.session.query(Patient.name, Patient.day_of_birth, Patient.gender)
-        .join(ExaminationForm, Patient.id == ExaminationForm.patient_id)  # Patient~~ExaminationForm
-        .filter(ExaminationForm.patient_id == patient_id))
-
-    return query.first()
-
-
 # ================================= NURSE ============================================
 def add_patient_by_nurse(name, address, day_of_birth, gender, phone):
     u = Patient(name=name, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
     db.session.add(u)
     db.session.commit()
     return u
-
-def check_phone(phone_number):
-    return Patient.query.filter_by(phone=phone_number).first()
 
 
 def load_registration_form():
@@ -180,6 +155,12 @@ def confirm_registration(reg_id):
 
 def registration_form_date(date):
     return RegistrationForm.query.filter_by(booked_date=date, lenLichKham = True).all()
+
+# ================================= CASHIER ============================================
+def receipt():
+
+    return None
+
 
 
 # ================================= BOOKS ============================================

@@ -6,7 +6,7 @@
 <form>
     <h2 class="bg-primary" style="text-align:center">Tìm kiếm thông tin bệnh nhân:</h2>
     <form class="d-flex" action="/{{patient.id}}">
-        <input type="text" class="form-control me-2" name="keyword" placeholder="Nhập tên Bệnh Nhân">
+        <input type="text" class="form-control me-2" name="phone" placeholder="Nhập Số điện thoại Bệnh Nhân">
         <button class="btn btn-primary" type="submit">Tìm kiếm</button>
     </form>
     {%if patient%}
@@ -19,10 +19,7 @@
                 <tr>
                     <th>Họ và tên:</th>
                     <td>
-                        {% for p in patient %}
-                        <input type="text" class="form-control" id="name"
-                               placeholder="{{p.name}}" name="name" required>
-                        {%endfor%}
+                        <div class="form-control" id="name" name="name">{{patient}}</div>
                     </td>
                 </tr>
                 <tr>

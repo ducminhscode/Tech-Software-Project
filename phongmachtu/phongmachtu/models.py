@@ -1,4 +1,6 @@
 from datetime import datetime
+from enum import unique
+
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, Float, false, Date
 from sqlalchemy.orm import relationship
 from phongmachtu import app, db
@@ -64,7 +66,7 @@ class Patient(Account):
     address = Column(String(50), nullable=False)
     day_of_birth = Column(String(50))
     gender = Column(String(10), nullable=False)
-    phone = Column(String(10), nullable=False)
+    phone = Column(String(10), unique=True, nullable=False)
 
     registration_form = relationship('RegistrationForm', cascade="all,delete", backref='patient', lazy=True)
     examination_forms = relationship('ExaminationForm', backref='patient', lazy=True)
@@ -180,6 +182,7 @@ class Receipt(db.Model):
     created_date = Column(DateTime, default=datetime.now)
     examines_price = Column(Float, default=100000)
     total_price = Column(Float, default=0)
+    isPaid = Column(Boolean, default=False)
 
     receipt_details = relationship('ReceiptDetails', backref='receipt', lazy=True)
     cashier_id = Column(Integer, ForeignKey(Cashier.id), nullable=False)
