@@ -4,35 +4,36 @@
 {%block content%}
 <header>
     <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </header>
 <body>
 
 <section class="hero-section">
     <div class="container">
-        <h1 class="display-3">Chào Mừng Đến Với Phòng Khám ABC</h1>
-        <p class="lead">Chăm sóc sức khỏe của bạn là ưu tiên hàng đầu của chúng tôi</p>
-        <a href="/services" class="btn btn-primary btn-lg">Khám Phá Dịch Vụ</a>
+        <h1 class="display-3" style="font-weight: bold; -webkit-text-stroke: 1px blue;">Chào Mừng Đến Với Phòng Khám Care Plus</h1>
+        <p class="lead" style="font-weight: bold;">Chăm sóc sức khỏe của bạn là ưu tiên hàng đầu của chúng tôi</p>
+        <a href="/service" class="btn btn-primary btn-lg">Khám Phá Dịch Vụ</a>
     </div>
 </section>
 
 <section class="container my-5">
-    <div class="row">
+    <div class="row" style="font-size: 20px;">
         <div class="col-md-6">
-            <h2>Về Phòng Khám ABC</h2>
-            <p>Phòng khám ABC là nơi cung cấp dịch vụ y tế chất lượng cao với đội ngũ bác sĩ giàu kinh nghiệm và cơ sở
+            <h2 style="font-weight: bold; margin-top: 50px">Về Phòng Khám Care Plus</h2>
+            <p>Phòng khám Care Plus là nơi cung cấp dịch vụ y tế chất lượng cao với đội ngũ bác sĩ giàu kinh nghiệm và cơ sở
                 vật chất hiện đại. Chúng tôi cam kết đem lại sự chăm sóc tận tình và hiệu quả cho mọi bệnh nhân.</p>
         </div>
-        <div class="col-md-6">
-            <img src="https://via.placeholder.com/500x300" class="img-fluid" alt="Phòng khám">
+        <div class="col-md-6" style="margin-top: 50px;">
+            <img src="/static/images/about.jpeg" class="img-fluid" alt="Phòng khám">
         </div>
     </div>
 </section>
 
-<section class="benefits">
-    <h2>Lợi Ích Khi Đến Với Chúng Tôi</h2>
+<section class="benefits" style="font-size: 20px;">
+    <h2 class="text-center mb-4" style="font-weight: bold;">Lợi Ích Khi Đến Với Chúng Tôi</h2>
     <ul>
         <li><strong>Chất lượng dịch vụ hàng đầu:</strong> Đội ngũ bác sĩ giàu kinh nghiệm, thiết bị y tế hiện đại.</li>
-        <li><strong>Thời gian phục vụ linh hoạt:</strong> Chúng tôi mở cửa từ 8:00 AM đến 5:00 PM mỗi ngày, kể cả vào
+        <li><strong>Thời gian phục vụ linh hoạt:</strong> Chúng tôi mở cửa từ 7:00 đến 17:00 mỗi ngày, kể cả vào
             cuối tuần.
         </li>
         <li><strong>Dịch vụ chăm sóc toàn diện:</strong> Chúng tôi cung cấp nhiều dịch vụ y tế từ khám bệnh, xét nghiệm
@@ -44,26 +45,28 @@
     </ul>
 </section>
 
-<section class="container my-5">
-    <h2 class="text-center mb-4">Dịch Vụ Chúng Tôi</h2>
+<div class="divider"></div>
+
+<section class="container my-5" style="font-size: 20px;">
+    <h2 class="text-center mb-4" style="font-weight: bold;">Dịch Vụ Chúng Tôi</h2>
     <div class="row">
         <div class="col-md-4">
             <div class="service-item">
-                <img src="https://via.placeholder.com/200" class="img-fluid" alt="Khám bệnh">
+                <img src="/static/images/tongquat.jpg" class="img-fluid" alt="Khám bệnh">
                 <h4>Khám Bệnh Tổng Quát</h4>
-                <p>Chúng tôi cung cấp dịch vụ khám bệnh tổng quát, giúp phát hiện sớm các vấn đề sức khỏe.</p>
+                <p>Chúng tôi cung cấp dịch vụ khám bệnh tổng quát, phát hiện sớm các vấn đề sức khỏe.</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="service-item">
-                <img src="https://via.placeholder.com/200" class="img-fluid" alt="Nội soi">
+                <img src="/static/images/noisoi.jpg" class="img-fluid" alt="Nội soi">
                 <h4>Định Kỳ Nội Soi</h4>
                 <p>Thực hiện các xét nghiệm nội soi nhằm phát hiện các vấn đề về tiêu hóa.</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="service-item">
-                <img src="https://via.placeholder.com/200" class="img-fluid" alt="Chăm sóc sức khỏe">
+                <img src="/static/images/suckhoe.jpg" class="img-fluid" alt="Chăm sóc sức khỏe">
                 <h4>Chăm Sóc Sức Khỏe</h4>
                 <p>Chúng tôi cung cấp các gói chăm sóc sức khỏe định kỳ cho mọi lứa tuổi.</p>
             </div>
@@ -71,8 +74,8 @@
     </div>
 </section>
 
-<section class="promotions">
-    <h2>Chương Trình Khuyến Mãi</h2>
+<section class="promotions" style="font-size: 20px;">
+    <h2 class="text-center mb-4" style="font-weight: bold;">Chương Trình Khuyến Mãi</h2>
     <p>Nhân dịp khai trương, chúng tôi đang có các chương trình khuyến mãi hấp dẫn:</p>
     <ul>
         <li><strong>Giảm giá 20%:</strong> Dành cho bệnh nhân lần đầu khám bệnh tại phòng khám.</li>
