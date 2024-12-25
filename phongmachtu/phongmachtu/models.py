@@ -13,6 +13,7 @@ class Account(db.Model, UserMixin):
     username = Column(String(50), unique=True)
     password = Column(String(50))
     joined_date = Column(DateTime, default=datetime.now)
+    avatar = Column(String(255))
 
     type = Column(String(20), nullable=False)
 

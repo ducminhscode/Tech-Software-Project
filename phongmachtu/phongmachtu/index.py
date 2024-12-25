@@ -6,6 +6,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 import dao
 from phongmachtu.admin import *
 from phongmachtu.dao import *
+import cloudinary.uploader
 
 
 @app.route('/')
@@ -57,7 +58,7 @@ def login_my_user():
             elif user.type == "nurse":
                 return redirect('/')
             elif user.type == "cashier":
-                return redirect('/cashier/cash')
+                return redirect('/')
             else:
                 err_msg = "Tài khoản hoặc mật khẩu không đúng!"
                 logout_my_user()
@@ -66,6 +67,26 @@ def login_my_user():
             err_msg = "Tài khoản hoặc mật khẩu không đúng!"
 
     return render_template('login.html', err_msg=err_msg)
+
+
+@app.route('/info', methods=['get', 'post'])
+def update():
+    err_msg = ""
+
+    if request.method.__eq__('POST'):
+        try:
+            dao.update_info(day_of_birth=request.form.get('day_of_birth'),
+                            phone=request.form.get('phone'),
+                            address=request.form.get('address'),
+                            avatar=request.files.get('avatar'),
+                            gender=request.form.get('gender'),
+                            patient_id=current_user.id)
+        except:
+            err_msg = 'Hệ thống đang bận, vui lòng thử lại sau!'
+        else:
+            err_msg = "Cập nhật thành công"
+        return redirect('/info')
+    return render_template('info.html', err_msg=err_msg)
 
 
 # =================================PATIENT============================================
@@ -92,6 +113,7 @@ def booking():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     err_msg = None
+    avatar_path = None
     if request.method.__eq__('POST'):
         password = request.form.get('password')
         confirm = request.form.get('confirm')
@@ -106,7 +128,12 @@ def register():
             day_of_birth = request.form.get('day_of_birth')
             gender = request.form.get('gender')
             phone = request.form.get('phone')
-            dao.add_patient(name=name, username=username, password=password, address=address, day_of_birth=day_of_birth,
+            avatar = request.files.get('avatar')
+            if avatar:
+                my_folder = "PhongMachTu"
+                response = cloudinary.uploader.upload(avatar, folder=my_folder)
+                avatar_path = response['secure_url']
+            dao.add_patient(name=name, username=username, password=password, avatar=avatar_path, address=address, day_of_birth=day_of_birth,
                             gender=gender, phone=phone)
             return redirect('/login')
     return render_template('register.html', err_msg=err_msg)

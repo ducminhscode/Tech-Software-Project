@@ -7,11 +7,12 @@ import phongmachtu
 from models import *
 from phongmachtu import db
 from sqlalchemy import extract, func, nullsfirst
+import cloudinary.uploader
 
 
-def add_patient(name, username, password, address, day_of_birth, gender, phone):
+def add_patient(name, username, password, avatar, address, day_of_birth, gender, phone):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
-    u = Patient(name=name, username=username, password=password, address=address, day_of_birth=day_of_birth,
+    u = Patient(name=name, username=username, password=password, avatar=avatar, address=address, day_of_birth=day_of_birth,
                 gender=gender, phone=phone)
     db.session.add(u)
     db.session.commit()
@@ -39,6 +40,21 @@ def get_user_type(username, password):
 def get_account_by_id(user_id):
     return Account.query.get(user_id)
 
+
+def update_info(day_of_birth, phone, address, avatar, patient_id, gender):
+    p = Patient.query.filter_by(id=patient_id).first()
+    a = Account.query.filter_by(id=patient_id).first()
+    if p:
+        p.day_of_birth = day_of_birth
+        p.phone = phone
+        p.address = address
+        p.gender = gender
+        if avatar:
+            my_folder = "PhongMachTu"
+            response = cloudinary.uploader.upload(avatar, folder=my_folder)
+            a.avatar = response['secure_url']
+
+        db.session.commit()
 
 # ================================= ADMIN ============================================
 def stats_revenue(month=None):
