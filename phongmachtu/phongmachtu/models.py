@@ -293,6 +293,11 @@ if __name__ == "__main__":
         r2 = Receipt(examines_price='90000', total_price='110000', cashier_id=4, patient_id=6)
         db.session.add(r2)
 
+        pm = PrescriptionMedicine(prescription_id=1, medicine_id=2,quantity=50,guide='qhadoiqw')
+        pm2 = PrescriptionMedicine(prescription_id=2, medicine_id=4, quantity=100, guide='kadaqw')
+        db.session.add(pm)
+        db.session.add(pm2)
+
         db.create_all()
         db.session.commit()
 

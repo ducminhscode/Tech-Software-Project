@@ -77,8 +77,8 @@ def stats_frequency(month=None):
 
 def stats_medicine(kw=None, from_date=None, to_date=None):
     query = db.session.query(Medicine.id, Medicine.name, Medicine.unit,
-                             func.sum(Prescription.quantity)) \
-        .join(Medicine, Medicine.id.__eq__(Prescription.medicine_id), isouter=True)
+                             func.sum(PrescriptionMedicine.quantity)) \
+        .join(Medicine, Medicine.id.__eq__(PrescriptionMedicine.medicine_id), isouter=True)
 
     if kw:
         query = query.filter(Medicine.name.contains(kw))
