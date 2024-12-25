@@ -56,6 +56,18 @@ def update_info(day_of_birth, phone, address, avatar, patient_id, gender):
 
         db.session.commit()
 
+
+def update_password(user_id, new_password):
+    user = Account.query.get(user_id)
+    if user:
+        hashed_password = str(hashlib.md5(new_password.encode('utf-8')).hexdigest())
+        user.password = hashed_password
+        db.session.commit()
+        return True
+    else:
+        return False
+
+
 # ================================= ADMIN ============================================
 def stats_revenue(month=None):
     query = (db.session.query(extract('day', Receipt.created_date).label('Ngày'),

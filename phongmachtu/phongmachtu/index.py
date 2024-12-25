@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.messages import success
 from flask import render_template, request, redirect, session, url_for
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
@@ -7,6 +8,7 @@ import dao
 from phongmachtu.admin import *
 from phongmachtu.dao import *
 import cloudinary.uploader
+import hashlib
 
 
 @app.route('/')
@@ -71,23 +73,36 @@ def login_my_user():
 
 @app.route('/info', methods=['get', 'post'])
 def update():
-    err_msg = ""
-
+    success_msg=None
     if request.method.__eq__('POST'):
-        try:
-            dao.update_info(day_of_birth=request.form.get('day_of_birth'),
-                            phone=request.form.get('phone'),
-                            address=request.form.get('address'),
-                            avatar=request.files.get('avatar'),
-                            gender=request.form.get('gender'),
-                            patient_id=current_user.id)
-        except:
-            err_msg = 'Hệ thống đang bận, vui lòng thử lại sau!'
-        else:
-            err_msg = "Cập nhật thành công"
-        return redirect('/info')
-    return render_template('info.html', err_msg=err_msg)
+        dao.update_info(day_of_birth=request.form.get('day_of_birth'),
+                        phone=request.form.get('phone'),
+                        address=request.form.get('address'),
+                        avatar=request.files.get('avatar'),
+                        gender=request.form.get('gender'),
+                        patient_id=current_user.id)
+        success_msg = "Thay đổi thông tin cá nhân thành công"
+    return render_template('info.html', success_msg=success_msg)
 
+
+@app.route('/change-password', methods=['get', 'post'])
+def change_password():
+
+    err_msg = None
+    success_msg=None
+    if request.method.__eq__('POST'):
+        hashed_old_password = request.form.get('old_password')
+        old_password = str(hashlib.md5(hashed_old_password.encode('utf-8')).hexdigest())
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        if (current_user.password != old_password) or new_password != confirm_password:
+            err_msg="Thay đổi mật khẩu thất bại"
+        else:
+            update_password(current_user.id, new_password)
+            success_msg = "Thay đổi mật khẩu thành công"
+
+    return render_template('change-password.html', success_msg=success_msg, err_msg=err_msg)
 
 # =================================PATIENT============================================
 @app.route('/patient/booking', methods=['GET', 'POST'])
