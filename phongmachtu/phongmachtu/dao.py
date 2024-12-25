@@ -36,8 +36,6 @@ def get_user_type(username, password):
     return None
 
 
-
-
 def get_account_by_id(user_id):
     return Account.query.get(user_id)
 
@@ -117,13 +115,60 @@ def load_examination_form(kw=None):
 def load_doctor():
     return Doctor.query.all()
 
+def load_medicine():
+    medicines = Medicine.query.with_entities(Medicine.name, Medicine.unit).all()
+    return medicines
 
-def add_examination_form(description, disease, doctor_id, patient_id):
-    now = datetime.now()
-    u = ExaminationForm(datetime=now, disease=disease, description=description, doctor_id=doctor_id,
-                        patient_id=patient_id)
-    db.session.add(u)
+def add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units, usages):
+    today_date = datetime.today().date()
+
+    examination_form = ExaminationForm(
+        datetime=today_date,
+        disease=disease,
+        doctor_id=doctor_id,
+        patient_id=patient_id
+    )
+    db.session.add(examination_form)
+    db.session.commit()  # Commit để có id cho examination_form
+
+    prescription = Prescription(
+        exam_date=today_date,
+        examinationForm_id=examination_form.id
+    )
+    db.session.add(prescription)
     db.session.commit()
+
+    for i in range(len(medicine_names)):
+        medicine = Medicine.query.filter_by(name=medicine_names[i]).first()
+
+        if medicine:
+            prescription_medicine = PrescriptionMedicine(
+                prescription_id=prescription.id,
+                medicine_id=medicine.id,
+                quantity=quantities[i],
+                guide=usages[i]
+            )
+
+            # Thêm vào bảng PrescriptionMedicine
+            db.session.add(prescription_medicine)
+            db.session.commit()
+
+
+def change_isKham(patient_id):
+    today_date = datetime.today().date()
+    registration = RegistrationForm.query.filter_by(patient_id=patient_id, booked_date=today_date).first()
+
+    if registration:
+        registration.isKham = True
+        db.session.commit()
+
+        return True  # Trả về True nếu cập nhật thành công
+    else:
+        return False  # Trả về False nếu không tìm thấy bản ghi
+
+
+def load_registration_form_by_day(today):
+    return RegistrationForm.query.filter_by(lenLichKham=True, booked_date=today, isKham=False).all()
 
 
 # ================================= NURSE ============================================
@@ -154,11 +199,12 @@ def confirm_registration(reg_id):
 
 
 def registration_form_date(date):
-    return RegistrationForm.query.filter_by(booked_date=date, lenLichKham = True).all()
+    return RegistrationForm.query.filter_by(booked_date=date, lenLichKham=True).all()
+
 
 # ================================= CASHIER ============================================
 def load_receipt(kw):
-    return Receipt.query.filter_by(patient_id = kw).all()
+    return Receipt.query.filter_by(patient_id=kw).all()
 
 
 # ================================= BOOKS ============================================
@@ -172,22 +218,25 @@ def save_booking(selected_date, symptom, patient_id, selected_time):
     db.session.add(u)
     db.session.commit()
 
+
 def save_booking_by_nurse(selected_date, symptom, patient_id, selected_time):
     u = RegistrationForm(
         booked_date=selected_date,
         desc=symptom,
         patient_id=patient_id,
         time_id=selected_time,
-        lenLichKham = True
+        lenLichKham=True
     )
     db.session.add(u)
     db.session.commit()
+
 
 # def load_times():
 #     return Times.query.all()
 
 def get_time_by_period(selected_time):
     return Times.query.filter_by(period=selected_time).first()
+
 
 def get_all_period():
     periods = Times.query.with_entities(Times.id, Times.period).all()

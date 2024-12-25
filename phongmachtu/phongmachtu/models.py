@@ -8,7 +8,6 @@ from flask_login import UserMixin
 
 
 class Account(db.Model, UserMixin):
-
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100))
     username = Column(String(50), unique=True)
@@ -71,7 +70,6 @@ class Patient(Account):
     registration_form = relationship('RegistrationForm', cascade="all,delete", backref='patient', lazy=True)
     examination_forms = relationship('ExaminationForm', backref='patient', lazy=True)
     receipts = relationship('Receipt', backref='patient', lazy=True)
-    history_disease = relationship('MedicalHistory', backref='patient', lazy=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'patient'
@@ -79,17 +77,6 @@ class Patient(Account):
 
     def __str__(self):
         return self.name
-
-
-class MedicalHistory(db.Model):
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    disease = Column(String(100), nullable=False)
-    datetime = Column(DateTime, default=datetime.now)
-
-    patient_id = Column(Integer, ForeignKey(Patient.id), nullable=False)
-
-    def __str__(self):
-        return self.disease_id
 
 
 class Cashier(Account):
@@ -134,7 +121,6 @@ class ExaminationForm(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     datetime = Column(DateTime, default=datetime.now)
     disease = Column(String(50), nullable=False)
-    description = Column(String(100))
 
     doctor_id = Column(Integer, ForeignKey(Doctor.id), nullable=False)
     patient_id = Column(Integer, ForeignKey(Patient.id), nullable=False)
@@ -154,7 +140,7 @@ class Medicine(db.Model):
     price = Column(Integer, nullable=False)
     usage = Column(String(100))
 
-    prescription = relationship('Prescription', backref='medicine', lazy=True)
+    prescription_medicines = relationship('PrescriptionMedicine', backref='medicine', lazy=True)
 
     def __str__(self):
         return self.name
@@ -162,19 +148,23 @@ class Medicine(db.Model):
 
 class Prescription(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    quantity = Column(Integer, default=0)
-    guide = Column(String(100))
+    exam_date = Column(Date, default=datetime.now)
 
-    medicine_id = Column(Integer, ForeignKey(Medicine.id), nullable=False)
+
     examinationForm_id = Column(Integer, ForeignKey(ExaminationForm.id), nullable=False)
     receipt_details = relationship('ReceiptDetails', backref='prescription', lazy=True)
+    prescription_medicines = relationship('PrescriptionMedicine', backref='prescription', lazy=True)
 
     def __str__(self):
         return Medicine.query.get(self.medicine_id).name
 
-    __mapper_args__ = {
-        'polymorphic_identity': 'cashier'
-    }
+
+class PrescriptionMedicine(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    prescription_id = Column(Integer, ForeignKey(Prescription.id), nullable=False)
+    medicine_id = Column(Integer, ForeignKey(Medicine.id), nullable=False)
+    quantity = Column(Integer, default=0)
+    guide = Column(String(100))
 
 
 class Receipt(db.Model):
@@ -213,7 +203,6 @@ class Regulations(db.Model):
     def __repr__(self):
         return f"<YourModel(booked_date='{self.booked_date.strftime('%Y-%m-%d')}')>"
 
-
 if __name__ == "__main__":
     with app.app_context():
         import hashlib
@@ -234,7 +223,7 @@ if __name__ == "__main__":
 
         p1 = Patient(name='Patient1', username="patient1",
                      password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
-                     address='GV, HCM', day_of_birth="2003", gender='Nam', phone="0123456789",)
+                     address='GV, HCM', day_of_birth="2003", gender='Nam', phone="0123456789", )
 
         p2 = Patient(name='Patient2', username="patient2",
                      password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
@@ -277,14 +266,14 @@ if __name__ == "__main__":
         db.session.add(r)
         db.session.add(r2)
 
-        e = ExaminationForm(disease='qwoiqep', description='qweqdxcmz', doctor_id=2, patient_id=5)
-        e1 = ExaminationForm(disease='pcoasqwicx', description='xzcmlaskdq', doctor_id=2, patient_id=6)
+        e = ExaminationForm(disease='qwoiqep', doctor_id=2, patient_id=5)
+        e1 = ExaminationForm(disease='pcoasqwicx', doctor_id=2, patient_id=6)
 
         db.session.add(e)
         db.session.add(e1)
 
-        p = Prescription(quantity=20, guide='aqowie', medicine_id=2, examinationForm_id=1)
-        p2 = Prescription(quantity=10, guide='czxcaqeqwe', medicine_id=3, examinationForm_id=2)
+        p = Prescription(examinationForm_id=1)
+        p2 = Prescription(examinationForm_id=2)
 
         db.session.add(p)
         db.session.add(p2)
@@ -301,14 +290,10 @@ if __name__ == "__main__":
         db.session.add(ru)
         db.session.add(ru2)
 
-        h = MedicalHistory(patient_id=5, disease='dqwidasdpad')
-        h2 = MedicalHistory(patient_id=6, disease='qwdoasdqw')
-
-        db.session.add(h)
-        db.session.add(h2)
-
         r2 = Receipt(examines_price='90000', total_price='110000', cashier_id=4, patient_id=6)
         db.session.add(r2)
 
         db.create_all()
         db.session.commit()
+
+

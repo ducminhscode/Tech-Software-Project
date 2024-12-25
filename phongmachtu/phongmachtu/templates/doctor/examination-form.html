@@ -1,81 +1,221 @@
-{%extends 'layout/base.html'%}
+{% extends 'layout/base.html' %}
 
 {% block title %}Phiếu khám bệnh{% endblock %}
 
-{%block content%}
-<form>
-    <h2 class="bg-primary" style="text-align:center">Tìm kiếm thông tin bệnh nhân:</h2>
-    <form class="d-flex" action="/{{patient.id}}">
-        <input type="text" class="form-control me-2" name="phone" placeholder="Nhập Số điện thoại Bệnh Nhân">
-        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-    </form>
-    {%if patient%}
-    <div class="container my-5">
-        <h3 class="text-center mb-4">Phiếu khám bệnh</h3>
-
-        <div class="table-responsive table-sm mb-3">
-            <table class="table table-bordered">
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Quản lý khám bệnh</h1>
+    <div class="row">
+        <!-- Bên trái: Danh sách bệnh nhân -->
+        <div class="col-md-6">
+            <h3 class="text-center mb-4">Danh sách bệnh nhân đăng ký</h3>
+            <div class="alert alert-danger d-none" id="message-container"></div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Mã bệnh nhân</th>
+                    <th>Họ và tên</th>
+                    <th>Ngày khám</th>
+                    <th>Triệu chứng</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
                 <tbody>
-                <tr>
-                    <th>Họ và tên:</th>
+                {% for r in reg %}
+                <tr name="{{ r.id }}">
+                    <td>{{r.patient.id}}</td>
+                    <td>{{ r.patient.name }}</td>
+                    <td>{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ r.desc }}</td>
                     <td>
-                        <div class="form-control" id="name" name="name">{{patient}}</div>
+                        <button type="button" class="btn btn-success"
+                                onclick="toggleForm(this, '{{ r.patient.name }}','{{r.patient.id}}', '{{ r.booked_date.strftime('%Y-%m-%d') }}')">
+                            Xác nhận
+                        </button>
                     </td>
                 </tr>
-                <tr>
-                    <th>Ngày khám:</th>
-                    <td>
-                        <input type="text" class="form-control" id="datetime"
-                               placeholder="" name="datetime" required>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Triệu chứng:</th>
-                    <td><input type="text" class="form-control" id="description" placeholder="Triệu chứng"
-                               name="description"
-                               required></td>
-                </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <div class="form-floating mt-3 mb-3">
-            <input type="text" class="form-control" id="disease" placeholder="Nhập lại mật khẩu" name="disease"
-                   required>
-            <label for="disease">Dự đoán bệnh: </label>
-        </div>
 
-        <div class="table-responsive mb-3">
-            <table class="table table-bordered">
-                <thead>
-                <tr class="text-center">
-                    <th>STT</th>
-                    <th>Tên Thuốc</th>
-                    <th>Số Lượng</th>
-                    <th>Đơn Vị</th>
-                    <th>Cách Dùng</th>
-                </tr>
-                <tr>
-                   <td>1</td>
-                    <td><input type="text" class="form-control" id="disease" placeholder="Nhập tên thuốc" name="disease"
-                   required></td>
-                    <td><input type="text" class="form-control" id="disease" placeholder="Nhập số lượng" name="disease"
-                   required>
-                    </td><td><input type="text" class="form-control" id="disease" placeholder="Nhập đơn vị" name="disease"
-                   required></td>
-                    <td><input type="text" class="form-control" id="disease" placeholder="Nhập cách dùng" name="disease"
-                   required></td>
-                </tr>
-                </thead>
+        <div class="col-md-6" id="examForm" style="display: none;">
+            <form method="POST" enctype="multipart/form-data">
+                <h3 class="text-center mb-4">Phiếu khám bệnh</h3>
+                <div class="table-responsive table-sm mb-3">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th>Mã bệnh nhân</th>
+                            <td>
+                                <input type="hidden" id="patient_id" name="patient_id">
+                                <div class="form-control" id="patient_id_display"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Họ và tên:</th>
+                            <td>
+                                <div class="form-control" id="name" name="name"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Ngày khám:</th>
+                            <td>
+                                <input type="text" class="form-control" id="datetime" placeholder="Nhập ngày khám"
+                                       name="datetime" required>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            </table>
+                <div class="form-floating mt-3 mb-3">
+                    <input type="text" class="form-control" id="disease" placeholder="Kết quả chuẩn đoán" name="disease"
+                           required>
+                    <label for="disease">Kết quả chuẩn đoán</label>
+                </div>
+
+                <div class="table-responsive mb-3">
+                    <table class="table table-bordered" id="medicineTable">
+                        <thead>
+                        <tr class="text-center">
+                            <th>STT</th>
+                            <th>Tên Thuốc</th>
+                            <th>Số Lượng</th>
+                            <th>Đơn Vị</th>
+                            <th>Cách Dùng</th>
+                            <th>Hành Động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                            data-bs-target="#medicineModal">Thêm thuốc
+                    </button>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Lưu phiếu khám</button>
+                </div>
+            </form>
         </div>
     </div>
-    {%endif%}
-    <div class="text-center">
-        <button type="submit" class="btn btn-success">Lưu phiếu khám</button>
+</div>
+
+
+<div class="modal fade" id="medicineModal" tabindex="-1" aria-labelledby="medicineModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="medicineModalLabel">Tra cứu thuốc</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control mb-3" id="searchInput" placeholder="Tìm tên thuốc"
+                       onkeyup="filterMedicines()">
+
+                <table class="table table-striped" id="medicines">
+                    <thead>
+                    <tr>
+                        <th>Tên thuốc</th>
+                        <th>Đơn vị</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for medicine in medicines %}
+                    <tr>
+                        <td>{{ medicine.name }}</td>
+                        <td>{{ medicine.unit }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="selectMedicine('{{ medicine.name }}', '{{ medicine.unit }}')">Chọn
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
     </div>
+</div>
 
-</form>
 
-{%endblock%}
+<script>
+    function filterMedicines() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Lấy giá trị tìm kiếm
+        const table = document.getElementById('medicines');
+        const rows = table.getElementsByTagName('tr'); // Lấy tất cả các dòng trong bảng
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const cells = row.getElementsByTagName('td');
+            const medicineName = cells[0].textContent.toLowerCase(); // Lấy tên thuốc từ cột đầu tiên
+
+            if (medicineName.includes(searchInput)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    }
+
+    function toggleForm(button, name,id, date) {
+        const row = button.closest('tr');  // Lấy hàng chứa nút
+        const confirmButton = row.querySelector('button');  // Lấy nút "Xác nhận"
+        const form = document.getElementById('examForm');
+
+        if (confirmButton.textContent === "Xác nhận") {
+
+            form.style.display = 'block';
+            document.getElementById('name').textContent = name;
+            document.getElementById('datetime').value = date;
+            document.getElementById('patient_id_display').textContent = id;
+            document.getElementById('patient_id').value = id;  // Cập nhật giá trị vào input ẩn
+            confirmButton.textContent = "Hủy";
+
+            confirmButton.classList.remove('btn-success');
+            confirmButton.classList.add('btn-danger');
+        } else {
+            form.style.display = 'none';
+            confirmButton.textContent = "Xác nhận";
+
+            confirmButton.classList.remove('btn-danger');
+            confirmButton.classList.add('btn-success');
+        }
+    }
+
+
+    function selectMedicine(name, unit) {
+        const table = document.getElementById('medicineTable').getElementsByTagName('tbody')[0];
+        const rowCount = table.rows.length;
+        const row = table.insertRow();
+
+        row.innerHTML = `
+            <td>${rowCount + 1}</td>
+            <td><input type="text" class="form-control" value="${name}" name="medicineName" required></td>
+            <td><input type="text" class="form-control" placeholder="Nhập số lượng" name="quantity" required></td>
+            <td><input type="text" class="form-control" value="${unit}" name="unit" required></td>
+            <td><input type="text" class="form-control" placeholder="Nhập cách dùng" name="usage" required></td>
+            <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">Xóa</button></td>
+        `;
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('medicineModal'));
+        modal.hide();
+    }
+
+    function deleteRow(button) {
+        const row = button.parentElement.parentElement;
+        const table = row.parentElement;
+        table.removeChild(row);
+
+        Array.from(table.rows).forEach((row, index) => {
+            row.cells[0].textContent = index + 1;
+        });
+    }
+</script>
+{% endblock %}

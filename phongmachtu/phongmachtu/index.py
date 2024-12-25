@@ -117,10 +117,8 @@ def receipt_list():
     kw = request.form.get('patientPhone')
     patient = dao.check_phone(kw)
     if patient:
-        # msg = "Số điện thoại có tồn tại."
         receipts = dao.load_receipt(patient.id)
     else:
-        # msg = "Số điện thoại có tồn tại."
         receipts = []
 
     return render_template('cashier/receipt-list.html', receipts=receipts, err_msg=msg)
@@ -133,30 +131,29 @@ def cashing():
 
 # =================================DOCTOR============================================
 @app.route('/doctor/examination-form', methods=['get', 'post'])
-@login_required  # Chỉ cho phép người dùng đã đăng nhập truy cập
+@login_required
 def examination_form():
-    kw = request.args.get('phone')
-    patient = dao.check_phone(kw)
-    if patient:
-        patient_name = patient.name
-        if request.method == 'POST':
-            disease = request.form.get('disease')
-            description = request.form.get('description')
-            doctor_id = current_user.id
-            patient_id = patient.id
+    today_date = datetime.today().date()
 
-            # Thêm phiếu khám bệnh vào cơ sở dữ liệu
-            dao.add_examination_form(disease=disease, description=description, doctor_id=doctor_id, patient_id=patient_id)
-            return redirect('/doctor/patient-list')
-    else:
-        patient_name = None
+    registrations = dao.load_registration_form_by_day(today_date)
+    medicines = dao.load_medicine()
 
-    return render_template('doctor/examination-form.html', patient=patient_name)
+    if request.method == 'POST':
+        patient_id = request.form.get('patient_id')
+        doctor_id = current_user.id
+        disease = request.form.get('disease')
+
+        medicine_names = request.form.getlist('medicineName')
+        quantities = request.form.getlist('quantity')
+        units = request.form.getlist('unit')
+        usages = request.form.getlist('usage')
+
+        dao.add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units, usages)
+        dao.change_isKham(patient_id)
 
 
-@app.route('/doctor/patient-list')
-def patient_list_doctor():
-    return render_template('nurse/patient-list.html', patients=list_patient)
+    return render_template('doctor/examination-form.html', reg = registrations, medicines = medicines)
+
 
 
 # =================================NURSE============================================
