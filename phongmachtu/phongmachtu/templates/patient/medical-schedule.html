@@ -1,0 +1,37 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Lịch sử khám bệnh{% endblock %}
+
+{% block content %}
+
+<div class="calendar-container">
+    <h2 class="text-center mb-4">Lịch Khám Bệnh</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ngày</th>
+                <th>Khung giờ</th>
+                <th>Xác nhận</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appoint %}
+            <tr>
+                <td>{{ appointment.booked_date.strftime('%d/%m/%Y') }}</td>
+                <td>{{ appointment.time.period }}</td>
+                <td>
+                    {% if appointment.lenLichKham %}
+                    <span class="badge bg-success">Đã xác nhận</span>
+                    {% else %}
+                    <span class="badge bg-warning">Chưa xác nhận</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

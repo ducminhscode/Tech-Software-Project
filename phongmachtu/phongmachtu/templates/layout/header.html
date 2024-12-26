@@ -18,11 +18,9 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Trang chủ </a></li>
                     {%if current_user.type=="patient"%}
+                        <li class="nav-item"><a class="nav-link" href="/patient/medical-schedule"><i class='fas fa-file-export'></i> Xem lịch khám bệnh</a></li>
                         <li class="nav-item"><a class="nav-link" href="/patient/booking"><i class='fas fa-file-import'></i> Đặt lịch khám</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/"><i class='fas fa-file-export'></i> Kết quả đặt lịch khám</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/"><i class='fas fa-search'></i> Xem kết quả khám</a></li>
                         <li class="nav-item"><a class="nav-link" href="/patient/history"><i class='fas fa-history'></i> Lịch sử khám bệnh</a></li>
-
                     {%elif current_user.type=="cashier"%}
                         <li class="nav-item"><a class="nav-link" href="/cashier/check-receipt"><i class='fas fa-cash-register'></i> Thanh toán <i class='fas fa-dollar-sign'></i></a></li>
                         <li class="nav-item"><a class="nav-link" href="/cashier/receipt-list"><i class='fas fa-search'></i> Tra cứu hóa đơn</a></li>

@@ -125,8 +125,33 @@ def booking():
 
 
 @app.route('/patient/history')
-def patient_history_examination():
-    return render_template('patient/history.html')
+def history_patient():
+    appoint = dao.get_appointment(current_user.id)
+
+    return render_template('patient/history.html', appoint = appoint)
+
+
+@app.route('/patient/history_details/<int:appointment_id>', methods=['GET'])
+def history_details(appointment_id):
+
+    result = dao.get_examination_form(appointment_id)
+    prescription_data = dao.get_prescription(appointment_id)
+
+    if result:
+        return render_template(
+            'patient/history_details.html',
+            result=result,
+            prescription_data=prescription_data
+        )
+    else:
+        return redirect(url_for('history_patient'))
+
+
+@app.route('/patient/medical-schedule')
+def medical_schedule():
+    appoint = dao.get_appointment(current_user.id)
+    return render_template('patient/medical-schedule.html', appoint = appoint)
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -227,6 +252,8 @@ def examination_form():
     if request.method == 'POST':
         patient_id = request.form.get('patient_id')
         doctor_id = current_user.id
+        examination_id = request.form.get('examination_id')
+
         disease = request.form.get('disease')
 
         medicine_names = request.form.getlist('medicineName')
@@ -234,7 +261,7 @@ def examination_form():
         units = request.form.getlist('unit')
         usages = request.form.getlist('usage')
 
-        prescription_id = dao.add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units,
+        prescription_id = dao.add_examination_form(examination_id, doctor_id, patient_id, disease, medicine_names, quantities, units,
                                                    usages)
         dao.change_isKham(patient_id)
         dao.set_receipt(prescription_id, patient_id, medicine_names, quantities)

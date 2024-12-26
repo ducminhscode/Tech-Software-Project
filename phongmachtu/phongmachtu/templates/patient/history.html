@@ -4,13 +4,41 @@
 
 {% block content %}
 
-{% if current_user.is_authenticated %}
-  <div class="container">Lịch sử khám bệnh</div>
-{% else %}
-<div class="container">
-    <h3 class="text-center text-info"><a href="/login" class="text-decoration-none">
-        ĐĂNG NHẬP ĐỂ ĐƯỢC XEM LỊCH SỬ KHÁM</a></h3>
+<div class="calendar-container">
+    <h2 class="text-center mb-4">Lịch Khám Bệnh</h2>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Ngày</th>
+            <th>Khung giờ</th>
+            <th>Xác nhận</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appoint %}
+        <tr>
+            <td>{{ appointment.booked_date.strftime('%d/%m/%Y') }}</td>
+            <td>{{ appointment.time.period }}</td>
+            <td>
+                {% if appointment.isKham %}
+                <span class="badge bg-success">Đã khám</span>
+                {% else %}
+                <span class="badge bg-warning">Chưa khám</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if appointment.isKham %}
+                <a href="{{ url_for('history_details', appointment_id=appointment.id) }}" class="btn btn-info">
+                    Xem chi tiết
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
-{% endif %}
 
 {% endblock %}

@@ -141,10 +141,11 @@ def load_medicine():
     return medicines
 
 
-def add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units, usages):
+def add_examination_form(registration_id, doctor_id, patient_id, disease, medicine_names, quantities, units, usages):
     today_date = datetime.today().date()
 
     examination_form = ExaminationForm(
+        id = registration_id,
         datetime=today_date,
         disease=disease,
         doctor_id=doctor_id,
@@ -358,3 +359,29 @@ def get_information_examination(patient_id):
     return result
 
 
+def get_appointment(patient_id):
+    return RegistrationForm.query.filter_by(patient_id = patient_id).all()
+
+
+
+def get_examination_form(regis_id):
+    return ExaminationForm.query.filter_by(id = regis_id).first()
+
+
+def get_prescription(appointment_id):
+    prescription = Prescription.query.filter_by(examinationForm_id=appointment_id).first()
+    if prescription:
+        prescription_details = PrescriptionMedicine.query.filter_by(prescription_id=prescription.id).all()
+        return {
+            "prescription": prescription,
+            "medicines": [
+                {
+                    "name": Medicine.query.get(detail.medicine_id).name,
+                    "quantity": detail.quantity,
+                    "unit": Medicine.query.get(detail.medicine_id).unit,
+                    "guide": detail.guide
+                }
+                for detail in prescription_details
+            ]
+        }
+    return None

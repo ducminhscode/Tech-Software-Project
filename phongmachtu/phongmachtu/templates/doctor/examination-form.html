@@ -13,6 +13,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th>Mã phiếu khám</th>
                     <th>Mã bệnh nhân</th>
                     <th>Họ và tên</th>
                     <th>Ngày khám</th>
@@ -23,13 +24,14 @@
                 <tbody>
                 {% for r in reg %}
                 <tr name="{{ r.id }}">
+                    <td>{{r.id}}</td>
                     <td>{{r.patient.id}}</td>
                     <td>{{ r.patient.name }}</td>
                     <td>{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ r.desc }}</td>
                     <td>
                         <button type="button" class="btn btn-success"
-                                onclick="toggleForm(this, '{{ r.patient.name }}','{{r.patient.id}}', '{{ r.booked_date.strftime('%Y-%m-%d') }}')">
+                                onclick="toggleForm(this,'{{r.id}}', '{{ r.patient.name }}','{{r.patient.id}}', '{{ r.booked_date.strftime('%Y-%m-%d') }}')">
                             Xác nhận
                         </button>
                     </td>
@@ -46,6 +48,13 @@
                 <div class="table-responsive table-sm mb-3">
                     <table class="table table-bordered">
                         <tbody>
+                        <tr>
+                            <th>Mã phiếu khám</th>
+                            <td>
+                                <input type="hidden" id="examination_id" name="examination_id">
+                                <div class="form-control" id="examination_id_display"></div>
+                            </td>
+                        </tr>
                         <tr>
                             <th>Mã bệnh nhân</th>
                             <td>
@@ -164,7 +173,7 @@
         }
     }
 
-    function toggleForm(button, name,id, date) {
+    function toggleForm(button,exam_id, name , id, date) {
         const row = button.closest('tr');  // Lấy hàng chứa nút
         const confirmButton = row.querySelector('button');  // Lấy nút "Xác nhận"
         const form = document.getElementById('examForm');
@@ -175,7 +184,9 @@
             document.getElementById('name').textContent = name;
             document.getElementById('datetime').value = date;
             document.getElementById('patient_id_display').textContent = id;
-            document.getElementById('patient_id').value = id;  // Cập nhật giá trị vào input ẩn
+            document.getElementById('examination_id_display').textContent = exam_id;
+            document.getElementById('patient_id').value = id;
+            document.getElementById('examination_id').value = exam_id;
             confirmButton.textContent = "Hủy";
 
             confirmButton.classList.remove('btn-success');
