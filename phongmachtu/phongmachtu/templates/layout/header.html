@@ -18,26 +18,26 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Trang chủ </a></li>
                     {%if current_user.type=="patient"%}
-                        <li class="nav-item"><a class="nav-link" href="/patient/booking">Đặt lịch khám</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/">Kết quả đặt lịch khám</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/">Xem kết quả khám</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/patient/history">Lịch sử khám bệnh</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/patient/booking"><i class='fas fa-file-import'></i> Đặt lịch khám</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/"><i class='fas fa-file-export'></i> Kết quả đặt lịch khám</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/"><i class='fas fa-search'></i> Xem kết quả khám</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/patient/history"><i class='fas fa-history'></i> Lịch sử khám bệnh</a></li>
 
                     {%elif current_user.type=="cashier"%}
-                        <li class="nav-item"><a class="nav-link" href="/cashier/cash">Thanh toán</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/cashier/receipt-list">Tra cứu hóa đơn</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cashier/cash"><i class='fas fa-cash-register'></i> Thanh toán <i class='fas fa-dollar-sign'></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cashier/receipt-list"><i class='fas fa-search'></i> Tra cứu hóa đơn</a></li>
 
 
                     {%elif current_user.type=="doctor"%}
-                        <li class="nav-item"><a class="nav-link" href="/doctor/history-examination">Tra cứu lịch sử khám</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/doctor/examination-form">Phiếu khám bệnh</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/doctor/history-examination"><i class='fas fa-search'></i> Tra cứu lịch sử khám</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/doctor/examination-form"><i class='fas fa-file-alt'></i> Phiếu khám bệnh</a></li>
 
 
                     {%elif current_user.type=="nurse"%}
-                        <li class="nav-item"><a class="nav-link" href="/nurse/patient-list">Danh sách bệnh nhân</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/nurse/patient-list"><i class='fas fa-paste'></i> Danh sách bệnh nhân</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">Phiếu khám bệnh</a>
+                               data-bs-toggle="dropdown" aria-expanded="false"><i class='fas fa-edit'></i> Phiếu khám bệnh </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="/nurse/check-phone">Lập phiếu khám bệnh</a></li>
                                 <li><a class="dropdown-item" href="/nurse/confirm-registration">Xác nhận đăng kí khám</a></li>
@@ -60,20 +60,20 @@
                 <div class="d-flex align-items-center">
                     <a href="/logout">
                         <button data-mdb-ripple-init type="button" class="btn btn-primary me-3" style="text-decoration: none; background-color: red; border-color: red;">
-                            <i class="fa fa-power-off"></i> Đăng xuất
+                            <i class='fas fa-sign-out-alt'></i> Đăng xuất
                         </button>
                     </a>
                 </div>
             {%else %}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Trang chủ </a></li>
-                    <li class="nav-item"><a class="nav-link" href="/introduce">Giới thiệu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/service">Dịch vụ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/introduce"><i class='fas fa-hand-holding-medical'></i> Giới thiệu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/service"><i class='fas fa-medkit'></i> Dịch vụ</a></li>
                 </ul>
 
                 <div class="d-flex align-items-center">
                     <a href="/login" class="btn btn-link px-3 me-2 text-white" style="text-decoration: none;">
-                        Đăng nhập
+                         <i class='fas fa-sign-in-alt'></i> Đăng nhập
                     </a>
                     <a href="/register">
                         <button data-mdb-ripple-init type="button" class="btn btn-primary me-3"
