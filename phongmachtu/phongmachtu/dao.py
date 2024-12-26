@@ -131,11 +131,6 @@ def check_phone(phone_number):
 
 def load_examination_form(patient_id):
     return ExaminationForm.query.filter_by(patient_id=patient_id).all()
-        # query = (db.session.query(ExaminationForm.datetime, ExaminationForm.description)
-        #          .join(Patient, Patient.id == ExaminationForm.patient_id)
-        #          .filter(Patient.id.contains(patient_id)))
-
-
 
 # =================================Doctor============================================
 def load_doctor():
