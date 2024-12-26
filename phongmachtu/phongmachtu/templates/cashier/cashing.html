@@ -1,0 +1,80 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Thanh toán{% endblock %}
+
+{% block content %}
+<div id="invoiceDetails" class="container mt-5">
+    <!-- Tựa đề hóa đơn -->
+    <h2 class="mb-4 text-center">Chi Tiết Hóa Đơn Thanh Toán</h2>
+
+    {% if error_message %}
+    <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
+
+    {% if success_message %}
+    <div class="alert alert-success">{{ success_message }}</div>
+    {% endif %}
+
+    {% if receipt %}
+    <!-- Trạng thái thanh toán -->
+    <div class="mb-4">
+        <p class="text-center">
+            <strong>Trạng Thái Thanh Toán:</strong>
+            {% if receipt.isPaid %}
+            <span class="text-success">Đã thanh toán</span>
+            {% else %}
+            <span class="text-danger">Chưa thanh toán</span>
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- Form cho chi tiết hóa đơn -->
+    <form method="POST" action="{{ url_for('cashing', patient_id=receipt.patient.id) }}">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Tên Thuốc</th>
+                <th>Số Lượng</th>
+                <th>Đơn Vị</th>
+                <th>Giá Thuốc</th>
+                <th>Thành Tiền Thuốc</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for receipt_detail in receipt.receipt_details %}
+            <tr>
+                <td>{{ receipt_detail.prescription.prescription_medicines[0].medicine.name }}</td>
+                <td>{{ receipt_detail.prescription.prescription_medicines[0].quantity }}</td>
+                <td>{{ receipt_detail.prescription.prescription_medicines[0].medicine.unit }}</td>
+                <td>{{ receipt_detail.prescription.prescription_medicines[0].medicine.price }} VND</td>
+                <td>
+                    {{ (receipt_detail.prescription.prescription_medicines[0].quantity *
+                    receipt_detail.prescription.prescription_medicines[0].medicine.price) | float }} VND
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4" class="text-end"><strong>Thành Tiền Khám:</strong></td>
+                <td><strong>{{ receipt.examines_price }} VND</strong></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" class="text-end"><strong>Tổng Thành Tiền:</strong></td>
+                <td><strong>{{ receipt.total_price }} VND</strong></td>
+            </tr>
+            </tfoot>
+        </table>
+
+        {% if not receipt.isPaid %}
+        <div class="d-flex justify-content-end mt-4">
+            <button id="saveInvoice" class="btn btn-success me-2" type="submit" name="action" value="save">Lưu Hóa Đơn
+            </button>
+        </div>
+        {% endif %}
+    </form>
+    {% else %}
+    <p>Không có hóa đơn để hiển thị.</p>
+    {% endif %}
+</div>
+{% endblock %}

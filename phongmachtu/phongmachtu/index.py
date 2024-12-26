@@ -1,6 +1,5 @@
 import datetime
 
-
 from flask import render_template, request, redirect, session, url_for
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
@@ -73,7 +72,7 @@ def login_my_user():
 
 @app.route('/info', methods=['get', 'post'])
 def update():
-    success_msg=None
+    success_msg = None
     if request.method.__eq__('POST'):
         dao.update_info(day_of_birth=request.form.get('day_of_birth'),
                         phone=request.form.get('phone'),
@@ -87,9 +86,8 @@ def update():
 
 @app.route('/change-password', methods=['get', 'post'])
 def change_password():
-
     err_msg = None
-    success_msg=None
+    success_msg = None
     if request.method.__eq__('POST'):
         hashed_old_password = request.form.get('old_password')
         old_password = str(hashlib.md5(hashed_old_password.encode('utf-8')).hexdigest())
@@ -97,12 +95,13 @@ def change_password():
         confirm_password = request.form.get('confirm_password')
 
         if (current_user.password != old_password) or new_password != confirm_password:
-            err_msg="Thay đổi mật khẩu thất bại"
+            err_msg = "Thay đổi mật khẩu thất bại"
         else:
             update_password(current_user.id, new_password)
             success_msg = "Thay đổi mật khẩu thành công"
 
     return render_template('change-password.html', success_msg=success_msg, err_msg=err_msg)
+
 
 # =================================PATIENT============================================
 @app.route('/patient/booking', methods=['GET', 'POST'])
@@ -153,7 +152,8 @@ def register():
                 my_folder = "PhongMachTu"
                 response = cloudinary.uploader.upload(avatar, folder=my_folder)
                 avatar_path = response['secure_url']
-            dao.add_patient(name=name, username=username, password=password, avatar=avatar_path, address=address, day_of_birth=day_of_birth,
+            dao.add_patient(name=name, username=username, password=password, avatar=avatar_path, address=address,
+                            day_of_birth=day_of_birth,
                             gender=gender, phone=phone)
             return redirect('/login')
     return render_template('register.html', err_msg=err_msg)
@@ -162,28 +162,58 @@ def register():
 # =================================CASHIER============================================
 @app.route('/cashier/receipt-list', methods=['GET', 'POST'])
 def receipt_list():
-    msg =None
-    kw = request.form.get('patientPhone')
-    patient = dao.check_phone(kw)
-    if patient:
-        receipts = dao.load_receipt(patient.id)
-    else:
-        receipts = []
+    msg = None
+    receipts = []
+
+    if request.method == 'POST':
+        kw = request.form.get('patientPhone')
+        if kw:
+            patient = dao.check_phone(kw)
+            if patient:
+                receipts = dao.show_receipt(patient.id)
+            else:
+                msg = "Không tìm thấy bệnh nhân với số điện thoại này."
+        else:
+            msg = "Vui lòng nhập số điện thoại."
 
     return render_template('cashier/receipt-list.html', receipts=receipts, err_msg=msg)
 
 
-@app.route('/cashier/cash', methods=['GET', 'POST'])
-def cashing():
-    patient_code = None
+@app.route('/cashier/check-receipt', methods=['GET', 'POST'])
+def check_receipt():
+    patient_id = None
     receipt = None
+    err_msg = None
     if request.method == 'POST':
-        patient_code = request.form.get('invoiceCode')
-        receipt = dao.get_receipt_by_id_and_time(patient_code)
-        if receipt:
-            return render_template('cashier/cash.html', receipt = receipt)
+        patient_id = request.form.get('invoiceCode')
 
-    return render_template('cashier/cash.html', receipt = receipt)
+        if not patient_id:
+            err_msg = "Vui lòng nhập bệnh nhân."
+            return render_template('cashier/check-receipt.html', err_msg=err_msg)
+
+        receipt = dao.check_receipt(patient_id)
+        if receipt:
+            return redirect(url_for('cashing', receipt_id = receipt.id))
+        else:
+            err_msg = "Không tìm thấy hóa đơn cần thanh toán"
+
+    return render_template('cashier/check-receipt.html', err_msg=err_msg)
+
+
+@app.route('/cashier/cashing', methods=['GET', 'POST'])
+def cashing():
+    receipt_id = request.args.get('receipt_id')
+    receipt = dao.show_receipt_by_receipt_id(receipt_id)
+
+    if receipt is None:
+        return render_template('cashier/cashing.html', error_message="Không tìm thấy hóa đơn cho bệnh nhân này.")
+
+    if request.method == 'POST':
+        dao.update_receipt(receipt.id, current_user.id)
+        return render_template('cashier/cashing.html', receipt=receipt, success_message="Hóa đơn đã được thanh toán!")
+
+    return render_template('cashier/cashing.html', receipt=receipt)
+
 
 # =================================DOCTOR============================================
 @app.route('/doctor/examination-form', methods=['get', 'post'])
@@ -204,11 +234,13 @@ def examination_form():
         units = request.form.getlist('unit')
         usages = request.form.getlist('usage')
 
-        prescription_id = dao.add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units, usages)
+        prescription_id = dao.add_examination_form(doctor_id, patient_id, disease, medicine_names, quantities, units,
+                                                   usages)
         dao.change_isKham(patient_id)
-        dao.set_receipt(prescription_id, patient_id,medicine_names, quantities)
+        dao.set_receipt(prescription_id, patient_id, medicine_names, quantities)
+        return render_template('doctor/examination-form.html', reg=registrations, medicines=medicines)
 
-    return render_template('doctor/examination-form.html', reg = registrations, medicines = medicines)
+    return render_template('doctor/examination-form.html', reg=registrations, medicines=medicines)
 
 
 @app.route('/doctor/history-examination', methods=['get', 'post'])
@@ -220,7 +252,7 @@ def history_examination():
         if patient_id:
             patient_history = dao.get_information_examination(patient_id)
 
-    return render_template('/doctor/history-examination.html', patient_history = patient_history)
+    return render_template('/doctor/history-examination.html', patient_history=patient_history)
 
 
 # =================================NURSE============================================
@@ -236,7 +268,7 @@ def check_phone():
             return redirect(url_for('patient_booking', patient_id=patient.id, patient_name=patient.name, msg=msg))
         else:
             msg = "Số điện thoại không tồn tại, đăng kí bệnh nhân mới."
-            return redirect(url_for('regis_patient', msg = msg))
+            return redirect(url_for('regis_patient', msg=msg))
 
     return render_template('/nurse/check-phone.html')
 
@@ -263,7 +295,8 @@ def patient_booking():
             return redirect('/nurse/patient-list')
 
     time = dao.get_all_period()
-    return render_template('/nurse/patient-booking.html', msg=msg, time=time, err_msg=err_msg,patient_name=patient_name)
+    return render_template('/nurse/patient-booking.html', msg=msg, time=time, err_msg=err_msg,
+                           patient_name=patient_name)
 
 
 @app.route('/nurse/regis-patient', methods=['GET', 'POST'])
@@ -276,10 +309,11 @@ def regis_patient():
         day_of_birth = request.form.get('day_of_birth')
         gender = request.form.get('gender')
         phone = request.form.get('phone')
-        patient = dao.add_patient_by_nurse(name=name, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+        patient = dao.add_patient_by_nurse(name=name, address=address, day_of_birth=day_of_birth, gender=gender,
+                                           phone=phone)
         return redirect(url_for('patient_booking', patient_id=patient.id, patient_name=patient.name))
 
-    return render_template('/nurse/regis-patient.html', msg = msg)
+    return render_template('/nurse/regis-patient.html', msg=msg)
 
 
 @app.route('/nurse/confirm-registration', methods=['GET', 'POST'])
@@ -291,7 +325,7 @@ def confirm_registration():
         if dao.confirm_registration(reg_id):
             return redirect('/nurse/patient-list')
 
-    return render_template('/nurse/confirm-registration.html', reg = registrations)
+    return render_template('/nurse/confirm-registration.html', reg=registrations)
 
 
 @app.route('/nurse/patient-list', methods=['GET', 'POST'])

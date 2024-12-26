@@ -9,7 +9,6 @@ from phongmachtu import db
 from sqlalchemy import extract, func, nullsfirst
 import cloudinary.uploader
 
-
 def add_patient(name, username, password, avatar, address, day_of_birth, gender, phone):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
     u = Patient(name=name, username=username, password=password, avatar=avatar, address=address, day_of_birth=day_of_birth,
@@ -265,11 +264,37 @@ def set_receipt(prescription_id, patient_id, medicine_names, quantities):
         print(f"Error: {e}")
         return None
 
-def get_receipt_by_id_and_time(patient_code):
-    return Receipt.query.filter_by(patient_id = patient_code, isPaid = False).first()
 
 def load_receipt(kw):
     return Receipt.query.filter_by(patient_id=kw).all()
+
+
+def check_receipt(patient_id):
+    return Receipt.query.filter_by(patient_id = patient_id,isPaid= False).first()
+
+
+def show_receipt_by_receipt_id(receipt_id):
+    return Receipt.query.filter_by(id = receipt_id).first()
+
+
+def show_receipt(patient_id):
+    return Receipt.query.filter_by(patient_id=patient_id).all()
+
+
+def get_receipt_by_patient_id(patient_id):
+    receipt = Receipt.query.filter_by(patient_id=patient_id, isPaid=False).first()
+    if receipt:
+        return receipt.id
+    return None
+
+
+def update_receipt(receipt_id, cashier_id):
+    receipt_to_update = Receipt.query.filter_by(id=receipt_id).first()
+    if receipt_to_update:
+        receipt_to_update.isPaid = True
+        receipt_to_update.cashier_id = cashier_id
+        db.session.commit()
+    return receipt_to_update
 
 
 # ================================= BOOKS ============================================

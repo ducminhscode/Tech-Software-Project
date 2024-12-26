@@ -3,31 +3,27 @@
 {% block title %}Tra cứu hóa đơn{% endblock %}
 
 {%block content%}
+{%if err_msg%}
+<div class="alert alert-danger">{{err_msg}}</div>
+{%endif%}
+
 <form method="POST" id="phone-check-form">
-    {%if err_msg%}
-    <div class="alert alert-danger">{{err_msg}}</div>
-    {%endif%}
     <div class="container my-5">
         <h3 class="text-center mb-4">Tra cứu hóa đơn</h3>
 
-        <!-- Form Tìm kiếm -->
         <div class="mb-4">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <label for="patientPhone" class="form-label">Số điện thoại của Bệnh Nhân</label>
-                    <input type="text" class="form-control" id="patientPhone" name="patientPhone" placeholder="Nhập SDT Bệnh Nhân">
+                    <input type="text" class="form-control" id="patientPhone" name="patientPhone"
+                           placeholder="Nhập SDT Bệnh Nhân">
                 </div>
 
-                <div class="col-md-4">
-                    <label for="invoiceCode" class="form-label">Mã hóa đơn</label>
-                    <input type="text" class="form-control" id="invoiceCode" placeholder="Nhập mã hóa đơn">
-                </div>
                 <div class="col-md-4 d-flex align-items-end">
-                    <button class="btn btn-primary w-100" id="searchBtn">Tìm kiếm</button>
+                    <button type="submit" class="btn btn-primary w-100" id="searchBtn">Tìm kiếm</button>
                 </div>
             </div>
         </div>
-
 
         <div class="table-responsive" id="invoiceTable">
             <h4 class="mb-3">Bảng thống kê Hóa đơn</h4>
@@ -37,42 +33,29 @@
                     <th scope="col">Mã Hóa đơn</th>
                     <th scope="col">Tên Bệnh nhân</th>
                     <th scope="col">Ngày Khám</th>
-                    <th scope="col">Tổng Tiền</th>
                     <th scope="col">Trạng Thái Thanh Toán</th>
+                    <th scope="col">Hành Động</th> <!-- Cột mới -->
                 </tr>
                 </thead>
                 <tbody>
-                {%for ce in receipts%}
+                {% for ce in receipts %}
                 <tr>
-                    <td>{{ce.id}}</td>
-                    <td>{{ce.patient.name}}</td>
-                    <td>{{ce.created_date}}</td>
-                    <td>{{ce.total_price}}</td>
-                    <td>{{ce.isPaid}}</td>
+                    <td>{{ ce.id }}</td>
+                    <td>{{ ce.patient.name }}</td>
+                    <td>{{ ce.created_date }}</td>
+                    <td>
+                        {% if ce.isPaid %}
+                        <span class="text-success">Đã thanh toán</span>
+                        {% else %}
+                        <span class="text-danger">Chưa thanh toán</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('cashing', receipt_id=ce.id) }}" class="btn btn-info">Xem Chi Tiết</a>
+                    </td>
                 </tr>
-                {%endfor%}
+                {% endfor %}
                 </tbody>
-            </table>
-        </div>
-
-        <!-- Bảng Toa thuốc (ẩn mặc định) -->
-        <div class="table-responsive" id="prescriptionTable" style="display:none;">
-            <h4 class="mb-3">Toa Thuốc</h4>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Tên Thuốc</th>
-                    <th scope="col">Số Lượng</th>
-                    <th scope="col">Tiền Thuốc</th>
-                </tr>
-                </thead>
-                <!--            <tbody>-->
-                <!--                &lt;!&ndash; Ví dụ dữ liệu &ndash;&gt;-->
-                <!--                <tr>-->
-                <!--                    <td>Paracetamol</td>-->
-                <!--                    <td>10 viên</td>-->
-                <!--                    <td>50.000 VND</td>-->
-                <!--                </tr>-->
             </table>
         </div>
     </div>

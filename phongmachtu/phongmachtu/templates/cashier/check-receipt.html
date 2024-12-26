@@ -1,0 +1,22 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Thanh toán{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Hóa Đơn Thanh Toán</h2>
+    {%if err_msg%}
+    <div class="alert alert-danger">{{err_msg}}</div>
+    {%endif%}
+    <form method="POST">
+        <div class="mb-4">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="invoiceCode" name="invoiceCode" placeholder="Mã hóa đơn">
+                <label for="invoiceCode">Nhập mã bệnh nhân</label>
+            </div>
+            <button class="btn btn-primary mt-2" type="submit">Tìm Kiếm</button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
