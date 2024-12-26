@@ -125,15 +125,9 @@ def booking():
     return render_template('patient/booking.html', time=time, err_msg=err_msg)
 
 
-@app.route('/patient/history', methods=['GET', 'POST'])
+@app.route('/patient/history')
 def patient_history_examination():
-    patient_id=current_user.id
-    if patient_id:
-        history = dao.load_examination_form(patient_id)
-    else:
-        history = []
-
-    return render_template('patient/history.html', history=history)
+    return render_template('patient/history.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -216,6 +210,7 @@ def examination_form():
 
     return render_template('doctor/examination-form.html', reg = registrations, medicines = medicines)
 
+
 @app.route('/doctor/history-examination', methods=['get', 'post'])
 def history_examination():
     patient_history = None
@@ -226,8 +221,6 @@ def history_examination():
             patient_history = dao.get_information_examination(patient_id)
 
     return render_template('/doctor/history-examination.html', patient_history = patient_history)
-
-
 
 
 # =================================NURSE============================================

@@ -5,43 +5,7 @@
 {% block content %}
 
 {% if current_user.is_authenticated %}
-<section>
-    <div class="container my-5">
-        <h1 class="mb-4 text-center">Lịch sử khám bệnh</h1>
-        <!--        {% if err_msg %}-->
-        <!--        <div class="alert alert-danger">{{ err_msg }}</div>-->
-        <!--        {% endif %}-->
-        <form method="POST" enctype="multipart/form-data">
-            <table class="table table-striped mt-3">
-                <thead>
-                <tr>
-                    <th scope="col">Họ và tên</th>
-                    <th scope="col">Giờ đặt lịch</th>
-                    <th scope="col">Ngày đặt</th>
-                    <th scope="col">Mô tả bệnh</th>
-                    <th scope="col">Thao tác</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for h in history %}
-                <tr name={{h.patient_id}}>
-                    <td> {{h.patient.name</td>
-                    <td>{{ h.datetime.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ r.disease}}</td>
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="history_id" value="{{ h.patient_id }}">
-                            <button type="submit" class="book-btn btn btn-success">Xác nhận</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </form>
-    </div>
-</section>
+  <div class="container">Lịch sử khám bệnh</div>
 {% else %}
 <div class="container">
     <h3 class="text-center text-info"><a href="/login" class="text-decoration-none">
