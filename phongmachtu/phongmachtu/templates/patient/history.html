@@ -13,7 +13,8 @@
             <th>Ngày</th>
             <th>Khung giờ</th>
             <th>Xác nhận</th>
-            <th>Thao tác</th>
+            <th>Xem kết quả khám</th>
+            <th>Xem hóa đơn</th>
         </tr>
         </thead>
         <tbody>
@@ -30,8 +31,16 @@
             </td>
             <td>
                 {% if appointment.isKham %}
-                <a href="{{ url_for('history_details', appointment_id=appointment.id) }}" class="btn btn-info">
+                <a href="{{ url_for('history_prescription_details', appointment_id=appointment.id) }}"
+                   class="btn btn-info">
                     Xem chi tiết
+                </a>
+                {% endif %}
+            </td>
+            <td>
+                {% if appointment.isKham %}
+                <a href="{{ url_for('invoice_details', appointment_id=appointment.id) }}" class="btn btn-warning">
+                    Xem hóa đơn
                 </a>
                 {% endif %}
             </td>

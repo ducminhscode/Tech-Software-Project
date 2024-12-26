@@ -13,6 +13,7 @@
                 <th>Ngày</th>
                 <th>Khung giờ</th>
                 <th>Xác nhận</th>
+                <th>Trạng thái khám</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,13 @@
                     <span class="badge bg-success">Đã xác nhận</span>
                     {% else %}
                     <span class="badge bg-warning">Chưa xác nhận</span>
+                    {% endif %}
+                </td>
+                  <td>
+                    {% if appointment.isKham %}
+                    <span class="badge bg-success">Đã khám</span>
+                    {% else %}
+                    <span class="badge bg-warning">Chưa khám</span>
                     {% endif %}
                 </td>
             </tr>

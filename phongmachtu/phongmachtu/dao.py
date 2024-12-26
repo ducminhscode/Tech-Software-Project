@@ -9,9 +9,11 @@ from phongmachtu import db
 from sqlalchemy import extract, func, nullsfirst
 import cloudinary.uploader
 
+
 def add_patient(name, username, password, avatar, address, day_of_birth, gender, phone):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
-    u = Patient(name=name, username=username, password=password, avatar=avatar, address=address, day_of_birth=day_of_birth,
+    u = Patient(name=name, username=username, password=password, avatar=avatar, address=address,
+                day_of_birth=day_of_birth,
                 gender=gender, phone=phone)
     db.session.add(u)
     db.session.commit()
@@ -131,6 +133,7 @@ def check_phone(phone_number):
 def load_examination_form(patient_id):
     return ExaminationForm.query.filter_by(patient_id=patient_id).all()
 
+
 # =================================Doctor============================================
 def load_doctor():
     return Doctor.query.all()
@@ -145,7 +148,7 @@ def add_examination_form(registration_id, doctor_id, patient_id, disease, medici
     today_date = datetime.today().date()
 
     examination_form = ExaminationForm(
-        id = registration_id,
+        id=registration_id,
         datetime=today_date,
         disease=disease,
         doctor_id=doctor_id,
@@ -189,7 +192,6 @@ def change_isKham(patient_id):
         return True
     else:
         return False
-
 
 
 def load_registration_form_by_day(today):
@@ -271,11 +273,11 @@ def load_receipt(kw):
 
 
 def check_receipt(patient_id):
-    return Receipt.query.filter_by(patient_id = patient_id,isPaid= False).first()
+    return Receipt.query.filter_by(patient_id=patient_id, isPaid=False).first()
 
 
 def show_receipt_by_receipt_id(receipt_id):
-    return Receipt.query.filter_by(id = receipt_id).first()
+    return Receipt.query.filter_by(id=receipt_id).first()
 
 
 def show_receipt(patient_id):
@@ -360,12 +362,11 @@ def get_information_examination(patient_id):
 
 
 def get_appointment(patient_id):
-    return RegistrationForm.query.filter_by(patient_id = patient_id).all()
-
+    return RegistrationForm.query.filter_by(patient_id=patient_id).all()
 
 
 def get_examination_form(regis_id):
-    return ExaminationForm.query.filter_by(id = regis_id).first()
+    return ExaminationForm.query.filter_by(id=regis_id).first()
 
 
 def get_prescription(appointment_id):
@@ -379,9 +380,22 @@ def get_prescription(appointment_id):
                     "name": Medicine.query.get(detail.medicine_id).name,
                     "quantity": detail.quantity,
                     "unit": Medicine.query.get(detail.medicine_id).unit,
-                    "guide": detail.guide
+                    "guide": detail.guide,
+                    "medicine_price": Medicine.query.get(detail.medicine_id).price
+
                 }
                 for detail in prescription_details
             ]
         }
+    return None
+
+
+def show_receipt_by_appointment_id(appointment_id):
+    prescription = Prescription.query.filter_by(examinationForm_id=appointment_id).first()
+
+    if prescription:
+        receipt_detail = ReceiptDetails.query.filter_by(prescription_id=prescription.id).first()
+
+        if receipt_detail:
+            return Receipt.query.get(receipt_detail.receipt_id)
     return None

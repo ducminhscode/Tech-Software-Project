@@ -131,20 +131,28 @@ def history_patient():
     return render_template('patient/history.html', appoint = appoint)
 
 
-@app.route('/patient/history_details/<int:appointment_id>', methods=['GET'])
-def history_details(appointment_id):
-
+@app.route('/patient/history_prescription_details/<int:appointment_id>', methods=['GET'])
+def history_prescription_details(appointment_id):
     result = dao.get_examination_form(appointment_id)
     prescription_data = dao.get_prescription(appointment_id)
-
     if result:
         return render_template(
-            'patient/history_details.html',
+            'patient/history_prescription_details.html',
             result=result,
             prescription_data=prescription_data
         )
     else:
         return redirect(url_for('history_patient'))
+
+
+@app.route('/patient/invoice_details/<int:appointment_id>', methods=['GET'])
+def invoice_details(appointment_id):
+    receipt = dao.show_receipt_by_appointment_id(appointment_id)
+    if receipt:
+        return render_template('patient/invoice_details.html', receipt = receipt)
+    else:
+        return redirect(url_for('history_patient'))
+
 
 
 @app.route('/patient/medical-schedule')
