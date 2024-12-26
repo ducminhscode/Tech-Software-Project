@@ -3,9 +3,13 @@
 {% block title %}Lập phiếu khám bệnh{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Kiểm tra số điện thoại</h2>
 
+<header>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+</header>
+
+<h1>Kiểm Tra Số Điện Thoại</h1>
+<div style="margin-top:50px; margin-bottom: 50px">
     <form method="POST" id="phone-check-form">
         <div class="form-floating mb-3">
             <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Số điện thoại"

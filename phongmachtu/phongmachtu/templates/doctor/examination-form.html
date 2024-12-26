@@ -3,10 +3,14 @@
 {% block title %}Phiếu khám bệnh{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <h1 class="text-center mb-4">Quản lý khám bệnh</h1>
-    <div class="row">
-        <!-- Bên trái: Danh sách bệnh nhân -->
+
+<header>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+</header>
+
+<div>
+    <h1>Quản Lý Khám Bệnh</h1>
+    <div class="row" style="margin-top: 50px;margin-bottom: 50px">
         <div class="col-md-6">
             <h3 class="text-center mb-4">Danh sách bệnh nhân đăng ký</h3>
             <div class="alert alert-danger d-none" id="message-container"></div>

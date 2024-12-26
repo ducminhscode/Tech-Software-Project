@@ -3,9 +3,14 @@
 {% block title %}Đặt lịch khám{% endblock %}
 
 {% block content %}
+
+<header>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+</header>
+
 <section>
-    <div class="container my-5">
-        <h1 class="mb-4 text-center">Đăng ký lịch khám</h1>
+    <h1>Đăng Ký Lịch Khám</h1>
+    <div class="container my-5" style="margin-bottom: 50px; margin-top: 50px;">
         <div class="alert alert-info">
             {{msg}} Bệnh nhân tên là {{patient_name}}. Có thể đăng kí lịch khám.
         </div>

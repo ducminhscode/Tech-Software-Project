@@ -1,11 +1,15 @@
 {% extends 'layout/base.html' %}
 
-{% block title %}Lịch sử khám bệnh{% endblock %}
+{% block title %}Lịch khám bệnh{% endblock %}
 
 {% block content %}
 
-<div class="calendar-container">
-    <h2 class="text-center mb-4">Lịch Khám Bệnh</h2>
+<header>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+</header>
+
+<h1>Lịch Khám Bệnh</h1>
+<div class="calendar-container" style="margin-bottom: 50px; margin-top: 50px">
 
     <table class="table table-bordered">
         <thead>

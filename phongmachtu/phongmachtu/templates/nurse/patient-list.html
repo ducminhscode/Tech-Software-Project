@@ -3,9 +3,14 @@
 {% block title %}Danh sách bệnh nhân{% endblock %}
 
 {%block content%}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Danh sách bệnh nhân</h2>
-    <div class="row">
+
+<header>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+</header>
+
+<div>
+    <h1>Danh Sách Bệnh Nhân</h1>
+    <div class="row container mt-5" style=" margin-bottom: 50px">
         <!-- Calendar View -->
         <div class="col-md-4">
             <div class="calendar-container border rounded p-3">

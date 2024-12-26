@@ -3,30 +3,32 @@
 {% block title %}Tra cứu hóa đơn{% endblock %}
 
 {%block content%}
+
+<header>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+</header>
+
+<h1>Tra cứu hóa đơn</h1>
+
 {%if err_msg%}
 <div class="alert alert-danger">{{err_msg}}</div>
 {%endif%}
 
 <form method="POST" id="phone-check-form">
     <div class="container my-5">
-        <h3 class="text-center mb-4">Tra cứu hóa đơn</h3>
-
         <div class="mb-4">
-            <div class="row">
-                <div class="col-md-8">
-                    <label for="patientPhone" class="form-label">Số điện thoại của Bệnh Nhân</label>
-                    <input type="text" class="form-control" id="patientPhone" name="patientPhone"
-                           placeholder="Nhập SDT Bệnh Nhân">
-                </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="patientPhone" name="patientPhone" placeholder="Nhập SDT Bệnh Nhân">
+                <label for="patientPhone" class="form-label">Số điện thoại của bệnh nhân</label>
+            </div>
 
-                <div class="col-md-4 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100" id="searchBtn">Tìm kiếm</button>
-                </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-50 mt-2" id="searchBtn">Tìm kiếm</button>
             </div>
         </div>
 
-        <div class="table-responsive" id="invoiceTable">
-            <h4 class="mb-3">Bảng thống kê Hóa đơn</h4>
+        <div class="table-responsive" id="invoiceTable" style="margin-top: 50px">
+            <h4 class="mb-3" style="text-align: center">Bảng Thống Kê Hóa Đơn</h4>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -34,7 +36,7 @@
                     <th scope="col">Tên Bệnh nhân</th>
                     <th scope="col">Ngày Khám</th>
                     <th scope="col">Trạng Thái Thanh Toán</th>
-                    <th scope="col">Hành Động</th> <!-- Cột mới -->
+                    <th scope="col">Hành Động</th>
                 </tr>
                 </thead>
                 <tbody>
