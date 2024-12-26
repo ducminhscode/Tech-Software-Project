@@ -14,47 +14,38 @@
             <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarButtonsExample">
-
             {%if current_user.is_authenticated%}
-            {%if current_user.type=="patient"%}
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Trang chủ </a></li>
-                <li class="nav-item"><a class="nav-link" href="/patient/booking">Đặt lịch khám</a></li>
-                <li class="nav-item"><a class="nav-link" href="/">Kết quả đặt lịch khám</a></li>
-                <li class="nav-item"><a class="nav-link" href="/">Xem kết quả khám</a></li>
-                <li class="nav-item"><a class="nav-link" href="/patient/history">Lịch sử khám bệnh</a></li>
-            </ul>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Trang chủ </a></li>
+                    {%if current_user.type=="patient"%}
+                        <li class="nav-item"><a class="nav-link" href="/patient/booking">Đặt lịch khám</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/">Kết quả đặt lịch khám</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/">Xem kết quả khám</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/patient/history">Lịch sử khám bệnh</a></li>
 
-            {%elif current_user.type=="cashier"%}
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="/cashier/cash">Thanh toán</a></li>
-                <li class="nav-item"><a class="nav-link" href="/cashier/receipt-list">Tra cứu hóa đơn</a></li>
-            </ul>
+                    {%elif current_user.type=="cashier"%}
+                        <li class="nav-item"><a class="nav-link" href="/cashier/cash">Thanh toán</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cashier/receipt-list">Tra cứu hóa đơn</a></li>
 
-            {%elif current_user.type=="doctor"%}
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="/doctor/history-examination">Tra cứu lịch sử khám</a></li>
-                <li class="nav-item"><a class="nav-link" href="/doctor/examination-form">Phiếu khám bệnh</a></li>
-            </ul>
 
-            {%elif current_user.type=="nurse"%}
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="/nurse/patient-list">Danh sách bệnh nhân</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">Phiếu khám bệnh</a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" href="/nurse/check-phone">Lập phiếu khám bệnh</a></li>
-                        <li><a class="dropdown-item" href="/nurse/confirm-registration">Xác nhận đăng kí khám</a></li>
-                    </ul>
-                </li>
-            </ul>
+                    {%elif current_user.type=="doctor"%}
+                        <li class="nav-item"><a class="nav-link" href="/doctor/history-examination">Tra cứu lịch sử khám</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/doctor/examination-form">Phiếu khám bệnh</a></li>
 
-            {%endif%}
-            <ul class="navbar-nav ms-auto">
+
+                    {%elif current_user.type=="nurse"%}
+                        <li class="nav-item"><a class="nav-link" href="/nurse/patient-list">Danh sách bệnh nhân</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">Phiếu khám bệnh</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item" href="/nurse/check-phone">Lập phiếu khám bệnh</a></li>
+                                <li><a class="dropdown-item" href="/nurse/confirm-registration">Xác nhận đăng kí khám</a></li>
+                            </ul>
+                        </li>
+                    {%endif%}
+                </ul>
+                <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link text-info" style="font-weight: bold; font-style: italic; font-size: 1.2em;" href="/info">
                         {%if current_user.avatar%}
@@ -62,38 +53,35 @@
                         {%else%}
                             <img src="{{url_for('static', filename='images/default.jpg')}}" width="30px" height="30px" class="rounded-circle" alt="{{current_user.name}}"/>
                         {%endif%}
-                        &nbsp;
                         {{current_user.name}}</a>
                 </li>
                 <li>" "</li>
-            </ul>
-            <div class="d-flex align-items-center">
-                <a href="/logout">
-                    <button data-mdb-ripple-init type="button" class="btn btn-primary me-3"
-                            style="text-decoration: none; background-color: red; border-color: red;">
-                        <i class="fa fa-power-off"></i> Đăng xuất
-                    </button>
-                </a>
-            </div>
-
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="/logout">
+                        <button data-mdb-ripple-init type="button" class="btn btn-primary me-3" style="text-decoration: none; background-color: red; border-color: red;">
+                            <i class="fa fa-power-off"></i> Đăng xuất
+                        </button>
+                    </a>
+                </div>
             {%else %}
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="/introduce">Giới thiệu</a></li>
-                <li class="nav-item"><a class="nav-link" href="/service">Dịch vụ</a></li>
-            </ul>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Trang chủ </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/introduce">Giới thiệu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/service">Dịch vụ</a></li>
+                </ul>
 
-            <div class="d-flex align-items-center">
-                <a href="/login" class="btn btn-link px-3 me-2 text-white" style="text-decoration: none;">
-                    Đăng nhập
-                </a>
-                <a href="/register">
-                    <button data-mdb-ripple-init type="button" class="btn btn-primary me-3"
-                            style="text-decoration: none">
-                        <i class="fa fa-user-plus"></i> Đăng ký
-                    </button>
-                </a>
-            </div>
+                <div class="d-flex align-items-center">
+                    <a href="/login" class="btn btn-link px-3 me-2 text-white" style="text-decoration: none;">
+                        Đăng nhập
+                    </a>
+                    <a href="/register">
+                        <button data-mdb-ripple-init type="button" class="btn btn-primary me-3"
+                                style="text-decoration: none">
+                            <i class="fa fa-user-plus"></i> Đăng ký
+                        </button>
+                    </a>
+                </div>
             {%endif%}
         </div>
     </div>
