@@ -1,6 +1,6 @@
 import datetime
 
-from django.contrib.messages import success
+
 from flask import render_template, request, redirect, session, url_for
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
@@ -123,6 +123,17 @@ def booking():
 
     time = dao.get_all_period()
     return render_template('patient/booking.html', time=time, err_msg=err_msg)
+
+
+@app.route('/patient/history', methods=['GET', 'POST'])
+def patient_history_examination():
+    patient_id=current_user.id
+    if patient_id:
+        history = dao.load_examination_form(patient_id)
+    else:
+        history = []
+
+    return render_template('patient/history.html', history=history)
 
 
 @app.route('/register', methods=['GET', 'POST'])
