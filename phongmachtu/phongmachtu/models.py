@@ -222,24 +222,22 @@ if __name__ == "__main__":
                     password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="cashier",
                     license="Giấy phép hành nghề")
 
-        p1 = Patient(name='Patient1', username="patient1",
-                     password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
-                     address='GV, HCM', day_of_birth="2003", gender='Nam', phone="0123456789", )
-
-        p2 = Patient(name='Patient2', username="patient2",
-                     password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
-                     address='Nha Be, HCM', day_of_birth="2003", gender='Nữ', phone="0987654321")
+        # p1 = Patient(name='Patient1', username="patient1",
+        #              password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
+        #              address='GV, HCM', day_of_birth="2003", gender='Nam', phone="0123456789", )
+        #
+        # p2 = Patient(name='Patient2', username="patient2",
+        #              password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
+        #              address='Nha Be, HCM', day_of_birth="2003", gender='Nữ', phone="0987654321")
 
         db.session.add(a)
         db.session.add(d)
         db.session.add(n)
         db.session.add(c)
-        db.session.add(p1)
-        db.session.add(p2)
+        # db.session.add(p1)
+        # db.session.add(p2)
 
-        time_periods = ["07:00 - 08:00", "08:00 - 09:00", "09:00 - 10:00",
-                        "10:00 - 11:00", "11:00 - 12:00", "13:00 - 14:00",
-                        "14:00 - 15:00", "15:00 - 16:00", "16:00 - 17:00"]
+        time_periods = ["07:00 - 09:00", "09:00 - 11:00", "13:00 - 15:00", "15:00 - 17:00"]
 
         for period in time_periods:
             time = Times(period=period)
@@ -255,50 +253,50 @@ if __name__ == "__main__":
         db.session.add(m3)
         db.session.add(m4)
 
-        b1 = RegistrationForm(patient_id=5, desc='Sốt, Ho', lenLichKham=False, isKham=False, time_id=2)
-        b2 = RegistrationForm(patient_id=6, desc='Cảm', lenLichKham=True, isKham=False, time_id=6)
-
-        db.session.add(b1)
-        db.session.add(b2)
-
-        r = Receipt(examines_price='20000', total_price='100000', cashier_id=4, patient_id=5)
-        r2 = Receipt(examines_price='30000', total_price='200000', cashier_id=4, patient_id=6)
-
-        db.session.add(r)
-        db.session.add(r2)
-        db.session.commit()
-
-        e = ExaminationForm(id=1, disease='Sốt nhẹ', doctor_id=2, patient_id=5)
-        e1 = ExaminationForm(id=2, disease='Say nắng', doctor_id=2, patient_id=6)
-
-        db.session.add(e)
-        db.session.add(e1)
-
-        p = Prescription(examinationForm_id=1)
-        p2 = Prescription(examinationForm_id=2)
-
-        db.session.add(p)
-        db.session.add(p2)
-
-        rd = ReceiptDetails(medicines_price='4000', receipt_id=1, prescription_id=1)
-        rd2 = ReceiptDetails(medicines_price='6000', receipt_id=2, prescription_id=2)
-
-        db.session.add(rd)
-        db.session.add(rd2)
-
-        ru = Regulations(name='minh', value='200000', admin_id=1)
-        ru2 = Regulations(name='zoen', value='900000', admin_id=1)
-
-        db.session.add(ru)
-        db.session.add(ru2)
-
-        r2 = Receipt(examines_price='90000', total_price='110000', cashier_id=4, patient_id=6)
-        db.session.add(r2)
-
-        pm = PrescriptionMedicine(prescription_id=1, medicine_id=2,quantity=50,guide='3 viên/ngày, uống sau khi ăn')
-        pm2 = PrescriptionMedicine(prescription_id=2, medicine_id=4, quantity=100, guide='2 viên sáng/chiều, uống sau khi ăn')
-        db.session.add(pm)
-        db.session.add(pm2)
+        # b1 = RegistrationForm(patient_id=5, desc='Sốt, Ho', lenLichKham=False, isKham=False, time_id=2)
+        # b2 = RegistrationForm(patient_id=6, desc='Cảm', lenLichKham=True, isKham=False, time_id=6)
+        #
+        # db.session.add(b1)
+        # db.session.add(b2)
+        #
+        # r = Receipt(examines_price='20000', total_price='100000', cashier_id=4, patient_id=5)
+        # r2 = Receipt(examines_price='30000', total_price='200000', cashier_id=4, patient_id=6)
+        #
+        # db.session.add(r)
+        # db.session.add(r2)
+        # db.session.commit()
+        #
+        # e = ExaminationForm(id=1, disease='Sốt nhẹ', doctor_id=2, patient_id=5)
+        # e1 = ExaminationForm(id=2, disease='Say nắng', doctor_id=2, patient_id=6)
+        #
+        # db.session.add(e)
+        # db.session.add(e1)
+        #
+        # p = Prescription(examinationForm_id=1)
+        # p2 = Prescription(examinationForm_id=2)
+        #
+        # db.session.add(p)
+        # db.session.add(p2)
+        #
+        # rd = ReceiptDetails(medicines_price='4000', receipt_id=1, prescription_id=1)
+        # rd2 = ReceiptDetails(medicines_price='6000', receipt_id=2, prescription_id=2)
+        #
+        # db.session.add(rd)
+        # db.session.add(rd2)
+        #
+        # ru = Regulations(name='minh', value='200000', admin_id=1)
+        # ru2 = Regulations(name='zoen', value='900000', admin_id=1)
+        #
+        # db.session.add(ru)
+        # db.session.add(ru2)
+        #
+        # r2 = Receipt(examines_price='90000', total_price='110000', cashier_id=4, patient_id=6)
+        # db.session.add(r2)
+        #
+        # pm = PrescriptionMedicine(prescription_id=1, medicine_id=2,quantity=50,guide='3 viên/ngày, uống sau khi ăn')
+        # pm2 = PrescriptionMedicine(prescription_id=2, medicine_id=4, quantity=100, guide='2 viên sáng/chiều, uống sau khi ăn')
+        # db.session.add(pm)
+        # db.session.add(pm2)
 
 
         db.session.commit()

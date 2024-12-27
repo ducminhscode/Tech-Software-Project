@@ -12,11 +12,16 @@
     <h1>Đăng Ký Lịch Khám</h1>
     <div class="container my-5" style="margin-bottom: 50px; margin-top: 50px;">
         <div class="alert alert-info">
-            {{msg}} Bệnh nhân tên là {{patient_name}}. Có thể đăng kí lịch khám.
+            Bệnh nhân tên là {{patient_name}}. Có thể đăng kí lịch khám.
         </div>
         {% if err_msg %}
         <div class="alert alert-danger">{{ err_msg }}</div>
         {% endif %}
+
+        {% if success_msg %}
+        <div class="alert alert-success">{{ success_msg }}</div>
+        {% endif %}
+
         <form method="POST" enctype="multipart/form-data">
             <div class="form-floating mb-3 mt-3">
                 <select class="form-control" id="buoiKham" aria-label="Chọn buổi khám" name="time">

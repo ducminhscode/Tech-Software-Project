@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.messages import success
 from flask import render_template, request, redirect, session, url_for
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
@@ -107,6 +108,7 @@ def change_password():
 @app.route('/patient/booking', methods=['GET', 'POST'])
 def booking():
     err_msg = None
+    success_msg = None
     if request.method.__eq__('POST'):
         selected_time = request.form.get('time')
         selected_date = request.form.get('date')
@@ -114,14 +116,14 @@ def booking():
 
         patient_id = current_user.id
 
-        if not selected_time or not selected_date or not symptom:
+        if not selected_time or not selected_date:
             err_msg = "Vui lòng chọn đầy đủ thông tin."
         else:
             dao.save_booking(selected_date, symptom, patient_id, selected_time)
-            err_msg = "Đăng kí thành công."
+            success_msg = "Đăng kí thành công."
 
     time = dao.get_all_period()
-    return render_template('patient/booking.html', time=time, err_msg=err_msg)
+    return render_template('patient/booking.html', time=time, err_msg=err_msg, success_msg=success_msg)
 
 
 @app.route('/patient/history')
@@ -273,7 +275,7 @@ def examination_form():
                                                    usages)
         dao.change_isKham(patient_id)
         dao.set_receipt(prescription_id, patient_id, medicine_names, quantities)
-        return render_template('doctor/examination-form.html', reg=registrations, medicines=medicines)
+        return redirect('/doctor/examination-form')
 
     return render_template('doctor/examination-form.html', reg=registrations, medicines=medicines)
 
@@ -317,21 +319,21 @@ def patient_booking():
         msg = ""
 
     err_msg = None
+    success_msg = None
     if request.method.__eq__('POST'):
         selected_time = request.form.get('time')
         selected_date = request.form.get('date')
         symptom = request.form.get('symptom')
 
-        if not selected_time or not selected_date or not symptom:
+        if not selected_time or not selected_date:
             err_msg = "Vui lòng chọn đầy đủ thông tin."
         else:
             dao.save_booking(selected_date, symptom, patient_id, selected_time)
-            err_msg = "Đăng kí thành công."
-            return redirect('/nurse/patient-list')
+            success_msg = "Đăng kí thành công."
 
     time = dao.get_all_period()
     return render_template('/nurse/patient-booking.html', msg=msg, time=time, err_msg=err_msg,
-                           patient_name=patient_name)
+                           patient_name=patient_name, success_msg=success_msg)
 
 
 @app.route('/nurse/regis-patient', methods=['GET', 'POST'])

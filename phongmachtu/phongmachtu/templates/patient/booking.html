@@ -13,7 +13,10 @@
     <h1>Đặt Lịch Khám</h1>
     <div class="container my-5">
         {% if err_msg %}
-        <div class="alert alert-danger">{{ err_msg }}</div>
+            <div class="alert alert-danger">{{ err_msg }}</div>
+        {% endif %}
+        {% if success_msg %}
+        <div class="alert alert-success">{{ success_msg }}</div>
         {% endif %}
         <form method="POST" enctype="multipart/form-data">
             <div class="form-floating mb-3 mt-3">
