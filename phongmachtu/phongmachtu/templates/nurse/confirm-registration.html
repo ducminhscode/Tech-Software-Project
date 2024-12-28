@@ -13,6 +13,7 @@
     <div class="d-flex justify-content-between">
     </div>
     <div class="danger alert-danger" id="message-container"></div>
+
     <table class="table table-striped mt-3">
         <thead>
         <tr>
@@ -31,7 +32,7 @@
             <td>{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
             <td>{{ r.desc }}</td>
             <td>
-                <form method="POST">
+                <form method="POST" action="/nurse/confirm-registration">
                     <input type="hidden" name="registration_id" value="{{ r.id }}">
                     <button type="submit" class="book-btn btn btn-success">Xác nhận</button>
                 </form>

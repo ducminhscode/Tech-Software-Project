@@ -367,6 +367,7 @@ def confirm_registration():
     return render_template('/nurse/confirm-registration.html', reg=registrations)
 
 
+
 @app.route('/nurse/patient-list', methods=['GET', 'POST'])
 def patient_list_nurse():
     date_str = request.form.get('selectedDate')

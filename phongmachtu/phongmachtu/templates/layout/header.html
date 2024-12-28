@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="navbarButtonsExample">
             {%if current_user.is_authenticated%}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Trang chủ &nbsp;</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/"><i class='fas fa-home'></i>  Trang chủ &nbsp;</a></li>
                     {%if current_user.type=="patient"%}
                         <li class="nav-item"><a class="nav-link" href="/patient/medical-schedule"><i class='fas fa-calendar'></i> Xem lịch khám bệnh &nbsp;</a></li>
                         <li class="nav-item"><a class="nav-link" href="/patient/booking"><i class='fas fa-file-import'></i> Đặt lịch khám &nbsp;</a></li>
@@ -85,3 +85,18 @@
         </div>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('.nav-item .nav-link');
+    const currentPath = window.location.pathname;
+
+    navLinks.forEach((link) => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+});
+</script>
