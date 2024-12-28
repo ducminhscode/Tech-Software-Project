@@ -1,6 +1,5 @@
 import datetime
 
-from django.contrib.messages import success
 from flask import render_template, request, redirect, session, url_for
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
@@ -119,8 +118,11 @@ def booking():
         if not selected_time or not selected_date:
             err_msg = "Vui lòng chọn đầy đủ thông tin."
         else:
-            dao.save_booking(selected_date, symptom, patient_id, selected_time)
-            success_msg = "Đăng kí thành công."
+            if dao.save_booking(selected_date, symptom, patient_id, selected_time):
+                success_msg = "Đăng kí thành công."
+            else:
+                err_msg = "Số lượng khám trong ngày đã giới hạn"
+
 
     time = dao.get_all_period()
     return render_template('patient/booking.html', time=time, err_msg=err_msg, success_msg=success_msg)

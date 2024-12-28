@@ -203,6 +203,7 @@ class Regulations(db.Model):
     def __repr__(self):
         return f"<YourModel(booked_date='{self.booked_date.strftime('%Y-%m-%d')}')>"
 
+
 if __name__ == "__main__":
     with app.app_context():
         import hashlib
@@ -298,6 +299,8 @@ if __name__ == "__main__":
         # db.session.add(pm)
         # db.session.add(pm2)
 
+        re1 = Regulations(name='Số lượng bệnh nhân tối đa', value=2, admin_id=1)
+        db.session.add(re1)
 
         db.session.commit()
 

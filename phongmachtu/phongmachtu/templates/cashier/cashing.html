@@ -34,7 +34,7 @@
     </div>
 
     <!-- Form cho chi tiết hóa đơn -->
-    <form method="POST" action="{{ url_for('cashing', patient_id=receipt.patient.id) }}">
+    <form method="POST" action="{{ url_for('cashing', receipt_id=receipt.id) }}">
         <table class="table table-bordered">
             <thead>
             <tr>

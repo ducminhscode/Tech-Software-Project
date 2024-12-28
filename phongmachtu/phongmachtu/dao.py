@@ -302,14 +302,22 @@ def update_receipt(receipt_id, cashier_id):
 
 # ================================= BOOKS ============================================
 def save_booking(selected_date, symptom, patient_id, selected_time):
-    u = RegistrationForm(
-        booked_date=selected_date,
-        desc=symptom,
-        patient_id=patient_id,
-        time_id=selected_time
-    )
-    db.session.add(u)
-    db.session.commit()
+    regu = Regulations.query.filter_by(id = 1).first()
+    count = RegistrationForm.query.filter_by( booked_date=selected_date).count()
+
+    if count < regu.value:
+        u = RegistrationForm(
+            booked_date=selected_date,
+            desc=symptom,
+            patient_id=patient_id,
+            time_id=selected_time
+        )
+        db.session.add(u)
+        db.session.commit()
+        return True
+    else:
+        return False
+
 
 
 def save_booking_by_nurse(selected_date, symptom, patient_id, selected_time):

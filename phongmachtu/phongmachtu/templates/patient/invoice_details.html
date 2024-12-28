@@ -12,10 +12,22 @@
 <div class="container mt-5" style="margin-bottom: 50px; margin-top: 50px;">
 
     <div class="mt-4">
-        <h4>Toa thuốc</h4>
+
         {% if receipt %}
+        <div class="mb-4">
+            <p class="text-center">
+                <strong>Trạng Thái Thanh Toán:</strong>
+                {% if receipt.isPaid %}
+                <span class="text-success">Đã thanh toán</span>
+                {% else %}
+                <span class="text-danger">Chưa thanh toán</span>
+                {% endif %}
+            </p>
+        </div>
+        <h4 style="text-align: center">Toa thuốc</h4>
         <table class="table table-bordered">
             <thead>
+
             <tr>
                 <th>Tên thuốc</th>
                 <th>Số lượng</th>
@@ -26,16 +38,17 @@
             </thead>
             <tbody>
             {% for receipt_detail in receipt.receipt_details %}
+            {% for medicine in receipt_detail.prescription.prescription_medicines %}
             <tr>
-                <td>{{ receipt_detail.prescription.prescription_medicines[0].medicine.name }}</td>
-                <td>{{ receipt_detail.prescription.prescription_medicines[0].quantity }}</td>
-                <td>{{ receipt_detail.prescription.prescription_medicines[0].medicine.unit }}</td>
-                <td>{{ receipt_detail.prescription.prescription_medicines[0].medicine.price }} VND</td>
+                <td>{{ medicine.medicine.name }}</td>
+                <td>{{ medicine.quantity }}</td>
+                <td>{{ medicine.medicine.unit }}</td>
+                <td>{{ medicine.medicine.price }} VND</td>
                 <td>
-                    {{ (receipt_detail.prescription.prescription_medicines[0].quantity *
-                    receipt_detail.prescription.prescription_medicines[0].medicine.price) | float }} VND
+                    {{ (medicine.quantity * medicine.medicine.price) | float }} VND
                 </td>
             </tr>
+            {% endfor %}
             {% endfor %}
             </tbody>
         </table>
