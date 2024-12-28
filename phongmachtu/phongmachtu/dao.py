@@ -1,7 +1,8 @@
 import hashlib
 from datetime import datetime
 from click.decorators import R
-from flask import render_template, Flask
+from flask import render_template, Flask, current_app
+from flask_mail import Message
 
 import phongmachtu
 from models import *
@@ -232,6 +233,19 @@ def cancel_registration(reg_id):
         return False
 
 
+# def send_confirm_email(registration):
+#     try:
+#         msg = Message(
+#             subject="Xác nhận đăng ký khám",
+#             recipients=[registration.patient.email],
+#             body=f"Kính gửi {registration.patient.name},\n\nLịch khám của bạn đã được xác nhận. "
+#                  "Chúng tôi mong gặp bạn vào thời gian đã hẹn.\n\nTrân trọng,\nCare Plus."
+#         )
+#         # Gửi email
+#         with current_app.app_context():
+#             mail.send(msg)
+#     except Exception as e:
+#         print(f"Lỗi khi gửi email: {e}")
 
 def confirm_registration(reg_id):
     try:
@@ -239,6 +253,7 @@ def confirm_registration(reg_id):
         if registration:
             registration.lenLichKham = True
             db.session.commit()
+            # send_confirm_email(registration)
             return True
         else:
             return False

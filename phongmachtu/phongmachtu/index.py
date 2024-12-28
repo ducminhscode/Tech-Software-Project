@@ -1,5 +1,6 @@
 import datetime
 
+from dotenv import load_dotenv
 from flask import render_template, request, redirect, session, url_for
 from wtforms.validators import email
 
@@ -423,6 +424,9 @@ def logout_my_user():
 def load_account(user_id):
     return dao.get_account_by_id(user_id)
 
+# def configure():
+#     load_dotenv()
 
 if __name__ == "__main__":
+    # configure()
     app.run(debug=True)

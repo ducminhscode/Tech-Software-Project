@@ -8,8 +8,8 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<section>
-    <h1 class="text-center text-primary fw-bold my-4">Đăng Ký Khám Bệnh</h1>
+<h1 class="text-center text-primary fw-bold my-4">Đăng Ký Khám Bệnh</h1>
+<section style="margin-bottom: 100px">
     {% if msg %}
     <div class="alert alert-danger text-center">
         <i class="fas fa-exclamation-circle"></i> {{ msg }}
@@ -17,7 +17,7 @@
     {% endif %}
 
     <!-- Form đăng ký -->
-    <div class="container shadow-lg rounded p-5 bg-light">
+    <div class="container shadow-lg rounded p-5 bg-white border border-2">
         <form method="POST" enctype="multipart/form-data">
             <div class="form-floating mb-4">
                 <input type="text" class="form-control shadow-sm" id="name" placeholder="Nhập họ tên" name="name" required>
@@ -54,7 +54,7 @@
 
             <div class="text-center mt-4">
                 <button class="btn btn-success btn-lg px-5 shadow-sm" type="submit">
-                    <i class="fas fa-check-circle"></i> Đăng ký
+                    Đăng ký
                 </button>
             </div>
         </form>

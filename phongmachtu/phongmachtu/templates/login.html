@@ -6,10 +6,10 @@
 <header>
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
-<section class="container mt-5 pt-5">
+<section class="container mt-5 pt-5" style="margin-bottom: 100px">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
-            <div class="card shadow-lg p-4 rounded-4 border-0">
+            <div class="card shadow-lg p-4 rounded-4 border border-2">
                 <div class="card-body">
                     {% if err_msg %}
                     <div class="alert alert-danger alert-dismissible fade show text-center mb-4" role="alert">
@@ -36,10 +36,6 @@
 
                         <div class="d-grid mb-3">
                             <button class="btn btn-primary btn-lg rounded-pill" type="submit">Đăng nhập</button>
-                        </div>
-
-                        <div class="text-center">
-                            <a href="#" class="text-decoration-none text-muted">Quên mật khẩu?</a>
                         </div>
                     </form>
                 </div>

@@ -68,6 +68,7 @@
                     <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Trang chủ &nbsp;</a></li>
                     <li class="nav-item"><a class="nav-link" href="/introduce"><i class='fas fa-hand-holding-medical'></i> Giới thiệu &nbsp;</a></li>
                     <li class="nav-item"><a class="nav-link" href="/service"><i class='fas fa-medkit'></i> Dịch vụ &nbsp;</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/patient/booking"><i class='fas fa-file-import'></i> Đặt lịch khám &nbsp;</a></li>
                 </ul>
 
                 <div class="d-flex align-items-center">
@@ -85,18 +86,3 @@
         </div>
     </div>
 </nav>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const navLinks = document.querySelectorAll('.nav-item .nav-link');
-    const currentPath = window.location.pathname;
-
-    navLinks.forEach((link) => {
-        if (link.getAttribute('href') === currentPath) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
-});
-</script>

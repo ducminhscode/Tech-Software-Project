@@ -7,7 +7,7 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<section class="container mt-5 pt-5">
+<section class="container mt-5 pt-5" style="margin-bottom: 100px">
 
     {% if err_msg %}
     <div class="alert alert-danger text-center mb-4">
@@ -17,7 +17,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card shadow-lg p-4 rounded">
+            <div class="card shadow-lg p-4 rounded border border-2">
                 <form method="POST" enctype="multipart/form-data">
                     <div class="text-center mb-4">
                         <h1 class="fw-bold text-primary">ĐĂNG KÝ</h1>
@@ -77,8 +77,8 @@
                         <input type="file" class="form-control" id="avatar" name="avatar"/>
                     </div>
 
-                    <div class="text-center">
-                        <button class="btn btn-success w-100" type="submit">Đăng ký</button>
+                    <div class="d-grid mb-3">
+                        <button class="btn btn-primary btn-lg rounded-pill" type="submit">Đăng ký</button>
                     </div>
                 </form>
             </div>

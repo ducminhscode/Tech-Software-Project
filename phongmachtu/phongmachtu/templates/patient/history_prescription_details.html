@@ -8,21 +8,21 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<section>
-    <h1 class="text-center text-primary fw-bold my-5">Chi Tiết Khám Bệnh</h1>
+<h1 class="text-center text-primary fw-bold my-5">Chi Tiết Khám Bệnh</h1>
+<section style="margin-bottom: 100px;" class="border border-2">
 
     <div class="container shadow-lg p-5 rounded bg-light">
         <div class="row">
-            <div class="col-md-6">
-                <h5 class="text-info mb-4">Thông Tin Bệnh Nhân</h5>
+            <div class="text-center">
+                <h5 class="text-danger mb-4">Thông tin bệnh nhân</h5>
                 <p><strong>Tên bệnh nhân:</strong> <span class="text-dark">{{ result.patient.name }}</span></p>
                 <p><strong>Ngày khám:</strong> <span class="text-dark">{{ result.datetime.strftime('%d/%m/%Y') }}</span></p>
                 <p><strong>Bệnh lý:</strong> <span class="text-dark">{{ result.disease }}</span></p>
             </div>
         </div>
 
-        <div class="mt-4">
-            <h4 class="text-info">Toa Thuốc</h4>
+        <div class="mt-4 text-center">
+            <h5 class="text-danger text-center mb-4">Toa thuốc</h5>
             {% if prescription_data and prescription_data.medicines %}
             <table class="table table-bordered table-striped shadow-sm">
                 <thead class="bg-primary text-white">
@@ -51,7 +51,7 @@
 
         <div class="mt-4 text-center">
             <a href="{{ url_for('history_patient') }}" class="btn btn-secondary btn-lg px-4 py-2">
-                <i class="fas fa-arrow-left"></i> Quay lại
+                Quay lại
             </a>
         </div>
     </div>

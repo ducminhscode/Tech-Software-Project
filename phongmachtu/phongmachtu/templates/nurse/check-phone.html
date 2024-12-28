@@ -7,11 +7,10 @@
 <header>
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
+<h1 class="text-center text-primary fw-bold my-4">Kiểm Tra Số Điện Thoại</h1>
 
 <section>
-    <h1 class="text-center text-primary fw-bold my-4">Kiểm Tra Số Điện Thoại</h1>
-
-    <div class="container shadow-lg p-4 rounded bg-light" style="max-width: 500px; margin-top: 50px; margin-bottom: 50px;">
+    <div class="container shadow-lg p-4 rounded bg-white border border-2" style="max-width: 500px; margin-top: 50px; margin-bottom: 100px;">
         <form method="POST" id="phone-check-form">
             <div class="form-floating mb-4">
                 <input type="tel" class="form-control shadow-sm" id="phone_number" name="phone_number" placeholder="Số điện thoại" required>
@@ -19,8 +18,8 @@
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm" id="submit-button">
-                    <i class="fas fa-check-circle"></i> Kiểm tra
+                <button type="submit" class="btn btn-success btn-lg px-5 shadow-sm" id="submit-button">
+                    Kiểm tra
                 </button>
             </div>
         </form>

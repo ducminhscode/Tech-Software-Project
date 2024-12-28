@@ -300,7 +300,7 @@ if __name__ == "__main__":
         # db.session.add(pm)
         # db.session.add(pm2)
 
-        re1 = Regulations(name='Số lượng bệnh nhân tối đa', value=2, admin_id=1)
+        re1 = Regulations(name='Số lượng bệnh nhân tối đa', value=40, admin_id=1)
         db.session.add(re1)
 
         db.session.commit()

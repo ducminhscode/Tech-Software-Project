@@ -8,7 +8,7 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<section class="container mt-5 pt-5">
+<section class="container mt-3">
     <h1 class="text-center text-primary fw-bold mb-4">Tra Cứu Lịch Sử Khám</h1>
 
     <form method="POST" class="d-flex justify-content-center mb-5">
@@ -21,7 +21,7 @@
     </form>
 
     {% if patient_history %}
-    <div class="mt-5">
+    <div class="mt-5 mb-5">
         <h3 class="text-center mb-4">Lịch Sử Khám Bệnh</h3>
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -60,7 +60,7 @@
 <div class="modal fade" id="prescriptionModal" tabindex="-1" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="prescriptionModalLabel">Toa thuốc</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
