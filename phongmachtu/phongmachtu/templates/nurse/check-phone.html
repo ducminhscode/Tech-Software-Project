@@ -8,18 +8,23 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<h1>Kiểm Tra Số Điện Thoại</h1>
-<div style="margin-top:50px; margin-bottom: 50px">
-    <form method="POST" id="phone-check-form">
-        <div class="form-floating mb-3">
-            <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Số điện thoại"
-                   required>
-            <label for="phone_number"> <i class='far fa-address-book'></i> Số điện thoại </label>
-        </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary" id="submit-button">Kiểm tra</button>
-        </div>
-    </form>
+<section>
+    <h1 class="text-center text-primary fw-bold my-4">Kiểm Tra Số Điện Thoại</h1>
 
-</div>
+    <div class="container shadow-lg p-4 rounded bg-light" style="max-width: 500px; margin-top: 50px; margin-bottom: 50px;">
+        <form method="POST" id="phone-check-form">
+            <div class="form-floating mb-4">
+                <input type="tel" class="form-control shadow-sm" id="phone_number" name="phone_number" placeholder="Số điện thoại" required>
+                <label for="phone_number"> <i class='far fa-address-book'></i> Số điện thoại </label>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm" id="submit-button">
+                    <i class="fas fa-check-circle"></i> Kiểm tra
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
 {% endblock %}

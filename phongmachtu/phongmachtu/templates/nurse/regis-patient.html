@@ -8,47 +8,58 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<h1>Đăng Kí Khám Bệnh</h1>
+<section>
+    <h1 class="text-center text-primary fw-bold my-4">Đăng Ký Khám Bệnh</h1>
+    {% if msg %}
+    <div class="alert alert-danger text-center">
+        <i class="fas fa-exclamation-circle"></i> {{ msg }}
+    </div>
+    {% endif %}
 
-{% if msg %}
-<div class="alert alert-danger">{{ msg }}</div>
-{% endif %}
+    <!-- Form đăng ký -->
+    <div class="container shadow-lg rounded p-5 bg-light">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-floating mb-4">
+                <input type="text" class="form-control shadow-sm" id="name" placeholder="Nhập họ tên" name="name" required>
+                <label for="name">Họ và Tên</label>
+            </div>
 
-<form method="POST" enctype="multipart/form-data">
-    <div class="form-floating mb-3 mt-3">
-        <input type="text" class="form-control" id="name" placeholder="Nhập họ tên" name="name" required>
-        <label for="name">Họ và Tên</label>
-    </div>
+            <div class="form-floating mb-4">
+                <input type="text" class="form-control shadow-sm" id="address" name="address" placeholder="Địa chỉ" required>
+                <label for="address">Địa chỉ</label>
+            </div>
 
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ" required>
-        <label for="address">Địa chỉ</label>
-    </div>
-    <div class="form-floating mb-3">
-        <input type="date" class="form-control" id="day_of_birth" name="day_of_birth" required>
-        <label for="day_of_birth">Ngày sinh</label>
-    </div>
-    <div class="form-floating mb-3">
-        <select class="form-select" id="gender" name="gender" required>
-            <option value="Nam">Nam</option>
-            <option value="Nữ">Nữ</option>
-        </select>
-        <label for="gender">Giới tính</label>
-    </div>
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" required>
-        <label for="phone">Số điện thoại</label>
-    </div>
+            <div class="form-floating mb-4">
+                <input type="date" class="form-control shadow-sm" id="day_of_birth" name="day_of_birth" required>
+                <label for="day_of_birth">Ngày sinh</label>
+            </div>
 
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
-        <label for="email">Email</label>
-    </div>
+            <div class="form-floating mb-4">
+                <select class="form-select shadow-sm" id="gender" name="gender" required>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
+                <label for="gender">Giới tính</label>
+            </div>
 
-    <div class="form-floating mt-3 mb-3">
-        <button class="btn btn-success" type="submit">Đăng ký</button>
-    </div>
+            <div class="form-floating mb-4">
+                <input type="text" class="form-control shadow-sm" id="phone" name="phone" placeholder="Số điện thoại" required>
+                <label for="phone">Số điện thoại</label>
+            </div>
 
-</form>
+            <div class="form-floating mb-4">
+                <input type="text" class="form-control shadow-sm" id="email" name="email" placeholder="Email" required>
+                <label for="email">Email</label>
+            </div>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-success btn-lg px-5 shadow-sm" type="submit">
+                    <i class="fas fa-check-circle"></i> Đăng ký
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
 
 {%endblock%}

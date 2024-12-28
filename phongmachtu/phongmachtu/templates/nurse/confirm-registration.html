@@ -8,50 +8,56 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<h1>Danh Sách Bệnh Nhân Đăng Ký</h1>
-<div class="container mt-5" style="margin-bottom: 50px">
-    <div class="d-flex justify-content-between">
-        <!-- Thêm nút "Xác nhận toàn bộ" -->
+<h1 class="text-center text-primary my-4 fw-bold">Danh Sách Bệnh Nhân Đăng Ký</h1>
+<div class="container shadow-lg rounded p-4 bg-light" style="margin-bottom: 50px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <form method="POST" action="/nurse/confirm-all-registrations">
-            <button type="submit" class="btn btn-primary">Xác nhận toàn bộ</button>
+            <button type="submit" class="btn btn-primary fw-bold shadow-sm">
+                <i class="fas fa-check-circle"></i> Xác nhận toàn bộ
+            </button>
         </form>
-    </div>
-    <div class="danger alert-danger" id="message-container"></div>
 
-    <table class="table table-striped mt-3">
-        <thead>
-        <tr>
-            <th scope="col">Họ và tên</th>
-            <th scope="col">Giờ đặt lịch</th>
-            <th scope="col">Ngày đặt</th>
-            <th scope="col">Mô tả bệnh</th>
-            <th scope="col">Thao tác</th>
-            <th scope="col">Hủy</th> <!-- Thêm cột Hủy -->
-        </tr>
+        <div id="message-container" class="alert alert-danger d-none"></div>
+    </div>
+
+    <table class="table table-hover table-bordered text-center">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th scope="col" class="py-3">Họ và Tên</th>
+                <th scope="col" class="py-3">Giờ Đặt Lịch</th>
+                <th scope="col" class="py-3">Ngày Đặt</th>
+                <th scope="col" class="py-3">Mô Tả Bệnh</th>
+                <th scope="col" class="py-3">Thao Tác</th>
+                <th scope="col" class="py-3">Hủy</th>
+            </tr>
         </thead>
         <tbody>
-        {% for r in reg %}
-        <tr name={{r.id}}>
-            <td>{{ r.patient.name }}</td>
-            <td>{{ r.time.period }}</td>
-            <td>{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
-            <td>{{ r.desc }}</td>
-            <td>
-                <form method="POST" action="/nurse/confirm-registration">
-                    <input type="hidden" name="registration_id" value="{{ r.id }}">
-                    <button type="submit" class="book-btn btn btn-success">Xác nhận</button>
-                </form>
-            </td>
-            <td>
-                <!-- Thêm nút Hủy -->
-                <form method="POST" action="/nurse/cancel-registration">
-                    <input type="hidden" name="registration_id" value="{{ r.id }}">
-                    <button type="submit" class="btn btn-danger">Hủy</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
+            {% for r in reg %}
+            <tr>
+                <td class="align-middle">{{ r.patient.name }}</td>
+                <td class="align-middle">{{ r.time.period }}</td>
+                <td class="align-middle">{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
+                <td class="align-middle">{{ r.desc }}</td>
+                <td class="align-middle">
+                    <form method="POST" action="/nurse/confirm-registration" class="d-inline-block">
+                        <input type="hidden" name="registration_id" value="{{ r.id }}">
+                        <button type="submit" class="btn btn-success shadow-sm">
+                            <i class="fas fa-check"></i> Xác nhận
+                        </button>
+                    </form>
+                </td>
+                <td class="align-middle">
+                    <form method="POST" action="/nurse/cancel-registration" class="d-inline-block">
+                        <input type="hidden" name="registration_id" value="{{ r.id }}">
+                        <button type="submit" class="btn btn-danger shadow-sm">
+                            <i class="fas fa-times"></i> Hủy
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
+
 {%endblock%}

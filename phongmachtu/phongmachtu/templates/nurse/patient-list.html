@@ -9,46 +9,54 @@
 </header>
 
 <div>
-    <h1>Danh Sách Bệnh Nhân</h1>
-    <div class="row container mt-5" style=" margin-bottom: 50px">
+    <h1 class="text-center text-primary my-4 fw-bold">Danh Sách Bệnh Nhân</h1>
+    <div class="row container mx-auto mt-5" style="max-width: 1200px; margin-bottom: 50px;">
         <!-- Calendar View -->
         <div class="col-md-4">
-            <div class="calendar-container border rounded p-3">
-                <h5 class="text-center">Chọn ngày</h5>
+            <div class="calendar-container border rounded shadow p-4 bg-light">
+                <h5 class="text-center text-primary fw-bold mb-4">Chọn Ngày</h5>
                 <form method="POST">
-                    <input type="date" class="form-control mb-3" id="selectedDate" name="selectedDate"/>
-                    <button class="btn btn-primary w-100" id="confirmDate" name="confirmDate" type="submit">Xác nhận</button>
+                    <input
+                        type="date"
+                        class="form-control mb-3 p-2 border-primary shadow-sm"
+                        id="selectedDate"
+                        name="selectedDate" />
+                    <button
+                        class="btn btn-primary w-100 fw-bold shadow-sm"
+                        id="confirmDate"
+                        name="confirmDate"
+                        type="submit">
+                        Xác nhận
+                    </button>
                 </form>
             </div>
         </div>
 
-        <!-- Info View -->
         <div class="col-md-8">
-            <div class="info-view">
-                <h5>Thông tin bệnh nhân</h5>
-
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Tên bệnh nhân</th>
-                        <th>Ngày đặt</th>
-                        <th>Khung giờ</th>
-                    </tr>
+            <div class="info-view border rounded shadow p-4 bg-white">
+                <h5 class="text-primary fw-bold mb-4">Thông Tin Bệnh Nhân</h5>
+                <table class="table table-hover table-bordered text-center">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th scope="col">Tên Bệnh Nhân</th>
+                            <th scope="col">Ngày Đặt</th>
+                            <th scope="col">Khung Giờ</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for r in reg %}
-                    <tr>
-                        <td>{{ r.patient.name }}</td>
-                        <td>{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
-                        <td>{{ r.time.period }}</td>
-                    </tr>
-                    {% endfor %}
+                        {% for r in reg %}
+                        <tr>
+                            <td class="align-middle">{{ r.patient.name }}</td>
+                            <td class="align-middle">{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
+                            <td class="align-middle">{{ r.time.period }}</td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
 </div>
+
 
 {%endblock%}
