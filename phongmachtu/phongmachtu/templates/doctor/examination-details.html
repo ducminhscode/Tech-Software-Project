@@ -36,7 +36,7 @@
                 <tr>
                     <th>Ngày khám:</th>
                     <td>
-                        <input class="form-control" id="datetime" type="hidden" name="datetime" >
+                        <input class="form-control" id="datetime" type="hidden" name="datetime">
                         {{ registration.booked_date.strftime('%Y-%m-%d') }}
                     </td>
                 </tr>
@@ -74,8 +74,9 @@
             <button type="submit" class="btn btn-success">Lưu phiếu khám</button>
         </div>
     </form>
-</div>
-</div>
+    <div class="mt-4">
+        <a href="{{ url_for('examination_form') }}" class="btn btn-secondary">Quay lại</a>
+    </div>
 </div>
 
 
