@@ -257,8 +257,15 @@ def cashing():
 @login_required
 def examination_form():
     today_date = datetime.today().date()
-
     registrations = dao.load_registration_form_by_day(today_date)
+
+    return render_template('doctor/examination-form.html', reg=registrations)
+
+
+@app.route('/doctor/examination/<int:registration_id>', methods=['GET', 'POST'])
+@login_required
+def examination_detail(registration_id):
+    registration = dao.get_registration_by_id(registration_id)
     medicines = dao.load_medicine()
 
     if request.method == 'POST':
@@ -267,19 +274,20 @@ def examination_form():
         examination_id = request.form.get('examination_id')
 
         disease = request.form.get('disease')
-
         medicine_names = request.form.getlist('medicineName')
         quantities = request.form.getlist('quantity')
         units = request.form.getlist('unit')
         usages = request.form.getlist('usage')
 
-        prescription_id = dao.add_examination_form(examination_id, doctor_id, patient_id, disease, medicine_names, quantities, units,
-                                                   usages)
+
+        prescription_id = dao.add_examination_form(examination_id, doctor_id, patient_id, disease,
+                                                   medicine_names, quantities, units, usages)
         dao.change_isKham(patient_id)
         dao.set_receipt(prescription_id, patient_id, medicine_names, quantities)
+
         return redirect('/doctor/examination-form')
 
-    return render_template('doctor/examination-form.html', reg=registrations, medicines=medicines)
+    return render_template('doctor/examination-details.html', registration=registration, medicines=medicines)
 
 
 @app.route('/doctor/history-examination', methods=['get', 'post'])
@@ -362,10 +370,31 @@ def confirm_registration():
     reg_id = request.form.get('registration_id')
     if reg_id:
         if dao.confirm_registration(reg_id):
-            return redirect('/nurse/patient-list')
+            return redirect('/nurse/confirm-registration')
 
     return render_template('/nurse/confirm-registration.html', reg=registrations)
 
+
+@app.route('/nurse/confirm-all-registrations', methods=['GET', 'POST'])
+def confirm_all_registrations():
+    registrations = load_registration_form()
+
+    for r in registrations:
+        dao.confirm_registration(r.id)
+        return redirect('/nurse/confirm-registration')
+
+    return render_template('/nurse/confirm-registration.html', reg=registrations)
+
+@app.route('/nurse/cancel-registration', methods=['GET', 'POST'])
+def cancel_registration():
+    registrations = load_registration_form()
+
+    reg_id = request.form.get('registration_id')
+    if reg_id:
+        if dao.cancel_registration(reg_id):
+            return redirect('/nurse/cancel-registration')
+
+    return render_template('/nurse/confirm-registration.html', reg=registrations)
 
 
 @app.route('/nurse/patient-list', methods=['GET', 'POST'])

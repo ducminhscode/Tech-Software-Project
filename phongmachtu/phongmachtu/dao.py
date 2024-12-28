@@ -197,7 +197,8 @@ def change_isKham(patient_id):
 def load_registration_form_by_day(today):
     return RegistrationForm.query.filter_by(lenLichKham=True, booked_date=today, isKham=False).all()
 
-
+def get_registration_by_id(registration_id):
+    return RegistrationForm.query.filter_by(id = registration_id).first()
 # ================================= NURSE ============================================
 def add_patient_by_nurse(name, address, day_of_birth, gender, phone):
     u = Patient(name=name, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
@@ -208,6 +209,28 @@ def add_patient_by_nurse(name, address, day_of_birth, gender, phone):
 
 def load_registration_form():
     return RegistrationForm.query.filter_by(lenLichKham=False).all()
+
+
+
+def cancel_registration(reg_id):
+    try:
+        # Tìm bảng ghi dựa trên reg_id
+        registration = RegistrationForm.query.get(reg_id)
+        if registration:
+            # Xóa bảng ghi khỏi session
+            db.session.delete(registration)
+            # Lưu thay đổi vào database
+            db.session.commit()
+            return True
+        else:
+            # Trả về False nếu không tìm thấy bảng ghi
+            return False
+    except Exception as e:
+        # Xử lý lỗi, rollback session
+        print(f"Lỗi khi xóa lịch khám: {e}")
+        db.session.rollback()
+        return False
+
 
 
 def confirm_registration(reg_id):
@@ -407,3 +430,5 @@ def show_receipt_by_appointment_id(appointment_id):
         if receipt_detail:
             return Receipt.query.get(receipt_detail.receipt_id)
     return None
+
+

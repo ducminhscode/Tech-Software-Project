@@ -11,6 +11,10 @@
 <h1>Danh Sách Bệnh Nhân Đăng Ký</h1>
 <div class="container mt-5" style="margin-bottom: 50px">
     <div class="d-flex justify-content-between">
+        <!-- Thêm nút "Xác nhận toàn bộ" -->
+        <form method="POST" action="/nurse/confirm-all-registrations">
+            <button type="submit" class="btn btn-primary">Xác nhận toàn bộ</button>
+        </form>
     </div>
     <div class="danger alert-danger" id="message-container"></div>
 
@@ -22,6 +26,7 @@
             <th scope="col">Ngày đặt</th>
             <th scope="col">Mô tả bệnh</th>
             <th scope="col">Thao tác</th>
+            <th scope="col">Hủy</th> <!-- Thêm cột Hủy -->
         </tr>
         </thead>
         <tbody>
@@ -35,6 +40,13 @@
                 <form method="POST" action="/nurse/confirm-registration">
                     <input type="hidden" name="registration_id" value="{{ r.id }}">
                     <button type="submit" class="book-btn btn btn-success">Xác nhận</button>
+                </form>
+            </td>
+            <td>
+                <!-- Thêm nút Hủy -->
+                <form method="POST" action="/nurse/cancel-registration">
+                    <input type="hidden" name="registration_id" value="{{ r.id }}">
+                    <button type="submit" class="btn btn-danger">Hủy</button>
                 </form>
             </td>
         </tr>
