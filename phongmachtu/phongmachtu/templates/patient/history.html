@@ -11,8 +11,8 @@
 <h1>Lịch Sử Khám Bệnh</h1>
 <div class="calendar-container" style="margin-bottom: 50px; margin-top: 50px">
 
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered shadow-lg rounded" style="text-align: center">
+        <thead style="background-color: #0064ff;">
         <tr>
             <th>Ngày</th>
             <th>Khung giờ</th>
@@ -21,7 +21,7 @@
             <th>Xem hóa đơn</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody style="background-color:#00ffff;">
         {% for appointment in appoint %}
         <tr>
             <td>{{ appointment.booked_date.strftime('%d/%m/%Y') }}</td>

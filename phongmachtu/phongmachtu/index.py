@@ -125,7 +125,6 @@ def booking():
             else:
                 err_msg = "Số lượng khám trong ngày đã giới hạn"
 
-
     time = dao.get_all_period()
     return render_template('patient/booking.html', time=time, err_msg=err_msg, success_msg=success_msg)
 

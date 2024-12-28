@@ -8,11 +8,10 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<h1>Lịch Khám Bệnh</h1>
-<div class="calendar-container" style="margin-bottom: 50px; margin-top: 50px">
-
-    <table class="table table-bordered">
-        <thead>
+<h1 class="text-center text-primary my-4">Lịch Khám Bệnh</h1>
+<div class="calendar-container mx-auto" style="max-width: 800px; margin-bottom: 50px; margin-top: 50px;">
+    <table class="table table-hover table-bordered text-center shadow-lg rounded">
+        <thead class="bg-primary text-white">
             <tr>
                 <th>Ngày</th>
                 <th>Khung giờ</th>
@@ -20,7 +19,7 @@
                 <th>Trạng thái khám</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="background-color: #eaf7fa;">
             {% for appointment in appoint %}
             <tr>
                 <td>{{ appointment.booked_date.strftime('%d/%m/%Y') }}</td>
@@ -32,11 +31,11 @@
                     <span class="badge bg-warning">Chưa xác nhận</span>
                     {% endif %}
                 </td>
-                  <td>
+                <td>
                     {% if appointment.isKham %}
                     <span class="badge bg-success">Đã khám</span>
                     {% else %}
-                    <span class="badge bg-warning">Chưa khám</span>
+                    <span class="badge bg-danger">Chưa khám</span>
                     {% endif %}
                 </td>
             </tr>
@@ -44,6 +43,8 @@
         </tbody>
     </table>
 </div>
+
+
 
 
 {% endblock %}
