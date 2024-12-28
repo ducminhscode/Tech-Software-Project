@@ -21,6 +21,12 @@
             <label for="name" class="form-label">Họ và tên</label>
             <input type="text" class="form-control" id="name" placeholder="{{ current_user.name }}" disabled>
         </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" placeholder="{{ current_user.email }}" disabled>
+        </div>
+
         {% if current_user.type == "patient" %}
             <div class="mb-3">
                 <label for="address" class="form-label">Địa chỉ</label>

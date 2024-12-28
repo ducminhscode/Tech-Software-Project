@@ -157,11 +157,11 @@ class CashierView(AuthenticatedAdminModelView):
 
 
 class PatientView(AuthenticatedAdminModelView):
-    column_list = ['id', 'name', 'username', 'address', 'day_of_birth', 'gender', 'phone', 'joined_date']
+    column_list = ['id', 'name', 'username', 'address', 'day_of_birth', 'gender', 'phone', 'email', 'joined_date']
     column_labels = {'id': 'STT', 'name': 'Tên', 'username': 'Tên đăng nhập', 'address': 'Địa chỉ',
-                     'day_of_birth': 'Ngày sinh',
+                     'day_of_birth': 'Ngày sinh', 'email': 'Email',
                      'gender': 'Giới tính', 'phone': 'Số điện thoại', 'joined_date': 'Ngày tham gia', 'type': 'Vai trò'}
-    column_searchable_list = ['name', 'phone']
+    column_searchable_list = ['name', 'phone', 'email']
     column_filters = ['name', 'address', 'phone', 'day_of_birth']
     column_sortable_list = ['name', 'joined_date', 'day_of_birth']
     can_view_details = True
@@ -170,7 +170,7 @@ class PatientView(AuthenticatedAdminModelView):
     details_modal = True
     page_size = 10
 
-    form_columns = ['name', 'username', 'password', 'type', 'address', 'day_of_birth', 'gender', 'phone']
+    form_columns = ['name', 'username', 'password', 'type', 'address', 'day_of_birth', 'gender', 'phone', 'email']
 
     form_extra_fields = {
         'password': PasswordField('Mật khẩu',validators=[DataRequired()])

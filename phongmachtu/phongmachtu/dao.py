@@ -10,11 +10,11 @@ from sqlalchemy import extract, func, nullsfirst
 import cloudinary.uploader
 
 
-def add_patient(name, username, password, avatar, address, day_of_birth, gender, phone):
+def add_patient(name, username, password, avatar, address, day_of_birth, gender, phone, email):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
     u = Patient(name=name, username=username, password=password, avatar=avatar, address=address,
                 day_of_birth=day_of_birth,
-                gender=gender, phone=phone)
+                gender=gender, phone=phone, email=email)
     db.session.add(u)
     db.session.commit()
 
@@ -200,8 +200,8 @@ def load_registration_form_by_day(today):
 def get_registration_by_id(registration_id):
     return RegistrationForm.query.filter_by(id = registration_id).first()
 # ================================= NURSE ============================================
-def add_patient_by_nurse(name, address, day_of_birth, gender, phone):
-    u = Patient(name=name, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone)
+def add_patient_by_nurse(name, address, day_of_birth, gender, phone, email):
+    u = Patient(name=name, address=address, day_of_birth=day_of_birth, gender=gender, phone=phone, email=email)
     db.session.add(u)
     db.session.commit()
     return u

@@ -67,6 +67,7 @@ class Patient(Account):
     day_of_birth = Column(String(50))
     gender = Column(String(10), nullable=False)
     phone = Column(String(10), unique=True, nullable=False)
+    email = Column(String(255),unique=True,nullable=False)
 
     registration_form = relationship('RegistrationForm', cascade="all,delete", backref='patient', lazy=True)
     examination_forms = relationship('ExaminationForm', backref='patient', lazy=True)

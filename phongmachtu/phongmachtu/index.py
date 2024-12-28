@@ -1,6 +1,8 @@
 import datetime
 
 from flask import render_template, request, redirect, session, url_for
+from wtforms.validators import email
+
 from phongmachtu import app, login
 from flask_login import login_user, logout_user, current_user, login_required
 import dao
@@ -185,13 +187,14 @@ def register():
             gender = request.form.get('gender')
             phone = request.form.get('phone')
             avatar = request.files.get('avatar')
+            email = request.form.get('email')
             if avatar:
                 my_folder = "PhongMachTu"
                 response = cloudinary.uploader.upload(avatar, folder=my_folder)
                 avatar_path = response['secure_url']
             dao.add_patient(name=name, username=username, password=password, avatar=avatar_path, address=address,
                             day_of_birth=day_of_birth,
-                            gender=gender, phone=phone)
+                            gender=gender, phone=phone, email=email)
             return redirect('/login')
     return render_template('register.html', err_msg=err_msg)
 
@@ -356,8 +359,9 @@ def regis_patient():
         day_of_birth = request.form.get('day_of_birth')
         gender = request.form.get('gender')
         phone = request.form.get('phone')
+        email = request.form.get('email')
         patient = dao.add_patient_by_nurse(name=name, address=address, day_of_birth=day_of_birth, gender=gender,
-                                           phone=phone)
+                                           phone=phone, email=email)
         return redirect(url_for('patient_booking', patient_id=patient.id, patient_name=patient.name))
 
     return render_template('/nurse/regis-patient.html', msg=msg)
