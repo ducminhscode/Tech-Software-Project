@@ -8,65 +8,68 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<h1>Chi Tiết Hóa Đơn</h1>
-<div class="container mt-5" style="margin-bottom: 50px; margin-top: 50px;">
+<section>
+    <h1 class="text-center text-primary fw-bold my-5">Chi Tiết Hóa Đơn</h1>
 
-    <div class="mt-4">
+    <div class="container shadow-lg p-5 rounded bg-light">
+        <div class="mt-4">
 
-        {% if receipt %}
-        <div class="mb-4">
-            <p class="text-center">
-                <strong>Trạng Thái Thanh Toán:</strong>
+            {% if receipt %}
+            <div class="mb-4 text-center">
+                <p class="fs-5"><strong>Trạng Thái Thanh Toán:</strong></p>
                 {% if receipt.isPaid %}
-                <span class="text-success">Đã thanh toán</span>
+                <p class="text-success fs-4">Đã thanh toán</p>
                 {% else %}
-                <span class="text-danger">Chưa thanh toán</span>
+                <p class="text-danger fs-4">Chưa thanh toán</p>
                 {% endif %}
-            </p>
-        </div>
-        <h4 style="text-align: center">Toa thuốc</h4>
-        <table class="table table-bordered">
-            <thead>
+            </div>
 
-            <tr>
-                <th>Tên thuốc</th>
-                <th>Số lượng</th>
-                <th>Đơn vị</th>
-                <th>Giá thuốc</th>
-                <th>Thành tiền</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for receipt_detail in receipt.receipt_details %}
-            {% for medicine in receipt_detail.prescription.prescription_medicines %}
-            <tr>
-                <td>{{ medicine.medicine.name }}</td>
-                <td>{{ medicine.quantity }}</td>
-                <td>{{ medicine.medicine.unit }}</td>
-                <td>{{ medicine.medicine.price }} VND</td>
-                <td>
-                    {{ (medicine.quantity * medicine.medicine.price) | float }} VND
-                </td>
-            </tr>
-            {% endfor %}
-            {% endfor %}
-            </tbody>
-        </table>
-        <div class="mb-3 text-end">
-            <strong>Thành Tiền Khám:</strong>
-            <span>{{ receipt.examines_price }} VND</span>
+            <h4 class="text-info text-center mb-4">Toa Thuốc</h4>
+            <table class="table table-bordered table-striped shadow-sm">
+                <thead class="bg-primary text-white">
+                <tr>
+                    <th>Tên thuốc</th>
+                    <th>Số lượng</th>
+                    <th>Đơn vị</th>
+                    <th>Giá thuốc</th>
+                    <th>Thành tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for receipt_detail in receipt.receipt_details %}
+                {% for medicine in receipt_detail.prescription.prescription_medicines %}
+                <tr>
+                    <td>{{ medicine.medicine.name }}</td>
+                    <td>{{ medicine.quantity }}</td>
+                    <td>{{ medicine.medicine.unit }}</td>
+                    <td>{{ medicine.medicine.price }} VND</td>
+                    <td>{{ (medicine.quantity * medicine.medicine.price) | float }} VND</td>
+                </tr>
+                {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="mb-3 text-end">
+                <p><strong>Thành Tiền Khám:</strong> <span class="text-dark">{{ receipt.examines_price }} VND</span></p>
+            </div>
+
+            <div class="mb-3 text-end">
+                <p class="fs-5"><strong>Tổng Thành Tiền:</strong> <span class="text-danger fs-4">{{ receipt.total_price }} VND</span>
+                </p>
+            </div>
+
+            {% else %}
+            <p class="text-muted text-center">Không có toa thuốc nào được kê.</p>
+            {% endif %}
         </div>
 
-        <div class="mb-3 text-end">
-            <strong>Tổng Thành Tiền:</strong>
-            <span>{{receipt.total_price }} VND</span>
+        <div class="mt-4 text-center">
+            <a href="{{ url_for('history_patient') }}" class="btn btn-secondary btn-lg px-4 py-2">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
         </div>
-        {% else %}
-        <p>Không có toa thuốc nào được kê.</p>
-        {% endif %}
     </div>
-    <div class="mt-4">
-        <a href="{{ url_for('history_patient') }}" class="btn btn-secondary">Quay lại</a>
-    </div>
-</div>
+</section>
+
 {% endblock %}

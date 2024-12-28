@@ -8,47 +8,53 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<h1>Chi Tiết Khám Bệnh</h1>
-<div class="container mt-5" style="margin-bottom: 50px; margin-top: 50px;">
+<section>
+    <h1 class="text-center text-primary fw-bold my-5">Chi Tiết Khám Bệnh</h1>
 
-    <div class="row">
-        <div class="col-md-6">
-            <p><strong>Tên bệnh nhân:</strong> {{ result.patient.name }}</p>
-            <p><strong>Ngày khám:</strong> {{ result.datetime.strftime('%d/%m/%Y') }}</p>
-            <p><strong>Bệnh lý:</strong> {{ result.disease }}</p>
+    <div class="container shadow-lg p-5 rounded bg-light">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="text-info mb-4">Thông Tin Bệnh Nhân</h5>
+                <p><strong>Tên bệnh nhân:</strong> <span class="text-dark">{{ result.patient.name }}</span></p>
+                <p><strong>Ngày khám:</strong> <span class="text-dark">{{ result.datetime.strftime('%d/%m/%Y') }}</span></p>
+                <p><strong>Bệnh lý:</strong> <span class="text-dark">{{ result.disease }}</span></p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="text-info">Toa Thuốc</h4>
+            {% if prescription_data and prescription_data.medicines %}
+            <table class="table table-bordered table-striped shadow-sm">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>Tên thuốc</th>
+                        <th>Số lượng</th>
+                        <th>Đơn vị</th>
+                        <th>Hướng dẫn sử dụng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medicine in prescription_data.medicines %}
+                    <tr>
+                        <td>{{ medicine.name }}</td>
+                        <td>{{ medicine.quantity }}</td>
+                        <td>{{ medicine.unit }}</td>
+                        <td>{{ medicine.guide }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">Không có toa thuốc nào được kê.</p>
+            {% endif %}
+        </div>
+
+        <div class="mt-4 text-center">
+            <a href="{{ url_for('history_patient') }}" class="btn btn-secondary btn-lg px-4 py-2">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
         </div>
     </div>
+</section>
 
-    <div class="mt-4">
-        <h4>Toa thuốc</h4>
-        {% if prescription_data and prescription_data.medicines %}
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Tên thuốc</th>
-                <th>Số lượng</th>
-                <th>Đơn vị</th>
-                <th>Hướng dẫn sử dụng</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for medicine in prescription_data.medicines %}
-            <tr>
-                <td>{{ medicine.name }}</td>
-                <td>{{ medicine.quantity }}</td>
-                <td>{{ medicine.unit }}</td>
-                <td>{{ medicine.guide }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <p>Không có toa thuốc nào được kê.</p>
-        {% endif %}
-    </div>
-
-    <div class="mt-4">
-        <a href="{{ url_for('history_patient') }}" class="btn btn-secondary">Quay lại</a>
-    </div>
-</div>
 {% endblock %}
