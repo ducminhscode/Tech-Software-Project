@@ -8,7 +8,7 @@
 </header>
 
 <section class="container mt-5 pt-5">
-    <!-- Thông báo lỗi -->
+
     {% if err_msg %}
     <div class="alert alert-danger text-center mb-4">
         {{ err_msg }}
@@ -19,7 +19,10 @@
         <div class="col-md-8 col-lg-6">
             <div class="card shadow-lg p-4 rounded">
                 <form method="POST" enctype="multipart/form-data">
-                    <h1 class="text-center mb-4">Thông tin tài khoản</h1>
+                    <div class="text-center mb-4">
+                        <h1 class="fw-bold text-primary">ĐĂNG KÝ</h1>
+                        <p class="text-muted">Thông tin tài khoản</p>
+                    </div>
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="name" placeholder="Nhập họ tên" name="name" required>
@@ -69,7 +72,7 @@
                         <label for="confirm">Nhập lại mật khẩu</label>
                     </div>
 
-                    <h4 class="text-center mb-3">Chọn Avatar</h4>
+                    <p class="text-center mb-4 text-muted"> Ảnh đại diện của bạn</p>
                     <div class="form-floating mb-3">
                         <input type="file" class="form-control" id="avatar" name="avatar"/>
                     </div>

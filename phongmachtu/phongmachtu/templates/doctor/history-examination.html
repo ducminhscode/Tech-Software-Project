@@ -8,31 +8,32 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<div>
-    <h1>Tra Cứu Lịch Sử Khám</h1>
-    <form method="POST">
-        <div class="form-floating mb-3" style="margin-top: 50px;">
-            <input type="text" class="form-control" id="patient_id" name="patient_id" placeholder="Mã bệnh nhân" required>
+<section class="container mt-5 pt-5">
+    <h1 class="text-center text-primary fw-bold mb-4">Tra Cứu Lịch Sử Khám</h1>
+
+    <form method="POST" class="d-flex justify-content-center mb-5">
+        <div class="form-floating w-50">
+            <input type="text" class="form-control rounded-pill" id="patient_id" name="patient_id"
+                   placeholder="Mã bệnh nhân" required>
             <label for="patient_id">Mã bệnh nhân</label>
         </div>
-        <div class="text-center" style="margin-bottom: 50px; margin-top: 20px">
-            <button type="submit" class="btn btn-primary">Tra cứu</button>
-        </div>
+        <button type="submit" class="btn btn-primary rounded-pill ms-3">Tra cứu</button>
     </form>
 
     {% if patient_history %}
-    <div class="mt-5" style="margin-bottom: 50px">
-        <h3 class="text-center">Lịch Sử Khám Bệnh</h3>
-        <table class="table table-striped">
-            <thead>
+    <div class="mt-5">
+        <h3 class="text-center mb-4">Lịch Sử Khám Bệnh</h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
                 <tr>
-                    <th>Mã phiếu khám</th>
-                    <th>Ngày khám</th>
-                    <th>Kết quả chuẩn đoán</th>
-                    <th>Toa thuốc</th>
+                    <th scope="col">Mã phiếu khám</th>
+                    <th scope="col">Ngày khám</th>
+                    <th scope="col">Kết quả chuẩn đoán</th>
+                    <th scope="col">Toa thuốc</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {% for history in patient_history %}
                 <tr>
                     <td>{{ history.id }}</td>
@@ -40,7 +41,7 @@
                     <td>{{ history.disease }}</td>
                     <td>
                         <button type="button"
-                                class="btn btn-info"
+                                class="btn btn-info btn-sm"
                                 data-prescriptions='{{ history.prescriptions|tojson|safe }}'
                                 onclick="viewPrescription(this)">
                             Xem toa thuốc
@@ -48,19 +49,19 @@
                     </td>
                 </tr>
                 {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
     {% endif %}
-</div>
+</section>
 
 <!-- Modal để xem toa thuốc -->
 <div class="modal fade" id="prescriptionModal" tabindex="-1" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header ">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="prescriptionModalLabel">Toa thuốc</h5>
-
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="prescriptionContent">
@@ -68,6 +69,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     function viewPrescription(button) {
