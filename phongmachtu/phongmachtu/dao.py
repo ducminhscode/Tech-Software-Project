@@ -270,7 +270,6 @@ def confirm_registration(reg_id):
         if registration:
             registration.lenLichKham = True
             db.session.commit()
-            # send_confirm_email(registration)
             return True
         else:
             return False
@@ -369,11 +368,9 @@ def save_booking(selected_date, symptom, patient_id, selected_time):
         )
         db.session.add(u)
         db.session.commit()
-
-
-        return True
+        return u.id
     else:
-        return False
+        return None
 
 
 

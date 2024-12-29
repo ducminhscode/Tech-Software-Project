@@ -370,8 +370,10 @@ def patient_booking():
             elif dao.check_booking(patient_id, selected_date):
                 err_msg = "Bạn đã đăng kí lịch khám vào ngày này rồi"
             else:
-                if dao.save_booking(selected_date, symptom, patient_id, selected_time):
-                    success_msg = "Đăng kí thành công."
+                u_id = dao.save_booking(selected_date, symptom, patient_id, selected_time)
+                if u_id:
+                    if dao.confirm_registration(u_id):
+                        success_msg = "Đăng kí thành công."
                 else:
                     err_msg = "Số lượng khám trong ngày đã giới hạn"
 
@@ -416,9 +418,8 @@ def confirm_all_registrations():
 
     for r in registrations:
         dao.confirm_registration(r.id)
-        return redirect('/nurse/confirm-registration')
 
-    return render_template('/nurse/confirm-registration.html', reg=registrations)
+    return redirect('/nurse/confirm-registration')
 
 
 @app.route('/nurse/cancel-registration', methods=['GET', 'POST'])
