@@ -27,7 +27,7 @@
             <tr>
                 <td class="align-middle">{{ r.patient.name }}</td>
                 <td class="align-middle">{{ r.time.period }}</td>
-                <td class="align-middle">{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
+                <td class="align-middle">{{ r.booked_date.strftime('%d/%m/%Y') }}</td>
                 <td class="align-middle">{{ r.desc }}</td>
                 <td class="align-middle">
                     <form method="POST" action="/nurse/confirm-registration" class="d-inline-block">

@@ -39,7 +39,7 @@
                     <thead class="bg-primary text-white">
                     <tr>
                         <th scope="col" class="py-3">Mã phiếu khám</th>
-                        <th scope="col" class="py-3"v>Mã bệnh nhân</th>
+                        <th scope="col" class="py-3">Mã bệnh nhân</th>
                         <th scope="col" class="py-3">Tên bệnh nhân</th>
                         <th scope="col" class="py-3">Ngày đặt</th>
                         <th scope="col" class="py-3">Khung giờ</th>
@@ -53,7 +53,7 @@
                         <td class="align-middle">{{ r.id }}</td>
                         <td class="align-middle">{{ r.patient.id }}</td>
                         <td class="align-middle">{{ r.patient.name }}</td>
-                        <td class="align-middle">{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
+                        <td class="align-middle">{{ r.booked_date.strftime('%d/%m/%Y') }}</td>
                         <td class="align-middle">{{ r.time.period }}</td>
                         {%if not r.isKham%}
                         <td><span class="badge bg-warning">Chưa khám</span></td>
