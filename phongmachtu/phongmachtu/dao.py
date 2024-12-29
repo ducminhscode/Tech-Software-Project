@@ -296,7 +296,6 @@ def order_number_for_patient(date, selected_time):
             return max_count + 1
     elif selected_time.__eq__(2) and current_count < value // 2:
             return max_count + 1
-
     return None
 
 
