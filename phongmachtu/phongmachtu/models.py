@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import unique
 
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, Float, false, Date
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, Float, false, Date, column
 from sqlalchemy.orm import relationship
 from phongmachtu import app, db
 from flask_login import UserMixin
@@ -106,6 +106,7 @@ class RegistrationForm(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     booked_date = Column(Date, default=datetime.now())
     desc = Column(String(500))
+    order_number = Column(Integer)
     lenLichKham = Column(Boolean, default=False)
     isKham = Column(Boolean, default=False)
 
@@ -239,7 +240,7 @@ if __name__ == "__main__":
         # db.session.add(p1)
         # db.session.add(p2)
 
-        time_periods = ["Sáng", "Chiều", "Tối"]
+        time_periods = ["Sáng: 7 giờ đến 11 giờ", "Chiều: 13 giờ đến 17 giờ"]
 
         for period in time_periods:
             time = Times(period=period)
@@ -301,6 +302,8 @@ if __name__ == "__main__":
         # db.session.add(pm2)
 
         re1 = Regulations(name='Số lượng bệnh nhân tối đa', value=40, admin_id=1)
+        re1 = Regulations(name='Giá tiền khám', value=100000, admin_id=1)
+
         db.session.add(re1)
 
         db.session.commit()

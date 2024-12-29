@@ -12,39 +12,45 @@
 <div class="calendar-container mx-auto" style="max-width: 800px; margin-bottom: 100px; margin-top: 50px;">
     <table class="table table-hover table-bordered text-center shadow-lg rounded">
         <thead class="bg-primary text-white">
-            <tr>
-                <th scope="col" class="py-3">Ngày</th>
-                <th scope="col" class="py-3">Khung giờ</th>
-                <th scope="col" class="py-3">Xác nhận</th>
-                <th scope="col" class="py-3">Trạng thái khám</th>
-            </tr>
+        <tr>
+            <th scope="col" class="py-3">Ngày</th>
+            <th scope="col" class="py-3">Khung giờ</th>
+            <th scope="col" class="py-3">Số thứ tự khám</th>
+            <th scope="col" class="py-3">Xác nhận</th>
+            <th scope="col" class="py-3">Trạng thái khám</th>
+        </tr>
         </thead>
         <tbody>
-            {% for appointment in appoint %}
-            <tr>
-                <td>{{ appointment.booked_date.strftime('%d/%m/%Y') }}</td>
-                <td>{{ appointment.time.period }}</td>
-                <td>
-                    {% if appointment.lenLichKham %}
-                    <span class="badge bg-success">Đã xác nhận</span>
-                    {% else %}
-                    <span class="badge bg-warning">Chưa xác nhận</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if appointment.isKham %}
-                    <span class="badge bg-success">Đã khám</span>
-                    {% else %}
-                    <span class="badge bg-danger">Chưa khám</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
+        {% for appointment in appoint %}
+        <tr>
+            <td>{{ appointment.booked_date.strftime('%d/%m/%Y') }}</td>
+            <td>{{ appointment.time.period }}</td>
+            <td>
+                {% if appointment.lenLichKham %}
+                <span class="badge bg-success">{{appointment.order_number}}</span>
+                {% else %}
+                <span class="badge bg-warning">Chưa có số thứ tự</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if appointment.lenLichKham %}
+                <span class="badge bg-success">Đã xác nhận</span>
+                {% else %}
+                <span class="badge bg-warning">Chưa xác nhận</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if appointment.isKham %}
+                <span class="badge bg-success">Đã khám</span>
+                {% else %}
+                <span class="badge bg-danger">Chưa khám</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>
-
-
 
 
 {% endblock %}

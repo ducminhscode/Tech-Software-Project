@@ -10,7 +10,7 @@ from sqlalchemy.orm import joinedload
 import phongmachtu
 from models import *
 from phongmachtu import db, mail
-from sqlalchemy import extract, func, nullsfirst
+from sqlalchemy import extract, func, nullsfirst, values
 import cloudinary.uploader
 
 
@@ -279,11 +279,38 @@ def cancel_registration(reg_id):
         return False
 
 
-def confirm_registration(reg_id):
+def order_number_for_patient(date, selected_time):
+    current_count = RegistrationForm.query.filter_by(booked_date=date, time_id=selected_time).count()
+
+    max_count = RegistrationForm.query.filter_by(booked_date=date, time_id=selected_time).with_entities(
+        func.max(RegistrationForm.order_number)
+    ).scalar()
+    max_count = max_count if max_count else 0
+
+    regulation = Regulations.query.filter_by(id=1).first()
+
+    value = regulation.value
+
+    if selected_time.__eq__(1):
+        if current_count <= value // 2:
+            return max_count + 1
+    elif selected_time.__eq__(2):
+        if current_count < value:
+            return max_count + 1 if max_count >= 21 else 21
+
+    return None
+
+
+def confirm_registration(reg_id,date, selected_time):
     try:
+        order_number= order_number_for_patient(date, selected_time)
+        if not order_number:
+            return False
+
         registration = RegistrationForm.query.get(reg_id)
         if registration:
             registration.lenLichKham = True
+            registration.order_number = order_number_for_patient(date, selected_time)
             db.session.commit()
             send_confirm_email(registration)
             return True
@@ -305,9 +332,10 @@ def registration_form_date(date):
 # ================================= CASHIER ============================================
 def set_receipt(prescription_id, patient_id, medicine_names, quantities):
     try:
+        regu = Regulations.query.filter_by(id=2).first()
         new_receipt = Receipt(
             created_date=datetime.now(),
-            examines_price=100000,
+            examines_price=regu.value,
             isPaid=False,
             patient_id=patient_id
         )
@@ -404,9 +432,6 @@ def save_booking_by_nurse(selected_date, symptom, patient_id, selected_time):
     db.session.add(u)
     db.session.commit()
 
-
-# def load_times():
-#     return Times.query.all()
 
 def get_time_by_period(selected_time):
     return Times.query.filter_by(period=selected_time).first()

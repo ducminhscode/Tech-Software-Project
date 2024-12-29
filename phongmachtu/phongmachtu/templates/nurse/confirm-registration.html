@@ -13,40 +13,46 @@
 
     <table class="table table-hover table-bordered text-center">
         <thead class="bg-primary text-white">
-            <tr>
-                <th scope="col" class="py-3">Họ và Tên</th>
-                <th scope="col" class="py-3">Giờ Đặt Lịch</th>
-                <th scope="col" class="py-3">Ngày Đặt</th>
-                <th scope="col" class="py-3">Mô Tả Bệnh</th>
-                <th scope="col" class="py-3">Thao Tác</th>
-                <th scope="col" class="py-3">Hủy</th>
-            </tr>
+        <tr>
+            <th scope="col" class="py-3">Họ và Tên</th>
+            <th scope="col" class="py-3">Giờ Đặt Lịch</th>
+            <th scope="col" class="py-3">Ngày Đặt</th>
+            <th scope="col" class="py-3">Mô Tả Bệnh</th>
+            <th scope="col" class="py-3">Thao Tác</th>
+            <th scope="col" class="py-3">Hủy</th>
+        </tr>
         </thead>
         <tbody>
-            {% for r in reg %}
-            <tr>
-                <td class="align-middle">{{ r.patient.name }}</td>
-                <td class="align-middle">{{ r.time.period }}</td>
-                <td class="align-middle">{{ r.booked_date.strftime('%d/%m/%Y') }}</td>
-                <td class="align-middle">{{ r.desc }}</td>
-                <td class="align-middle">
-                    <form method="POST" action="/nurse/confirm-registration" class="d-inline-block">
-                        <input type="hidden" name="registration_id" value="{{ r.id }}">
-                        <button type="submit" class="btn btn-success shadow-sm">
-                             Xác nhận
-                        </button>
-                    </form>
-                </td>
-                <td class="align-middle">
-                    <form method="POST" action="/nurse/cancel-registration" class="d-inline-block">
-                        <input type="hidden" name="registration_id" value="{{ r.id }}">
-                        <button type="submit" class="btn btn-danger shadow-sm">
-                            Hủy
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
+        {% for r in reg %}
+        <tr>
+            <td class="align-middle">{{ r.patient.name }}</td>
+            <td class="align-middle">
+                {{ r.time.period }}
+            </td>
+            <td class="align-middle">
+                {{ r.booked_date.strftime('%d/%m/%Y') }}
+            </td>
+            <td class="align-middle">{{ r.desc }}</td>
+            <td class="align-middle">
+                <form method="POST" action="/nurse/confirm-registration" class="d-inline-block">
+                    <input type="hidden" name="registration_id" value="{{ r.id }}">
+                    <input type="hidden" name="time" value="{{ r.time.id }}">
+                    <input type="hidden" name="date" value="{{ r.booked_date }}">
+                    <button type="submit" class="btn btn-success shadow-sm">
+                        Xác nhận
+                    </button>
+                </form>
+            </td>
+            <td class="align-middle">
+                <form method="POST" action="/nurse/cancel-registration" class="d-inline-block">
+                    <input type="hidden" name="registration_id" value="{{ r.id }}">
+                    <button type="submit" class="btn btn-danger shadow-sm">
+                        Hủy
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
     <div class="d-flex justify-content-between align-items-center mb-4">
