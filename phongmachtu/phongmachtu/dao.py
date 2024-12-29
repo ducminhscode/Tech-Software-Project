@@ -1,5 +1,7 @@
 import hashlib
 from datetime import datetime
+from multiprocessing.connection import Client
+
 from click.decorators import R
 from flask import render_template, Flask, current_app
 from flask_mail import Message
@@ -352,6 +354,8 @@ def save_booking(selected_date, symptom, patient_id, selected_time):
         )
         db.session.add(u)
         db.session.commit()
+
+
         return True
     else:
         return False
@@ -447,3 +451,8 @@ def show_receipt_by_appointment_id(appointment_id):
     return None
 
 
+def check_booking(patient_id, selected_date):
+    check = RegistrationForm.query.filter_by(patient_id = patient_id, booked_date=selected_date).first()
+    if check:
+        return True
+    return False

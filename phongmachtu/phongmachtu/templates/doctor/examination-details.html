@@ -30,7 +30,8 @@
                 <tr>
                     <th>Họ và tên:</th>
                     <td>
-                        <div class="form-control" id="name" name="name">{{ registration.patient.name }}</div>
+                        <input class="form-control" id="name" name="name" type="hidden">
+                        {{ registration.patient.name }}
                     </td>
                 </tr>
                 <tr>

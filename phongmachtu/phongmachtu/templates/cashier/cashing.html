@@ -25,14 +25,15 @@
     <!-- Trạng thái thanh toán -->
     <div class="mb-4">
         <p class="text-center">
-            <strong>Trạng Thái Thanh Toán:</strong>
-            {% if receipt.isPaid %}
-            <span class="text-success">Đã thanh toán</span>
-            {% else %}
-            <span class="text-danger">Chưa thanh toán</span>
-            {% endif %}
+            <strong>Tên bệnh nhân: {{receipt.patient.name}}</strong>
         </p>
     </div>
+    <div class="mb-4">
+        <p class="text-center">
+            <strong>Số điện thoại: {{receipt.patient.phone}}</strong>
+        </p>
+    </div>
+
 
     <!-- Form cho chi tiết hóa đơn -->
     <form method="POST" action="{{ url_for('cashing', receipt_id=receipt.id) }}">
@@ -48,17 +49,17 @@
             </thead>
             <tbody>
             {% for receipt_detail in receipt.receipt_details %}
-                {% for medicine in receipt_detail.prescription.prescription_medicines %}
-                    <tr>
-                        <td>{{ medicine.medicine.name }}</td>
-                        <td>{{ medicine.quantity }}</td>
-                        <td>{{ medicine.medicine.unit }}</td>
-                        <td>{{ medicine.medicine.price }} VND</td>
-                        <td>
-                            {{ (medicine.quantity * medicine.medicine.price) | float }} VND
-                        </td>
-                    </tr>
-                {% endfor %}
+            {% for medicine in receipt_detail.prescription.prescription_medicines %}
+            <tr>
+                <td>{{ medicine.medicine.name }}</td>
+                <td>{{ medicine.quantity }}</td>
+                <td>{{ medicine.medicine.unit }}</td>
+                <td>{{ medicine.medicine.price }} VND</td>
+                <td>
+                    {{ (medicine.quantity * medicine.medicine.price) | float }} VND
+                </td>
+            </tr>
+            {% endfor %}
             {% endfor %}
             <tr>
                 <td colspan="4" class="text-end"><strong>Thành Tiền Khám:</strong></td>
@@ -80,6 +81,16 @@
         </div>
         {% endif %}
     </form>
+    <div class="mb-4">
+        <p class="text-center">
+            <strong>Trạng Thái Thanh Toán:</strong>
+            {% if receipt.isPaid %}
+            <span class="text-success">Đã thanh toán</span>
+            {% else %}
+            <span class="text-danger">Chưa thanh toán</span>
+            {% endif %}
+        </p>
+    </div>
     {% else %}
     <p>Không có hóa đơn để hiển thị.</p>
     {% endif %}
