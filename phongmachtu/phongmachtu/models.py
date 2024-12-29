@@ -97,7 +97,7 @@ class Cashier(Account):
 
 class Times(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    period = Column(String(20), nullable=False)
+    period = Column(String(100), nullable=False)
 
     registration_form = relationship('RegistrationForm', backref='time', lazy=True)
 
@@ -301,11 +301,11 @@ if __name__ == "__main__":
         # db.session.add(pm)
         # db.session.add(pm2)
 
-        re1 = Regulations(name='Số lượng bệnh nhân tối đa', value=40, admin_id=1)
-        re1 = Regulations(name='Giá tiền khám', value=100000, admin_id=1)
+        re1 = Regulations(name='Số lượng bệnh nhân tối đa', value=4, admin_id=1)
+        re2 = Regulations(name='Giá tiền khám', value=100000, admin_id=1)
 
         db.session.add(re1)
-
+        db.session.add(re2)
         db.session.commit()
 
 

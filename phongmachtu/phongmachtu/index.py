@@ -138,10 +138,14 @@ def booking():
                     if dao.check_booking(patient_id, selected_date):
                         err_msg = "Bạn đã đăng kí lịch khám vào ngày này rồi"
                     else:
-                        if dao.save_booking(selected_date, symptom, patient_id, selected_time):
-                            success_msg = "Đăng kí thành công."
+                        if not dao.order_number_for_patient(selected_date, selected_time):
+                            err_msg = "Số lượng khám trong buổi đã giới hạn"
                         else:
-                            err_msg = "Số lượng khám trong ngày đã giới hạn"
+                            if dao.save_booking(selected_date, symptom, patient_id, selected_time):
+                                success_msg = "Đăng kí thành công."
+                            else:
+                                err_msg = "Số lượng khám trong ngày đã giới hạn"
+
     time = dao.get_all_period()
     return render_template('patient/booking.html', time=time, err_msg=err_msg, success_msg=success_msg)
 
@@ -369,21 +373,31 @@ def patient_booking():
 
         selected_date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
         current_date = datetime.now().date()
-
-        if selected_date_obj < current_date:
-            err_msg = "Vui lòng chọn ngày phù hợp."
+        now = datetime.now()
+        current_hour = now.hour
+        if not selected_time or not selected_date:
+            err_msg = "Vui lòng chọn đầy đủ thông tin."
         else:
-            if not selected_time or not selected_date:
-                err_msg = "Vui lòng chọn đầy đủ thông tin."
-            elif dao.check_booking(patient_id, selected_date):
-                err_msg = "Bạn đã đăng kí lịch khám vào ngày này rồi"
+            if selected_date_obj < current_date:
+                err_msg = "Vui lòng chọn ngày phù hợp."
             else:
-                u_id = dao.save_booking(selected_date, symptom, patient_id, selected_time)
-                if u_id:
-                    if dao.confirm_registration(u_id, selected_date, selected_time):
-                        success_msg = "Đăng kí thành công."
+                if int(selected_time) == 1 and current_hour > 11:
+                    err_msg = "Vui lòng chọn khung giờ sáng hợp lệ (trước 11 giờ)."
+                elif int(selected_time) == 2 and current_hour > 17:
+                    err_msg = "Vui lòng chọn khung giờ chiều hợp lệ (trước 17 giờ)."
                 else:
-                    err_msg = "Số lượng khám trong ngày đã giới hạn"
+                    if dao.check_booking(patient_id, selected_date):
+                        err_msg = "Bạn đã đăng kí lịch khám vào ngày này rồi"
+                    else:
+                        if not dao.order_number_for_patient(selected_date, selected_time):
+                            err_msg = "Số lượng khám trong buổi đã giới hạn"
+                        else:
+                            u_id = dao.save_booking(selected_date, symptom, patient_id, selected_time)
+                            if u_id:
+                                if dao.confirm_registration(u_id, selected_date, selected_time):
+                                    success_msg = "Đăng kí thành công."
+                            else:
+                                err_msg = "Số lượng khám trong ngày đã giới hạn"
 
     time = dao.get_all_period()
     return render_template('/nurse/patient-booking.html', msg=msg, time=time, err_msg=err_msg,

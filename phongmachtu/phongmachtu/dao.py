@@ -291,26 +291,20 @@ def order_number_for_patient(date, selected_time):
 
     value = regulation.value
 
-    if selected_time.__eq__(1):
-        if current_count <= value // 2:
+
+    if selected_time.__eq__(1) and current_count < value // 2:
             return max_count + 1
-    elif selected_time.__eq__(2):
-        if current_count < value:
-            return max_count + 1 if max_count >= 21 else 21
+    elif selected_time.__eq__(2) and current_count < value // 2:
+            return max_count + 1
 
     return None
 
 
 def confirm_registration(reg_id,date, selected_time):
     try:
-        order_number= order_number_for_patient(date, selected_time)
-        if not order_number:
-            return False
-
         registration = RegistrationForm.query.get(reg_id)
         if registration:
             registration.lenLichKham = True
-            registration.order_number = order_number_for_patient(date, selected_time)
             db.session.commit()
             send_confirm_email(registration)
             return True
@@ -405,10 +399,12 @@ def update_receipt(receipt_id, cashier_id):
 def save_booking(selected_date, symptom, patient_id, selected_time):
     regu = Regulations.query.filter_by(id = 1).first()
     count = RegistrationForm.query.filter_by( booked_date=selected_date).count()
+    order_number = order_number_for_patient(selected_date, selected_time)
 
     if count < regu.value:
         u = RegistrationForm(
             booked_date=selected_date,
+            order_number = order_number,
             desc=symptom,
             patient_id=patient_id,
             time_id=selected_time
@@ -419,18 +415,6 @@ def save_booking(selected_date, symptom, patient_id, selected_time):
     else:
         return None
 
-
-
-def save_booking_by_nurse(selected_date, symptom, patient_id, selected_time):
-    u = RegistrationForm(
-        booked_date=selected_date,
-        desc=symptom,
-        patient_id=patient_id,
-        time_id=selected_time,
-        lenLichKham=True
-    )
-    db.session.add(u)
-    db.session.commit()
 
 
 def get_time_by_period(selected_time):
