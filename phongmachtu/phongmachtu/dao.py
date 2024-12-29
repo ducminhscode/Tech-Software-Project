@@ -40,7 +40,7 @@ def check_account(username, phone, email):
     if email and Patient.query.filter_by(email=email).first():
         errors.append('Email đã tồn tại!')
 
-    if username and Patient.query.filter_by(username=username).first():
+    if username and Account.query.filter_by(username=username).first():
         errors.append('Tên đăng nhập đã tồn tại!')
 
     return errors
