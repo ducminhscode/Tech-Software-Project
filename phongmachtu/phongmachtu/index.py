@@ -433,6 +433,15 @@ def cancel_registration():
 
     return render_template('/nurse/confirm-registration.html', reg=registrations)
 
+@app.route('/nurse/delete-registration/<int:registration_id>', methods=['POST'])
+def delete_registration(registration_id):
+    result = dao.cancel_registration(registration_id)
+
+    if result:
+        return redirect('/nurse/patient-list')
+    else:
+        return "Có lỗi xảy ra khi hủy lịch khám!", 400
+
 
 @app.route('/nurse/patient-list', methods=['GET', 'POST'])
 def patient_list_nurse():
@@ -440,7 +449,7 @@ def patient_list_nurse():
     if date_str:
         date_str = datetime.strptime(date_str, '%Y-%m-%d').date()
     else:
-        date_str = datetime.now().date()
+        date_str = None
 
     list_patient = registration_form_date(date_str)
     return render_template('/nurse/patient-list.html', reg=list_patient)

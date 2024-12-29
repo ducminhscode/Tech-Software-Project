@@ -280,7 +280,10 @@ def confirm_registration(reg_id):
 
 
 def registration_form_date(date):
-    return RegistrationForm.query.filter_by(booked_date=date, lenLichKham=True).all()
+    if date is not None:
+        return RegistrationForm.query.filter_by(booked_date=date, lenLichKham=True).all()
+    else:
+        return RegistrationForm.query.filter_by(lenLichKham=True).all()
 
 
 # ================================= CASHIER ============================================
