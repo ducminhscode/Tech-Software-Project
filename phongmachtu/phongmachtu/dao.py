@@ -3,7 +3,7 @@ from datetime import datetime
 from multiprocessing.connection import Client
 
 from click.decorators import R
-from flask import render_template, Flask, current_app
+from flask import render_template, Flask, current_app, jsonify
 from flask_mail import Message
 
 import phongmachtu
@@ -29,6 +29,21 @@ def auth_account(username, password, type=None):
     if type:
         query = query.filter(Account.type.__eq__(type))
     return query.first()
+
+
+def check_account(username, phone, email):
+    errors = []
+
+    if phone and Patient.query.filter_by(phone=phone).first():
+        errors.append('Số điện thoại đã tồn tại!')
+
+    if email and Patient.query.filter_by(email=email).first():
+        errors.append('Email đã tồn tại!')
+
+    if username and Patient.query.filter_by(username=username).first():
+        errors.append('Tên đăng nhập đã tồn tại!')
+
+    return errors
 
 
 def get_user_type(username, password):

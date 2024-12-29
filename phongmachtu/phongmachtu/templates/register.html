@@ -25,12 +25,14 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="name" placeholder="Nhập họ tên" name="name" required>
+                        <input type="text" class="form-control" id="name" placeholder="Nhập họ tên" name="name"
+                               required>
                         <label for="name">Họ và Tên</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ" required>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ"
+                               required>
                         <label for="address">Địa chỉ</label>
                     </div>
 
@@ -48,28 +50,38 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" required>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại"
+                               required>
                         <label for="phone">Số điện thoại</label>
+                        <div id="phone-feedback" class="invalid-feedback" style="display: none;"></div>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
                         <label for="email">Email</label>
+                        <div id="email-feedback" class="invalid-feedback" style="display: none;"></div>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản" name="username" pattern="[A-Za-z0-9]*" required>
+                        <input type="text" class="form-control" id="username" name="username"
+                               placeholder="Tên đăng nhập" required>
                         <label for="username">Tên đăng nhập</label>
+                        <div id="username-feedback" class="invalid-feedback" style="display: none;"></div>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" name="password" required>
+                        <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu"
+                               name="password" required>
                         <label for="password">Mật khẩu</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="confirm" placeholder="Nhập lại mật khẩu" name="confirm" required>
+                        <input type="password" class="form-control" id="confirm" placeholder="Nhập lại mật khẩu"
+                               name="confirm" required>
                         <label for="confirm">Nhập lại mật khẩu</label>
+                        <div id="confirm-feedback" class="invalid-feedback" style="display: none;">Mật khẩu không
+                            khớp!
+                        </div>
                     </div>
 
                     <p class="text-center mb-4 text-muted"> Ảnh đại diện của bạn</p>
@@ -85,5 +97,72 @@
         </div>
     </div>
 </section>
+<script>
+    let isFormValid = true;
+    document.getElementById('password').addEventListener('input', checkPasswords);
+    document.getElementById('confirm').addEventListener('input', checkPasswords);
+
+    function checkField(inputId, value) {
+        fetch('/check_account', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ [inputId]: value })  // Gửi theo key là tên của trường nhập liệu
+        })
+        .then(response => response.json())
+        .then(data => {
+            const feedback = document.querySelector(`#${inputId}-feedback`);
+            const input = document.getElementById(inputId);
+
+            if (data.status === 'error') {
+                // Hiển thị thông báo lỗi nếu có
+                input.classList.add('is-invalid');
+                feedback.innerHTML = data.messages.join('<br>');
+                feedback.style.display = 'block';
+                isFormValid = false;  // Đặt trạng thái form không hợp lệ
+            } else {
+                // Xóa thông báo lỗi nếu không có
+                input.classList.remove('is-invalid');
+                feedback.style.display = 'none';
+                isFormValid = true;  // Đặt trạng thái form hợp lệ
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    document.getElementById('username').addEventListener('input', function () {
+        checkField('username', this.value);
+    });
+    document.getElementById('email').addEventListener('input', function () {
+        checkField('email', this.value);
+    });
+    document.getElementById('phone').addEventListener('input', function () {
+        checkField('phone', this.value);
+    });
+
+    function checkPasswords() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm').value;
+
+        const feedback = document.getElementById('confirm-feedback');
+        const confirmInput = document.getElementById('confirm');
+
+        if (password !== confirmPassword) {
+            confirmInput.classList.add('is-invalid');  // Thêm class lỗi nếu không khớp
+            feedback.style.display = 'block';  // Hiển thị thông báo lỗi
+        } else {
+            confirmInput.classList.remove('is-invalid');  // Xóa class lỗi nếu khớp
+            feedback.style.display = 'none';  // Ẩn thông báo lỗi
+        }
+    }
+
+    document.querySelector('form').addEventListener('submit', function (event) {
+        if (!isFormValid) {
+            event.preventDefault();
+            alert('Vui lòng sửa thông tin hợp lệ');
+        }
+    });
+</script>
 
 {% endblock %}

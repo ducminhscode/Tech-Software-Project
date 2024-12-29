@@ -1,7 +1,8 @@
 import datetime
+from operator import or_
 
 from dotenv import load_dotenv
-from flask import render_template, request, redirect, session, url_for
+from flask import render_template, request, redirect, session, url_for, jsonify
 from wtforms.validators import email
 
 from phongmachtu import app, login
@@ -141,7 +142,7 @@ def booking():
 def history_patient():
     appoint = dao.get_appointment(current_user.id)
 
-    return render_template('patient/history.html', appoint = appoint)
+    return render_template('patient/history.html', appoint=appoint)
 
 
 @app.route('/patient/history_prescription_details/<int:appointment_id>', methods=['GET'])
@@ -162,17 +163,15 @@ def history_prescription_details(appointment_id):
 def invoice_details(appointment_id):
     receipt = dao.show_receipt_by_appointment_id(appointment_id)
     if receipt:
-        return render_template('patient/invoice_details.html', receipt = receipt)
+        return render_template('patient/invoice_details.html', receipt=receipt)
     else:
         return redirect(url_for('history_patient'))
-
 
 
 @app.route('/patient/medical-schedule')
 def medical_schedule():
     appoint = dao.get_appointment(current_user.id)
-    return render_template('patient/medical-schedule.html', appoint = appoint)
-
+    return render_template('patient/medical-schedule.html', appoint=appoint)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -182,28 +181,44 @@ def register():
     if request.method.__eq__('POST'):
         password = request.form.get('password')
         confirm = request.form.get('confirm')
+        username = request.form.get('username')
+        name = request.form.get('name')
+        address = request.form.get('address')
+        day_of_birth = request.form.get('day_of_birth')
+        gender = request.form.get('gender')
+        phone = request.form.get('phone')
+        avatar = request.files.get('avatar')
+        email = request.form.get('email')
+        if avatar:
+            my_folder = "PhongMachTu"
+            response = cloudinary.uploader.upload(avatar, folder=my_folder)
+            avatar_path = response['secure_url']
 
-        if not password.__eq__(confirm):
-            err_msg = "Mật khẩu không khớp!"
-            return render_template('register.html', err_msg=err_msg)
+        error = dao.check_account(username, phone, email)
+        if error:
+            err_msg = error[0]
         else:
-            username = request.form.get('username')
-            name = request.form.get('name')
-            address = request.form.get('address')
-            day_of_birth = request.form.get('day_of_birth')
-            gender = request.form.get('gender')
-            phone = request.form.get('phone')
-            avatar = request.files.get('avatar')
-            email = request.form.get('email')
-            if avatar:
-                my_folder = "PhongMachTu"
-                response = cloudinary.uploader.upload(avatar, folder=my_folder)
-                avatar_path = response['secure_url']
             dao.add_patient(name=name, username=username, password=password, avatar=avatar_path, address=address,
                             day_of_birth=day_of_birth,
                             gender=gender, phone=phone, email=email)
             return redirect('/login')
+
     return render_template('register.html', err_msg=err_msg)
+
+
+@app.route('/check_account', methods=['POST'], endpoint='check_account_route')
+def check_account():
+    data = request.get_json()  # Nhận dữ liệu từ AJAX
+    username = data.get('username')
+    phone = data.get('phone')
+    email = data.get('email')
+
+    errors = dao.check_account(username, phone, email)
+
+    if errors:
+        return jsonify({'status': 'error', 'messages': errors})
+    else:
+        return jsonify({'status': 'success'})
 
 
 # =================================CASHIER============================================
@@ -240,7 +255,7 @@ def check_receipt():
 
         receipt = dao.check_receipt(patient_id)
         if receipt:
-            return redirect(url_for('cashing', receipt_id = receipt.id))
+            return redirect(url_for('cashing', receipt_id=receipt.id))
         else:
             err_msg = "Không tìm thấy hóa đơn cần thanh toán"
 
@@ -288,7 +303,6 @@ def examination_detail(registration_id):
         quantities = request.form.getlist('quantity')
         units = request.form.getlist('unit')
         usages = request.form.getlist('usage')
-
 
         prescription_id = dao.add_examination_form(examination_id, doctor_id, patient_id, disease,
                                                    medicine_names, quantities, units, usages)
@@ -406,6 +420,7 @@ def confirm_all_registrations():
 
     return render_template('/nurse/confirm-registration.html', reg=registrations)
 
+
 @app.route('/nurse/cancel-registration', methods=['GET', 'POST'])
 def cancel_registration():
     registrations = load_registration_form()
@@ -440,6 +455,7 @@ def logout_my_user():
 @login.user_loader
 def load_account(user_id):
     return dao.get_account_by_id(user_id)
+
 
 # def configure():
 #     load_dotenv()
