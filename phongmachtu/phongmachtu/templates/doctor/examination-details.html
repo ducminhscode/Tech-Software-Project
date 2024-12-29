@@ -7,45 +7,46 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<div class="table-responsive table-sm mb-3">
-    <form method="POST" enctype="multipart/form-data">
-        <h3 class="text-center mb-4">Phiếu khám bệnh</h3>
+<h1 class="text-center text-primary fw-bold mt-3">Phiếu Khám Bệnh</h1>
+<div class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-top: 50px; margin-bottom: 100px">
+    <form method="POST" enctype="multipart/form-data" >
+
         <div class="table-responsive table-sm mb-3">
             <table class="table table-bordered">
                 <tbody>
                 <tr>
-                    <th>Mã phiếu khám</th>
+                    <th scope="col" class="py-3">Mã phiếu khám</th>
                     <td>
                         <input type="hidden" id="examination_id" name="examination_id" value="{{registration.id}}">
                         {{ registration.id }}
                     </td>
                 </tr>
                 <tr>
-                    <th>Mã bệnh nhân</th>
+                    <th scope="col" class="py-3">Mã bệnh nhân</th>
                     <td>
                         <input type="hidden" id="patient_id" name="patient_id" value="{{registration.patient.id}}">
                         {{ registration.patient.id }}
                     </td>
                 </tr>
                 <tr>
-                    <th>Họ và tên:</th>
+                    <th scope="col" class="py-3">Họ và tên:</th>
                     <td>
                         <input class="form-control" id="name" name="name" type="hidden">
                         {{ registration.patient.name }}
                     </td>
                 </tr>
                 <tr>
-                    <th>Ngày khám:</th>
+                    <th scope="col" class="py-3">Ngày khám:</th>
                     <td>
                         <input class="form-control" id="datetime" type="hidden" name="datetime">
-                        {{ registration.booked_date.strftime('%Y-%m-%d') }}
+                        {{ registration.booked_date.strftime('%d/%m/%Y') }}
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="form-floating mt-3 mb-3">
+        <div class="form-floating mb-3">
             <input type="text" class="form-control" id="disease" placeholder="Kết quả chuẩn đoán" name="disease"
                    required>
             <label for="disease">Kết quả chuẩn đoán</label>
@@ -53,14 +54,14 @@
 
         <div class="table-responsive mb-3">
             <table class="table table-bordered" id="medicineTable">
-                <thead>
+                <thead class="bg-primary text-white">
                 <tr class="text-center">
-                    <th>STT</th>
-                    <th>Tên Thuốc</th>
-                    <th>Số Lượng</th>
-                    <th>Đơn Vị</th>
-                    <th>Cách Dùng</th>
-                    <th>Hành Động</th>
+                    <th scope="col" class="py-3">STT</th>
+                    <th scope="col" class="py-3">Tên Thuốc</th>
+                    <th scope="col" class="py-3">Số Lượng</th>
+                    <th scope="col" class="py-3">Đơn Vị</th>
+                    <th scope="col" class="py-3">Cách Dùng</th>
+                    <th scope="col" class="py-3">Hành Động</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -75,7 +76,7 @@
             <button type="submit" class="btn btn-success">Lưu phiếu khám</button>
         </div>
     </form>
-    <div class="mt-4">
+    <div class="mt-4 text-center">
         <a href="{{ url_for('examination_form') }}" class="btn btn-secondary">Quay lại</a>
     </div>
 </div>
@@ -84,7 +85,7 @@
 <div class="modal fade" id="medicineModal" tabindex="-1" aria-labelledby="medicineModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="medicineModalLabel">Tra cứu thuốc</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -92,21 +93,21 @@
                 <input type="text" class="form-control mb-3" id="searchInput" placeholder="Tìm tên thuốc"
                        onkeyup="filterMedicines()">
 
-                <table class="table table-striped" id="medicines">
-                    <thead>
-                    <tr>
-                        <th>Tên thuốc</th>
-                        <th>Đơn vị</th>
-                        <th>Hành động</th>
+                <table class="table table-bordered" id="medicines">
+                    <thead class="bg-primary text-white">
+                    <tr class="text-center">
+                        <th scope="col" class="py-3">Tên thuốc</th>
+                        <th scope="col" class="py-3">Đơn vị</th>
+                        <th scope="col" class="py-3">Hành động</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for medicine in medicines %}
                     <tr>
                         <td>{{ medicine.name }}</td>
-                        <td>{{ medicine.unit }}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary"
+                        <td class="text-center">{{ medicine.unit }}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-success"
                                     onclick="selectMedicine('{{ medicine.name }}', '{{ medicine.unit }}')">Chọn
                             </button>
                         </td>
@@ -114,7 +115,6 @@
                     {% endfor %}
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>

@@ -10,7 +10,7 @@
 
 <h1 class="text-center text-primary fw-bold mt-3">Chi Tiết Hóa Đơn Thanh Toán</h1>
 
-<div id="invoiceDetails" class="container mt-5" style="margin-bottom: 50px">
+<div id="invoiceDetails" class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-bottom: 100px">
     <!-- Tựa đề hóa đơn -->
 
     {% if error_message %}
@@ -38,38 +38,38 @@
     <!-- Form cho chi tiết hóa đơn -->
     <form method="POST" action="{{ url_for('cashing', receipt_id=receipt.id) }}">
         <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Tên Thuốc</th>
-                <th>Số Lượng</th>
-                <th>Đơn Vị</th>
-                <th>Giá Thuốc</th>
-                <th>Thành Tiền Thuốc</th>
+            <thead class="bg-primary text-white">
+            <tr class="text-center">
+                <th scope="col" class="py-3">Tên Thuốc</th>
+                <th scope="col" class="py-3">Số Lượng</th>
+                <th scope="col" class="py-3"v>Đơn Vị</th>
+                <th scope="col" class="py-3"v>Giá Thuốc</th>
+                <th scope="col" class="py-3">Thành Tiền Thuốc</th>
             </tr>
             </thead>
             <tbody>
             {% for receipt_detail in receipt.receipt_details %}
             {% for medicine in receipt_detail.prescription.prescription_medicines %}
             <tr>
-                <td>{{ medicine.medicine.name }}</td>
-                <td>{{ medicine.quantity }}</td>
-                <td>{{ medicine.medicine.unit }}</td>
-                <td>{{ medicine.medicine.price }} VND</td>
-                <td>
+                <td scope="col" class="py-3">{{ medicine.medicine.name }}</td>
+                <td scope="col" class="py-3 text-center">{{ medicine.quantity }}</td>
+                <td scope="col" class="py-3 text-center">{{ medicine.medicine.unit }}</td>
+                <td scope="col" class="py-3 text-center">{{ medicine.medicine.price }} VND</td>
+                <td scope="col" class="py-3 text-center">
                     {{ (medicine.quantity * medicine.medicine.price) | float }} VND
                 </td>
             </tr>
             {% endfor %}
             {% endfor %}
             <tr>
-                <td colspan="4" class="text-end"><strong>Thành Tiền Khám:</strong></td>
-                <td><strong>{{ receipt.examines_price }} VND</strong></td>
+                <td scope="col" class="py-3" colspan="4" class="text-end"><strong>Thành Tiền Khám:</strong></td>
+                <td scope="col" class="py-3 text-center"><strong>{{ receipt.examines_price }} VND</strong></td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="4" class="text-end"><strong>Tổng Thành Tiền:</strong></td>
-                <td><strong>{{ receipt.total_price }} VND</strong></td>
+                <td scope="col" class="py-3" colspan="4" class="text-end"><strong>Tổng Thành Tiền:</strong></td>
+                <td scope="col" class="py-3 text-center"><strong>{{ receipt.total_price }} VND</strong></td>
             </tr>
             </tfoot>
         </table>

@@ -239,7 +239,7 @@ if __name__ == "__main__":
         # db.session.add(p1)
         # db.session.add(p2)
 
-        time_periods = ["07:00 - 09:00", "09:00 - 11:00", "13:00 - 15:00", "15:00 - 17:00"]
+        time_periods = ["Sáng", "Chiều", "Tối"]
 
         for period in time_periods:
             time = Times(period=period)

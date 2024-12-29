@@ -8,10 +8,10 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<section class="container mt-3">
-    <h1 class="text-center text-primary fw-bold mb-4">Tra Cứu Lịch Sử Khám</h1>
+<h1 class="text-center text-primary fw-bold mb-4">Tra Cứu Lịch Sử Khám</h1>
+<section class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-bottom: 100px">
 
-    <form method="POST" class="d-flex justify-content-center mb-5">
+    <form method="POST" class="d-flex justify-content-center ">
         <div class="form-floating w-50">
             <input type="text" class="form-control rounded-pill" id="patient_id" name="patient_id"
                    placeholder="Mã bệnh nhân" required>
@@ -22,22 +22,22 @@
 
     {% if patient_history %}
     <div class="mt-5 mb-5">
-        <h3 class="text-center mb-4">Lịch Sử Khám Bệnh</h3>
+        <h3 class="text-center mb-4 text-danger">Lịch Sử Khám Bệnh</h3>
         <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Mã phiếu khám</th>
-                    <th scope="col">Ngày khám</th>
-                    <th scope="col">Kết quả chuẩn đoán</th>
-                    <th scope="col">Toa thuốc</th>
+            <table class="table table-hover table-bordered text-center">
+                <thead class="bg-primary text-white">
+                <tr class="text-center">
+                    <th scope="col" class="py-3">Mã phiếu khám</th>
+                    <th scope="col" class="py-3">Ngày khám</th>
+                    <th scope="col" class="py-3"v>Kết quả chuẩn đoán</th>
+                    <th scope="col" class="py-3">Toa thuốc</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for history in patient_history %}
-                <tr>
+                <tr class="text-center">
                     <td>{{ history.id }}</td>
-                    <td>{{ history.datetime }}</td>
+                    <td id="date-cell">{{ history.datetime }}</td>
                     <td>{{ history.disease }}</td>
                     <td>
                         <button type="button"
@@ -73,23 +73,34 @@
 
 <script>
     function viewPrescription(button) {
-        // Lấy dữ liệu toa thuốc từ thuộc tính data-prescriptions
+
         const prescriptionsJson = button.getAttribute('data-prescriptions');
         const prescriptions = JSON.parse(prescriptionsJson);
 
-        // Tạo nội dung modal từ dữ liệu toa thuốc
         let content = `<ul>`;
         prescriptions.forEach(prescription => {
             content += `<li>${prescription.medicine_name}: ${prescription.quantity} ${prescription.unit} - ${prescription.guide}</li>`;
         });
         content += `</ul>`;
 
-        // Hiển thị nội dung trong modal
         document.getElementById('prescriptionContent').innerHTML = content;
 
-        // Hiển thị modal
         const modal = new bootstrap.Modal(document.getElementById('prescriptionModal'));
         modal.show();
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const dateCell = document.getElementById("date-cell");
+        const originalDate = dateCell.textContent.trim();
+
+        if (originalDate) {
+
+            const [year, month, day] = originalDate.split("-");
+            const formattedDate = `${day}/${month}/${year}`;
+
+            dateCell.textContent = formattedDate;
+        }
+    });
 </script>
 {% endblock %}

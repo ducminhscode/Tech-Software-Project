@@ -20,24 +20,16 @@ login = LoginManager(app)
 cloudinary.config(
     cloud_name= 'dp9b0dkkt',
     api_key= '785552982855161',
-    api_secret= 'v4laZXdEttJZYUUr3sSJFRzGV30'
+    api_secret= os.getenv('api_secret')
 )
 
-# account_sid = 'ACe58c46baa657f47308ae947d3b2a23da'
-# auth_token = '[AuthToken]'
-# client = Client(account_sid, auth_token)
-#
-# message = client.messages.create(
-#   from_='+12314488348',
-#   to='+84938563416'
-# )
 
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USE_SSL'] = False
-# app.config['MAIL_USERNAME'] = '2251012095minh@ou.edu.vn'
-# app.config['MAIL_PASSWORD'] = os.getenv('password_email')
-# app.config['MAIL_DEFAULT_SENDER'] = '2251012095minh@ou.edu.vn'
-#
-# mail = Mail(app)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = os.getenv('email')
+app.config['MAIL_PASSWORD'] = os.getenv('password_email')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('email')
+
+mail = Mail(app)

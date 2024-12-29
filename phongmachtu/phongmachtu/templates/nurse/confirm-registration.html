@@ -10,15 +10,6 @@
 
 <h1 class="text-center text-primary my-4 fw-bold">Danh Sách Bệnh Nhân Đăng Ký</h1>
 <div class="container shadow-lg rounded p-4 bg-white border border-2" style="margin-bottom: 50px;">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <form method="POST" action="/nurse/confirm-all-registrations">
-            <button type="submit" class="btn btn-success fw-bold shadow-sm">
-                Xác nhận toàn bộ
-            </button>
-        </form>
-
-        <div id="message-container" class="alert alert-danger d-none"></div>
-    </div>
 
     <table class="table table-hover table-bordered text-center">
         <thead class="bg-primary text-white">
@@ -42,7 +33,7 @@
                     <form method="POST" action="/nurse/confirm-registration" class="d-inline-block">
                         <input type="hidden" name="registration_id" value="{{ r.id }}">
                         <button type="submit" class="btn btn-success shadow-sm">
-                            <i class="fas fa-check"></i> Xác nhận
+                             Xác nhận
                         </button>
                     </form>
                 </td>
@@ -50,7 +41,7 @@
                     <form method="POST" action="/nurse/cancel-registration" class="d-inline-block">
                         <input type="hidden" name="registration_id" value="{{ r.id }}">
                         <button type="submit" class="btn btn-danger shadow-sm">
-                            <i class="fas fa-times"></i> Hủy
+                            Hủy
                         </button>
                     </form>
                 </td>
@@ -58,6 +49,16 @@
             {% endfor %}
         </tbody>
     </table>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <form method="POST" action="/nurse/confirm-all-registrations">
+            <button type="submit" class="btn btn-success fw-bold shadow-sm" style="margin-top: 20px">
+                Xác nhận toàn bộ
+            </button>
+        </form>
+
+        <div id="message-container" class="alert alert-danger d-none"></div>
+    </div>
 </div>
 
 {%endblock%}

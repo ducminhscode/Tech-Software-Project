@@ -9,19 +9,16 @@
 </header>
 
 <h1 class="text-center text-primary fw-bold mt-3">Hóa Đơn Thanh Toán</h1>
-<div class="container mt-5" style="margin-bottom: 50px">
+<div class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-bottom: 100px; margin-top: 50px">
     {%if err_msg%}
     <div class="alert alert-danger">{{err_msg}}</div>
     {%endif%}
-    <form method="POST">
-        <div class="mb-4">
-            <div class="form-floating">
-                <input type="text" class="form-control" id="invoiceCode" name="invoiceCode" placeholder="Mã hóa đơn">
-                <label for="invoiceCode">Nhập mã bệnh nhân</label>
-            </div>
-            <button class="btn btn-primary mt-2" type="submit">Tìm Kiếm</button>
+    <form method="POST" class="d-flex justify-content-center">
+        <div class="form-floating" style="width: 1700px">
+            <input type="text" class="form-control rounded-pill" id="invoiceCode" name="invoiceCode" placeholder="Mã hóa đơn">
+            <label for="invoiceCode">Nhập mã bệnh nhân</label>
         </div>
+        <button class="btn btn-primary rounded-pill ms-3" style="width: 300px" type="submit">Tìm Kiếm</button>
     </form>
-
 </div>
 {% endblock %}

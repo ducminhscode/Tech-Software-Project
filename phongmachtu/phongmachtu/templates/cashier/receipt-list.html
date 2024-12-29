@@ -13,29 +13,27 @@
 <div class="alert alert-danger">{{err_msg}}</div>
 {%endif%}
 
-<form method="POST" id="phone-check-form">
+<form method="POST" id="phone-check-form" class="container shadow-lg rounded bg-white border border-2" style="margin-top: 50px; margin-bottom: 100px;">
     <div class="container my-5">
-        <div class="mb-4">
-            <div class="form-floating">
-                <input type="text" class="form-control" id="patientPhone" name="patientPhone" placeholder="Nhập SDT Bệnh Nhân">
+
+        <div class="d-flex justify-content-center">
+            <div class="form-floating" style="width: 1700px">
+                <input type="text" class="form-control rounded-pill" id="patientPhone" name="patientPhone" placeholder="Nhập SDT Bệnh Nhân">
                 <label for="patientPhone" class="form-label">Số điện thoại của bệnh nhân</label>
             </div>
-
-            <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-50 mt-2" id="searchBtn">Tìm kiếm</button>
-            </div>
+            <button type="submit" class="btn btn-primary rounded-pill ms-3" style="width: 300px" id="searchBtn">Tìm kiếm</button>
         </div>
 
         <div class="table-responsive" id="invoiceTable" style="margin-top: 50px">
-            <h4 class="mb-3" style="text-align: center">Bảng Thống Kê Hóa Đơn</h4>
-            <table class="table table-bordered">
-                <thead>
+            <h4 class="mb-3 text-danger" style="text-align: center">Bảng Thống Kê Hóa Đơn</h4>
+            <table class="table table-bordered text-center">
+                <thead class="bg-primary text-white">
                 <tr>
-                    <th scope="col">Mã Hóa đơn</th>
-                    <th scope="col">Tên Bệnh nhân</th>
-                    <th scope="col">Ngày Khám</th>
-                    <th scope="col">Trạng Thái Thanh Toán</th>
-                    <th scope="col">Hành Động</th>
+                    <th scope="col" class="py-3">Mã Hóa đơn</th>
+                    <th scope="col" class="py-3">Tên Bệnh nhân</th>
+                    <th scope="col" class="py-3">Ngày Khám</th>
+                    <th scope="col" class="py-3">Trạng Thái Thanh Toán</th>
+                    <th scope="col" class="py-3">Hành Động</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,7 +41,7 @@
                 <tr>
                     <td>{{ ce.id }}</td>
                     <td>{{ ce.patient.name }}</td>
-                    <td>{{ ce.created_date }}</td>
+                    <td>{{ ce.created_date.strftime('%d/%m/%Y') }}</td>
                     <td>
                         {% if ce.isPaid %}
                         <span class="text-success">Đã thanh toán</span>

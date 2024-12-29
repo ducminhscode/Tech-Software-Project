@@ -5,10 +5,11 @@ from multiprocessing.connection import Client
 from click.decorators import R
 from flask import render_template, Flask, current_app, jsonify
 from flask_mail import Message
+from sqlalchemy.orm import joinedload
 
 import phongmachtu
 from models import *
-from phongmachtu import db
+from phongmachtu import db, mail
 from sqlalchemy import extract, func, nullsfirst
 import cloudinary.uploader
 
@@ -230,11 +231,39 @@ def load_registration_form():
 
 
 
+def send_confirm_email(registration):
+    try:
+        msg = Message(
+            subject="Đăng ký khám bệnh phòng mạch tư Care Plus",
+            recipients=[registration.patient.email],
+            body=f"Kính gửi {registration.patient.name},\n\nLịch khám của bạn đã được xác nhận. "
+                 "Chúng tôi mong gặp bạn vào thời gian đã hẹn.\n\nTrân trọng,\nCare Plus."
+        )
+        with current_app.app_context():
+            mail.send(msg)
+    except Exception as e:
+        print(f"Lỗi khi gửi email: {e}")
+
+def send_deny_email(registration):
+    try:
+        msg = Message(
+            subject="Đăng ký khám bệnh phòng mạch tư Care Plus",
+            recipients=[registration.patient.email],
+            body=f"Kính gửi {registration.patient.name},\n\nLịch khám của bạn đã bị từ chối. "
+                 "Chúng tôi mong gặp lại bạn vào thời gian gần nhất.\n\nTrân trọng,\nCare Plus."
+        )
+        with current_app.app_context():
+            mail.send(msg)
+    except Exception as e:
+        print(f"Lỗi khi gửi email: {e}")
+
+
 def cancel_registration(reg_id):
     try:
         # Tìm bảng ghi dựa trên reg_id
-        registration = RegistrationForm.query.get(reg_id)
+        registration =( db.session.query(RegistrationForm).options(joinedload(RegistrationForm.patient)).get(reg_id))
         if registration:
+            send_deny_email(registration)
             # Xóa bảng ghi khỏi session
             db.session.delete(registration)
             # Lưu thay đổi vào database
@@ -250,26 +279,13 @@ def cancel_registration(reg_id):
         return False
 
 
-# def send_confirm_email(registration):
-#     try:
-#         msg = Message(
-#             subject="Xác nhận đăng ký khám",
-#             recipients=[registration.patient.email],
-#             body=f"Kính gửi {registration.patient.name},\n\nLịch khám của bạn đã được xác nhận. "
-#                  "Chúng tôi mong gặp bạn vào thời gian đã hẹn.\n\nTrân trọng,\nCare Plus."
-#         )
-#         # Gửi email
-#         with current_app.app_context():
-#             mail.send(msg)
-#     except Exception as e:
-#         print(f"Lỗi khi gửi email: {e}")
-
 def confirm_registration(reg_id):
     try:
         registration = RegistrationForm.query.get(reg_id)
         if registration:
             registration.lenLichKham = True
             db.session.commit()
+            send_confirm_email(registration)
             return True
         else:
             return False

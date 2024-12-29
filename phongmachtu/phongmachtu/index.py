@@ -467,9 +467,9 @@ def load_account(user_id):
     return dao.get_account_by_id(user_id)
 
 
-# def configure():
-#     load_dotenv()
+def configure():
+    load_dotenv()
 
 if __name__ == "__main__":
-    # configure()
+    configure()
     app.run(debug=True)

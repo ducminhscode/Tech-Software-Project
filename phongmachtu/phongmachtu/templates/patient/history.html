@@ -9,19 +9,19 @@
 </header>
 
 <h1 class="text-center text-primary my-4">Lịch Sử Khám Bệnh</h1>
-<div class="calendar-container" style="margin-bottom: 50px; margin-top: 50px">
+<div class="calendar-container" style="margin-bottom: 100px; margin-top: 50px">
 
-    <table class="table table-bordered shadow-lg rounded" style="text-align: center">
+    <table class="table table-bordered table-hover shadow-lg rounded" style="text-align: center">
         <thead class="bg-primary text-white">
-        <tr>
-            <th>Ngày</th>
-            <th>Khung giờ</th>
-            <th>Xác nhận</th>
-            <th>Xem kết quả khám</th>
-            <th>Xem hóa đơn</th>
+        <tr class="text-center">
+            <th scope="col" class="py-3">Ngày</th>
+            <th scope="col" class="py-3">Khung giờ</th>
+            <th scope="col" class="py-3">Xác nhận</th>
+            <th scope="col" class="py-3">Xem kết quả khám</th>
+            <th scope="col" class="py-3">Xem hóa đơn</th>
         </tr>
         </thead>
-        <tbody style="background-color: #eaf7fa;">
+        <tbody>
         {% for appointment in appoint %}
         <tr>
             <td>{{ appointment.booked_date.strftime('%d/%m/%Y') }}</td>

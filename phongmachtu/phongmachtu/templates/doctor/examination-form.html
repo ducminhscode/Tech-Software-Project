@@ -7,31 +7,30 @@
 <header>
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
-<h1 class="text-center text-primary fw-bold mt-3">Quản Lý Khám Bệnh</h1>
+<h1 class="text-center text-primary fw-bold mt-3">Danh Sách Bệnh Nhân Đăng Ký</h1>
 <div>
-    <div class="row" style="margin-top: 50px; margin-bottom: 100px">
+    <div class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-top: 50px; margin-bottom: 100px">
         <div class="table-responsive table-sm mb-3">
-            <h3 class="text-center mb-4">Danh sách bệnh nhân đăng ký</h3>
             <div class="alert alert-danger d-none" id="message-container"></div>
-            <table class="table table-striped">
-                <thead>
+            <table class="table table-hover table-bordered text-center">
+                <thead class="bg-primary text-white">
                 <tr>
-                    <th>Mã phiếu khám</th>
-                    <th>Mã bệnh nhân</th>
-                    <th>Họ và tên</th>
-                    <th>Ngày khám</th>
-                    <th>Triệu chứng</th>
-                    <th>Thao tác</th>
+                    <th scope="col" class="py-3">Mã phiếu khám</th>
+                    <th scope="col" class="py-3">Mã bệnh nhân</th>
+                    <th scope="col" class="py-3">Họ và tên</th>
+                    <th scope="col" class="py-3">Ngày khám</th>
+                    <th scope="col" class="py-3">Triệu chứng</th>
+                    <th scope="col" class="py-3">Thao tác</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for r in reg %}
                 <tr name="{{ r.id }}">
-                    <td>{{r.id}}</td>
-                    <td>{{r.patient.id}}</td>
-                    <td>{{ r.patient.name }}</td>
-                    <td>{{ r.booked_date.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ r.desc }}</td>
+                    <td class="align-middle">{{r.id}}</td>
+                    <td class="align-middle">{{r.patient.id}}</td>
+                    <td class="align-middle">{{ r.patient.name }}</td>
+                    <td class="align-middle">{{ r.booked_date.strftime('%d/%m/%Y') }}</td>
+                    <td class="align-middle">{{ r.desc }}</td>
                     <td>
                         <a href="{{ url_for('examination_detail', registration_id=r.id) }}" class="btn btn-success">
                             Xác nhận
