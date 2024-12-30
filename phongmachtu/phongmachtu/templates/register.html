@@ -25,13 +25,13 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="name" placeholder="Nhập họ tên" name="name"
+                        <input type="text" class="form-control" id="name" placeholder="Nhập họ tên" name="name" maxlength="100"
                                required>
                         <label for="name">Họ và Tên</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ"
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ" maxlength="̀200"
                                required>
                         <label for="address">Địa chỉ</label>
                     </div>
@@ -57,21 +57,21 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" maxlength="255" required>
                         <label for="email">Email</label>
                         <div id="email-feedback" class="invalid-feedback" style="display: none;"></div>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="username" name="username"
-                               placeholder="Tên đăng nhập" required>
+                               placeholder="Tên đăng nhập" maxlength="50" required>
                         <label for="username">Tên đăng nhập</label>
                         <div id="username-feedback" class="invalid-feedback" style="display: none;"></div>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu"
-                               name="password" required>
+                               name="password" maxlength="50" required>
                         <label for="password">Mật khẩu</label>
                     </div>
 
@@ -86,7 +86,7 @@
 
                     <p class="text-center mb-4 text-muted"> Ảnh đại diện của bạn</p>
                     <div class="form-floating mb-3">
-                        <input type="file" class="form-control" id="avatar" name="avatar"/>
+                        <input type="file" class="form-control" maxlength="255" id="avatar" name="avatar"/>
                     </div>
 
                     <div class="d-grid mb-3">

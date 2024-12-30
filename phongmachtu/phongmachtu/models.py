@@ -51,7 +51,7 @@ class Doctor(Account):
 
 class Nurse(Account):
     id = Column(Integer, ForeignKey(Account.id), primary_key=True)
-    phuTrachKhoa = Column(String(50))
+    phuTrachKhoa = Column(String(200))
 
     __mapper_args__ = {
         'polymorphic_identity': 'nurse'
@@ -63,7 +63,7 @@ class Nurse(Account):
 
 class Patient(Account):
     id = Column(Integer, ForeignKey(Account.id), primary_key=True)
-    address = Column(String(50), nullable=False)
+    address = Column(String(200), nullable=False)
     day_of_birth = Column(String(50))
     gender = Column(String(10), nullable=False)
     phone = Column(String(10), unique=True, nullable=False)
@@ -122,7 +122,7 @@ class RegistrationForm(db.Model):
 class ExaminationForm(db.Model):
     id = Column(Integer, ForeignKey(RegistrationForm.id), primary_key=True)  # Dùng ForeignKey từ RegistrationForm
     datetime = Column(DateTime, default=datetime.now)
-    disease = Column(String(50), nullable=False)
+    disease = Column(String(200), nullable=False)
 
     doctor_id = Column(Integer, ForeignKey(Doctor.id), nullable=False)
     patient_id = Column(Integer, ForeignKey(Patient.id), nullable=False)
@@ -140,7 +140,7 @@ class Medicine(db.Model):
     name = Column(String(50), nullable=False)
     unit = Column(String(10), nullable=False)
     price = Column(Integer, nullable=False)
-    usage = Column(String(100))
+    usage = Column(String(200))
 
     prescription_medicines = relationship('PrescriptionMedicine', backref='medicine', lazy=True)
 

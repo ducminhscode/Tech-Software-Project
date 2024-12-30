@@ -29,43 +29,42 @@
         </div>
 
         {% if current_user.type == "patient" %}
-            <div class="mb-3">
+            <div class="mb-3 form-floating">
+                <input type="text" class="form-control" id="address" name="address" maxlength="200" value="{{ current_user.address }}">
                 <label for="address" class="form-label">Địa chỉ</label>
-                <input type="text" class="form-control" id="address" name="address" value="{{ current_user.address }}">
             </div>
-            <div class="mb-3">
+            <div class="mb-3 form-floating">
                 {% if current_user.day_of_birth %}
-                  <label for="day_of_birth1" class="form-label">Ngày sinh</label>
-                  <input type="date" class="form-control" id="day_of_birth1" name="day_of_birth" value="{{ current_user.day_of_birth }}"
-                >
+                    <input type="date" class="form-control" id="day_of_birth1" name="day_of_birth" value="{{ current_user.day_of_birth }}">
+                    <label for="day_of_birth1" class="form-label">Ngày sinh</label>
                 {% else %}
-                  <label for="day_of_birth2" class="form-label">Ngày sinh</label>
-                  <input type="date" class="form-control" id="day_of_birth2" name="day_of_birth" placeholder="Nhập năm sinh của bạn"
+                    <input type="date" class="form-control" id="day_of_birth2" name="day_of_birth" placeholder="Nhập năm sinh của bạn"
                        required>
+                    <label for="day_of_birth2" class="form-label">Ngày sinh</label>
                 {% endif %}
             </div>
-            <div class="mb-3">
-                  <label for="gender" class="form-label">Giới tính</label>
-                  <select class="form-select" id="gender" name="gender">
-                      <option value="Nam" {% if current_user.gender=='Nam' %} selected {% endif %}>Nam</option>
-                      <option value="Nữ" {% if current_user.gender=='Nữ' %} selected {% endif %}>Nữ</option>
-                  </select>
+            <div class="mb-3 form-floating">
+                <select class="form-select" id="gender" name="gender">
+                  <option value="Nam" {% if current_user.gender=='Nam' %} selected {% endif %}>Nam</option>
+                  <option value="Nữ" {% if current_user.gender=='Nữ' %} selected {% endif %}>Nữ</option>
+                </select>
+                <label for="gender" class="form-label">Giới tính</label>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 form-floating">
+                <input type="text" class="form-control" id="phone" name="phone" maxlength="10" value="{{ current_user.phone }}">
                 <label for="phone" class="form-label">Số điện thoại</label>
-                <input type="text" class="form-control" id="phone" name="phone" value="{{ current_user.phone }}">
             </div>
          {% endif %}
 
         {% if current_user.avatar %}
-          <label for="avatar1" class="form-label">Avatar</label>
+          <label for="avatar1" class="form-label">Ảnh đại diện</label>
           <div>
               <img width="250px" class="img-rounder" src="{{ current_user.avatar }}">
-              <input style="margin-top: 20px" type="file" class="form-control" id="avatar1" name="avatar">
+              <input style="margin-top: 20px" type="file" class="form-control" maxlength="255" id="avatar1" name="avatar">
           </div>
         {% else %}
-          <label for="avatar2" class="form-label">Avatar</label>
+          <label for="avatar2" class="form-label">Ảnh đại diện</label>
           <div>
               <img width="250px" class="img-rounder" src="{{url_for('static', filename='images/default.jpg')}}">
               <input style="margin-top: 20px" type="file" class="form-control" id="avatar2" name="avatar">
