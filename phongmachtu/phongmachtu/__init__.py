@@ -16,6 +16,13 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 login = LoginManager(app)
 
+# Tạo file .env trong package phongmachtu và điền các thông tin sau:
+# cloud_name=
+# api_key=
+# api_secret=
+# email=
+# password_email=
+
 
 cloudinary.config(
     cloud_name= os.getenv('cloud_name'),
