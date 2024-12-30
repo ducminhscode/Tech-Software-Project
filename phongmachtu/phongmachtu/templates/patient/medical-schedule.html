@@ -15,7 +15,6 @@
         <tr>
             <th scope="col" class="py-3">Ngày</th>
             <th scope="col" class="py-3">Khung giờ</th>
-            <th scope="col" class="py-3">Số thứ tự khám</th>
             <th scope="col" class="py-3">Xác nhận</th>
             <th scope="col" class="py-3">Trạng thái khám</th>
         </tr>
@@ -25,13 +24,6 @@
         <tr>
             <td>{{ appointment.booked_date.strftime('%d/%m/%Y') }}</td>
             <td>{{ appointment.time.period }}</td>
-            <td>
-                {% if appointment.lenLichKham %}
-                <span class="badge bg-success">{{appointment.order_number}}</span>
-                {% else %}
-                <span class="badge bg-warning">Chưa có số thứ tự</span>
-                {% endif %}
-            </td>
             <td>
                 {% if appointment.lenLichKham %}
                 <span class="badge bg-success">Đã xác nhận</span>

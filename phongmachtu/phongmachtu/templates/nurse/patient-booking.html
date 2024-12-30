@@ -10,9 +10,11 @@
 
 <section>
     <h1 class="text-center text-primary fw-bold my-4">Đăng Ký Lịch Khám</h1>
-    <div class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-bottom: 100px; margin-top: 50px;">
+    <div class="container shadow-lg rounded p-5 bg-white border border-2"
+         style="margin-bottom: 100px; margin-top: 50px;">
         <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i> Bệnh nhân tên là <strong>{{ patient_name }}</strong>. Có thể đăng ký lịch khám.
+            <i class="fas fa-info-circle"></i> Bệnh nhân tên là <strong>{{ patient_name }}</strong>. Có thể đăng ký lịch
+            khám.
         </div>
 
         {% if err_msg %}
@@ -28,22 +30,26 @@
         {% endif %}
 
         <form method="POST" enctype="multipart/form-data">
-            <div class="form-floating mb-4">
-                <select class="form-control shadow-sm" id="buoiKham" aria-label="Chọn buổi khám" name="time">
+            <div class="form-group mb-4">
+                <label for="ngayKham" class="form-label">Ngày khám:</label>
+                <input type="date" class="form-control rounded-pill" id="ngayKham" name="date"
+                       placeholder="Chọn ngày khám" required>
+                <div id="feedback-date" class="invalid-feedback" style="display: none;">Nhập ngày phù hợp</div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="buoiKham" class="form-label">Chọn buổi khám:</label>
+                <select class="form-select rounded-pill" id="buoiKham" aria-label="Chọn buổi khám" name="time">
                     {% for t in time %}
                     <option value="{{ t.id }}">{{ t.period }}</option>
                     {% endfor %}
                 </select>
-                <label for="buoiKham" class="text-secondary">Chọn buổi khám</label>
+                <div id="feedback-time" class="invalid-feedback" style="display: none;">Nhập buổi phù hợp</div>
             </div>
 
             <div class="form-floating mb-4">
-                <input type="date" class="form-control shadow-sm" id="ngayKham" name="date" placeholder="Chọn ngày khám">
-                <label for="ngayKham" class="text-secondary">Ngày khám</label>
-            </div>
-
-            <div class="form-floating mb-4">
-                <input type="text" class="form-control shadow-sm" id="trieuchung" name="symptom" placeholder="Triệu chứng">
+                <input type="text" class="form-control shadow-sm" id="trieuchung" name="symptom"
+                       placeholder="Triệu chứng">
                 <label for="trieuchung" class="text-secondary">
                     <i class="fas fa-pen"></i> Triệu chứng
                 </label>
@@ -58,5 +64,67 @@
     </div>
 </section>
 
+<script>
+    let isFormValid = true;
 
+    document.getElementById('ngayKham').addEventListener('input', function () {
+        console.log('Ngày khám được nhập:', this.value);
+        checkDateAndTime(this.value, document.getElementById('buoiKham').value);
+    });
+
+    document.getElementById('buoiKham').addEventListener('change', function () {
+        console.log('Buổi khám được chọn:', this.value);
+
+        checkDateAndTime(document.getElementById('ngayKham').value, this.value);
+    });
+
+    function checkDateAndTime(date, time) {
+        const feedback_date = document.getElementById('feedback-date');
+        const feedback_time = document.getElementById('feedback-time');
+        const currentDate = new Date();
+        const currentHour = currentDate.getHours();
+        const today = currentDate.toISOString().split('T')[0];
+
+        feedback_date.style.display = 'none';
+        feedback_time.style.display = 'none';
+        isFormValid = true;
+
+        if (date < today) {
+            feedback_date.innerText = "Chọn ngày hợp lệ";
+            feedback_date.style.display = 'block';
+            isFormValid = false;
+            return;
+        }
+
+        if (date === today) {
+            if (time === '1' && currentHour > 11) {
+                feedback_time.innerText = "Không thể chọn buổi sáng sau 11 giờ.";
+                feedback_time.style.display = 'block';
+                isFormValid = false;
+            } else if (time === '2' && currentHour > 17) {
+                feedback_time.innerText = "Không thể chọn buổi chiều sau 17 giờ.";
+                feedback_time.style.display = 'block';
+                isFormValid = false;
+            }
+        }
+        if (!date) {
+            feedback_date.innerText = "Vui lòng chọn ngày khám.";
+            feedback_date.style.display = 'block';
+            isFormValid = false;
+        }
+        if (!time) {
+            feedback_time.innerText = "Vui lòng chọn buổi khám.";
+            feedback_time.style.display = 'block';
+            isFormValid = false;
+        }
+    }
+
+    document.querySelector('form').addEventListener('submit', function (event) {
+        if (!isFormValid) {
+            event.preventDefault(); // Ngăn form gửi đi nếu dữ liệu không hợp lệ
+            alert('Vui lòng sửa thông tin không hợp lệ trước khi gửi.');
+        }
+    });
+
+</script>
 {% endblock %}

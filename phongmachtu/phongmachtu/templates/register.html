@@ -151,9 +151,11 @@
         if (password !== confirmPassword) {
             confirmInput.classList.add('is-invalid');  // Thêm class lỗi nếu không khớp
             feedback.style.display = 'block';  // Hiển thị thông báo lỗi
+            isFormValid = false;
         } else {
             confirmInput.classList.remove('is-invalid');  // Xóa class lỗi nếu khớp
             feedback.style.display = 'none';  // Ẩn thông báo lỗi
+            isFormValid = true;
         }
     }
 

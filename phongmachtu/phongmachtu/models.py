@@ -106,7 +106,6 @@ class RegistrationForm(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     booked_date = Column(Date, default=datetime.now())
     desc = Column(String(500))
-    order_number = Column(Integer)
     lenLichKham = Column(Boolean, default=False)
     isKham = Column(Boolean, default=False)
 

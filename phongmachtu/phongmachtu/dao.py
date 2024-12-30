@@ -279,26 +279,6 @@ def cancel_registration(reg_id):
         return False
 
 
-def order_number_for_patient(date, selected_time):
-    current_count = RegistrationForm.query.filter_by(booked_date=date, time_id=selected_time).count()
-
-    max_count = RegistrationForm.query.filter_by(booked_date=date, time_id=selected_time).with_entities(
-        func.max(RegistrationForm.order_number)
-    ).scalar()
-    max_count = max_count if max_count else 0
-
-    regulation = Regulations.query.filter_by(id=1).first()
-
-    value = regulation.value
-
-
-    if selected_time.__eq__(1) and current_count < value // 2:
-            return max_count + 1
-    elif selected_time.__eq__(2) and current_count < value // 2:
-            return max_count + 1
-    return None
-
-
 def confirm_registration(reg_id,date, selected_time):
     try:
         registration = RegistrationForm.query.get(reg_id)
@@ -398,12 +378,10 @@ def update_receipt(receipt_id, cashier_id):
 def save_booking(selected_date, symptom, patient_id, selected_time):
     regu = Regulations.query.filter_by(id = 1).first()
     count = RegistrationForm.query.filter_by( booked_date=selected_date).count()
-    order_number = order_number_for_patient(selected_date, selected_time)
 
     if count < regu.value:
         u = RegistrationForm(
             booked_date=selected_date,
-            order_number = order_number,
             desc=symptom,
             patient_id=patient_id,
             time_id=selected_time
