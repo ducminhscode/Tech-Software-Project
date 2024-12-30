@@ -16,12 +16,13 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 login = LoginManager(app)
 
-# Tạo file .env trong package phongmachtu và điền các thông tin sau:
+# Tạo file .env trong package phongmachtu và điền các thông tin sau để upload ảnh lên cloudinary và gửi email:
 # cloud_name=
 # api_key=
 # api_secret=
 # email=
 # password_email=
+# Chú ý: cần có email đã được xác thực 2 bước và đã có App Password
 
 
 cloudinary.config(
