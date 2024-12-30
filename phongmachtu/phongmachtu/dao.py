@@ -410,6 +410,7 @@ def get_information_examination(patient_id):
     for exam in examinations:
         result.append({
             "id": exam.id,
+            "patient_name": exam.patient.name,
             "datetime": exam.datetime.strftime('%Y-%m-%d'),
             "disease": exam.disease,
             "doctor_name": Doctor.query.get(exam.doctor_id).name if Doctor.query.get(exam.doctor_id) else None,

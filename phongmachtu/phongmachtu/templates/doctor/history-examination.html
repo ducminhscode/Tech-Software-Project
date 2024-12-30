@@ -29,6 +29,7 @@
                 <thead class="bg-primary text-white">
                 <tr class="text-center">
                     <th scope="col" class="py-3">Mã phiếu khám</th>
+                    <th scope="col" class="py-3">Tên bệnh nhân</th>
                     <th scope="col" class="py-3">Ngày khám</th>
                     <th scope="col" class="py-3">Kết quả chuẩn đoán</th>
                     <th scope="col" class="py-3">Toa thuốc</th>
@@ -38,6 +39,7 @@
                 {% for history in patient_history %}
                 <tr class="text-center">
                     <td>{{ history.id }}</td>
+                    <td>{{history.patient_name}}</td>
                     <td id="date-cell">{{ history.datetime }}</td>
                     <td>{{ history.disease }}</td>
                     <td>
