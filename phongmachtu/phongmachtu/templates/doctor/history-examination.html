@@ -13,12 +13,12 @@
 <section class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-bottom: 100px">
 
     <form method="POST" class="d-flex justify-content-center ">
-        <div class="form-floating w-50">
+        <div class="form-floating" style="width: 1700px">
             <input type="text" class="form-control rounded-pill" id="patient_id" name="patient_id"
                    placeholder="Mã bệnh nhân" required>
             <label for="patient_id">Mã bệnh nhân</label>
         </div>
-        <button type="submit" class="btn btn-primary rounded-pill ms-3">Tra cứu</button>
+        <button type="submit" class="btn btn-primary rounded-pill ms-3" style="width: 300px">Tra cứu</button>
     </form>
 
     {% if patient_history %}
