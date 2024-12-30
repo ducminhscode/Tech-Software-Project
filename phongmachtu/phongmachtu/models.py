@@ -224,81 +224,65 @@ if __name__ == "__main__":
                     password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="cashier",
                     license="Giấy phép hành nghề")
 
-        # p1 = Patient(name='Patient1', username="patient1",
-        #              password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
-        #              address='GV, HCM', day_of_birth="2003", gender='Nam', phone="0123456789", )
-        #
-        # p2 = Patient(name='Patient2', username="patient2",
-        #              password=str(hashlib.md5("1".encode('utf-8')).hexdigest()), type="patient",
-        #              address='Nha Be, HCM', day_of_birth="2003", gender='Nữ', phone="0987654321")
-
         db.session.add(a)
         db.session.add(d)
         db.session.add(n)
         db.session.add(c)
-        # db.session.add(p1)
-        # db.session.add(p2)
 
-        time_periods = ["Sáng: 7 giờ đến 11 giờ", "Chiều: 13 giờ đến 17 giờ"]
+        time_periods = ["Sáng: 7 giờ đến 11 giờ", "Chiều: 13 giờ đến 17 giờ", "Tối: 18 giờ đến 22 giờ"]
 
         for period in time_periods:
             time = Times(period=period)
             db.session.add(time)
 
-        m1 = Medicine(name='Panadol', unit='Vỉ', price=25000, usage='Thuốc giảm đau, hạ sốt')
-        m2 = Medicine(name='Becberin', unit='Lọ', price=20000, usage='Thuốc tiêu hóa')
-        m3 = Medicine(name='Paracetamol', unit='Vỉ', price=30000, usage='Thuốc hạ sốt, cảm cúm')
-        m4 = Medicine(name='Thuốc ho Prospan', unit='Chai', price=30000, usage='Thuốc giảm ho, trị ho dai ho có đờm')
+        m1 = Medicine(name='Paracetamol', unit='Viên', price=5000, usage='Thuốc giảm đau, hạ sốt')
+        m2 = Medicine(name='Ibuprofen', unit='Vỹ', price=50000, usage='Thuốc giảm đau, hạ sốt')
+        m3 = Medicine(name='Aspirin', unit='Chai', price=200000, usage='Thuốc giảm đau, hạ sốt')
 
-        db.session.add(m1)
-        db.session.add(m2)
-        db.session.add(m3)
-        db.session.add(m4)
 
-        # b1 = RegistrationForm(patient_id=5, desc='Sốt, Ho', lenLichKham=False, isKham=False, time_id=2)
-        # b2 = RegistrationForm(patient_id=6, desc='Cảm', lenLichKham=True, isKham=False, time_id=6)
-        #
-        # db.session.add(b1)
-        # db.session.add(b2)
-        #
-        # r = Receipt(examines_price='20000', total_price='100000', cashier_id=4, patient_id=5)
-        # r2 = Receipt(examines_price='30000', total_price='200000', cashier_id=4, patient_id=6)
-        #
-        # db.session.add(r)
-        # db.session.add(r2)
-        # db.session.commit()
-        #
-        # e = ExaminationForm(id=1, disease='Sốt nhẹ', doctor_id=2, patient_id=5)
-        # e1 = ExaminationForm(id=2, disease='Say nắng', doctor_id=2, patient_id=6)
-        #
-        # db.session.add(e)
-        # db.session.add(e1)
-        #
-        # p = Prescription(examinationForm_id=1)
-        # p2 = Prescription(examinationForm_id=2)
-        #
-        # db.session.add(p)
-        # db.session.add(p2)
-        #
-        # rd = ReceiptDetails(medicines_price='4000', receipt_id=1, prescription_id=1)
-        # rd2 = ReceiptDetails(medicines_price='6000', receipt_id=2, prescription_id=2)
-        #
-        # db.session.add(rd)
-        # db.session.add(rd2)
-        #
-        # ru = Regulations(name='minh', value='200000', admin_id=1)
-        # ru2 = Regulations(name='zoen', value='900000', admin_id=1)
-        #
-        # db.session.add(ru)
-        # db.session.add(ru2)
-        #
-        # r2 = Receipt(examines_price='90000', total_price='110000', cashier_id=4, patient_id=6)
-        # db.session.add(r2)
-        #
-        # pm = PrescriptionMedicine(prescription_id=1, medicine_id=2,quantity=50,guide='3 viên/ngày, uống sau khi ăn')
-        # pm2 = PrescriptionMedicine(prescription_id=2, medicine_id=4, quantity=100, guide='2 viên sáng/chiều, uống sau khi ăn')
-        # db.session.add(pm)
-        # db.session.add(pm2)
+        m4 = Medicine(name='Diclofenac', unit='Vỹ', price=20000, usage='Thuốc kháng viêm')
+        m5 = Medicine(name='Celecoxib', unit='Chai', price=60000, usage='Thuốc kháng viêm')
+        m6 = Medicine(name='Prednisolone', unit='Viên', price=2000, usage='Thuốc kháng viêm')
+
+        m7 = Medicine(name='Amoxicillin', unit='Viên', price=5000, usage='Thuốc kháng sinh')
+        m8 = Medicine(name='Ciprofloxacin', unit='Chai', price=150000, usage='Thuốc kháng sinh')
+        m9 = Medicine(name='Azithromycin', unit='Viên', price=3000, usage='Thuốc kháng sinh')
+        m10 = Medicine(name='Doxycycline', unit='Vỹ', price=50000, usage='Thuốc kháng sinh')
+
+        m11 = Medicine(name='Omeprazole', unit='Viên', price=1000, usage='Thuốc điều trị tiêu hóa')
+        m12 = Medicine(name='Lansoprazole', unit='Chai', price=30000, usage='Thuốc điều trị tiêu hóa')
+        m13 = Medicine(name='Ranitidine', unit='Chai', price=35000, usage='Thuốc điều trị tiêu hóa')
+        m14 = Medicine(name='Metoclopramide', unit='Vỹ', price=10000, usage='Thuốc điều trị tiêu hóa')
+
+        m15 = Medicine(name='Amlodipine', unit='Vỹ', price=40000, usage='Thuốc điều trị tim mạch')
+        m16 = Medicine(name='Atenolol', unit='Vỹ', price=40000, usage='Thuốc điều trị tim mạch')
+        m17 = Medicine(name='Enalapril', unit='Viên', price=4000, usage='Thuốc điều trị tim mạch')
+        m18 = Medicine(name='Simvastatin', unit='Chai', price=120000, usage='Thuốc điều trị tim mạch')
+
+        m19 = Medicine(name='Metformin', unit='Viên', price=1000, usage='Thuốc điều trị tiểu đường')
+        m20 = Medicine(name='Gliclazide', unit='Viên', price=3000, usage='Thuốc điều trị tiểu đường')
+        m21 = Medicine(name='Insulin', unit='Chai', price=30000, usage='Thuốc điều trị tiểu đường')
+
+        m22 = Medicine(name='Loratadine', unit='Chai', price=45000, usage='Thuốc chống dị ứng')
+        m23 = Medicine(name='Cetirizine', unit='Vỹ', price=15000, usage='Thuốc chống dị ứng')
+        m24 = Medicine(name='Fexofenadine', unit='Chai', price=50000, usage='Thuốc chống dị ứng')
+
+        m25 = Medicine(name='Diazepam', unit='Viên', price=2000, usage='Thuốc điều trị bệnh thần kinh')
+        m26 = Medicine(name='Gabapentin', unit='Vỹ', price=20000, usage='Thuốc điều trị bệnh thần kinh')
+        m27 = Medicine(name='Amitriptyline', unit='Viên', price=3000, usage='Thuốc điều trị bệnh thần kinh')
+
+        m28 = Medicine(name='Salbutamol', unit='Chai', price=200000, usage='Thuốc điều trị bệnh hô hấp')
+        m29 = Medicine(name='Budesonide', unit='Chai', price=210000, usage='Thuốc điều trị bệnh hô hấp')
+        m30 = Medicine(name='Montelukast', unit='Viên', price=7000, usage='Thuốc điều trị bệnh hô hấp')
+
+        medicines = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10,
+                     m11, m12, m13, m14, m15, m16, m17, m18, m19, m20,
+                     m21, m22, m23, m24, m25, m26, m27, m28, m29, m30]
+
+        for medicine in medicines:
+            db.session.add(medicine)
+
+
 
         re1 = Regulations(name='Số lượng bệnh nhân tối đa', value=40, admin_id=1)
         re2 = Regulations(name='Giá tiền khám', value=100000, admin_id=1)

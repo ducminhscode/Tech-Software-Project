@@ -104,22 +104,6 @@
         checkField('phone', this.value);
     });
 
-    function checkPasswords() {
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm').value;
-
-        const feedback = document.getElementById('confirm-feedback');
-        const confirmInput = document.getElementById('confirm');
-
-        if (password !== confirmPassword) {
-            confirmInput.classList.add('is-invalid');  // Thêm class lỗi nếu không khớp
-            feedback.style.display = 'block';  // Hiển thị thông báo lỗi
-        } else {
-            confirmInput.classList.remove('is-invalid');  // Xóa class lỗi nếu khớp
-            feedback.style.display = 'none';  // Ẩn thông báo lỗi
-        }
-    }
-
     document.querySelector('form').addEventListener('submit', function (event) {
         if (!isFormValid) {
             event.preventDefault();

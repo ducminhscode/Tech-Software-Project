@@ -105,6 +105,10 @@
                 feedback_time.innerText = "Không thể chọn buổi chiều sau 17 giờ.";
                 feedback_time.style.display = 'block';
                 isFormValid = false;
+            } else if (time === '3' && currentHour > 22) {
+                feedback_time.innerText = "Không thể chọn buổi tối sau 22 giờ.";
+                feedback_time.style.display = 'block';
+                isFormValid = false;
             }
         }
 
