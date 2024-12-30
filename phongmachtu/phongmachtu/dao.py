@@ -26,8 +26,8 @@ def add_patient(name, username, password, avatar, address, day_of_birth, gender,
 
 def auth_account(username, password, type=None):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
-    query = Account.query.filter(Account.username.__eq__(username),
-                                 Account.password.__eq__(password))
+    query = Account.query.filter(func.binary(Account.username).__eq__(username),
+                                 func.binary(Account.password).__eq__(password))
     if type:
         query = query.filter(Account.type.__eq__(type))
     return query.first()
