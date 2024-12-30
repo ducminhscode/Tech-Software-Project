@@ -1,4 +1,5 @@
 import datetime
+import os
 from operator import or_
 from wsgiref.util import request_uri
 
@@ -184,7 +185,7 @@ def register():
         avatar = request.files.get('avatar')
         email = request.form.get('email')
         if avatar:
-            my_folder = "PhongMachTu"
+            my_folder = os.getenv('my_folder')
             response = cloudinary.uploader.upload(avatar, folder=my_folder)
             avatar_path = response['secure_url']
 

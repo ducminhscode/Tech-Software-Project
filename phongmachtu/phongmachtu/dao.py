@@ -1,4 +1,5 @@
 import hashlib
+import os
 from datetime import datetime
 from multiprocessing.connection import Client
 
@@ -70,7 +71,7 @@ def update_info(day_of_birth, phone, address, avatar, patient_id, gender):
         p.address = address
         p.gender = gender
         if avatar:
-            my_folder = "PhongMachTu"
+            my_folder = os.getenv('my_folder')
             response = cloudinary.uploader.upload(avatar, folder=my_folder)
             a.avatar = response['secure_url']
 
