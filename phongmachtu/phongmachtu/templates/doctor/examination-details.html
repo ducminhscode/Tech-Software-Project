@@ -16,28 +16,28 @@
                 <tbody>
                 <tr>
                     <th scope="col" class="py-3">Mã phiếu khám</th>
-                    <td>
+                    <td scope="col" class="py-3">
                         <input type="hidden" id="examination_id" name="examination_id" value="{{registration.id}}">
                         {{ registration.id }}
                     </td>
                 </tr>
                 <tr>
                     <th scope="col" class="py-3">Mã bệnh nhân</th>
-                    <td>
+                    <td scope="col" class="py-3">
                         <input type="hidden" id="patient_id" name="patient_id" value="{{registration.patient.id}}">
                         {{ registration.patient.id }}
                     </td>
                 </tr>
                 <tr>
                     <th scope="col" class="py-3">Họ và tên:</th>
-                    <td>
+                    <td scope="col" class="py-3">
                         <input class="form-control" id="name" name="name" type="hidden">
                         {{ registration.patient.name }}
                     </td>
                 </tr>
                 <tr>
                     <th scope="col" class="py-3">Ngày khám:</th>
-                    <td>
+                    <td scope="col" class="py-3">
                         <input class="form-control" id="datetime" type="hidden" name="datetime">
                         {{ registration.booked_date.strftime('%d/%m/%Y') }}
                     </td>
