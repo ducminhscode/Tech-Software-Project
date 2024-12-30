@@ -8,6 +8,7 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
+{% if current_user.is_authenticated and current_user.type=="doctor" %}
 <h1 class="text-center text-primary fw-bold mb-4">Tra Cứu Lịch Sử Khám</h1>
 <section class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-bottom: 100px">
 
@@ -69,7 +70,7 @@
         </div>
     </div>
 </div>
-
+{%endif%}
 
 <script>
     function viewPrescription(button) {

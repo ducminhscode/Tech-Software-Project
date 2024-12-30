@@ -7,8 +7,8 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
-<h1 class=" container col-md-6 mx-auto">Chỉnh Sửa Thông Tin Cá Nhân</h1>
 {% if current_user.is_authenticated %}
+<h1 class=" container col-md-6 mx-auto">Chỉnh Sửa Thông Tin Cá Nhân</h1>
 <div class=" container col-md-6 mx-auto shadow-lg rounded border border-2" style="margin-bottom: 100px; margin-top: 50px">
 
     <form method="post" action="/info" enctype="multipart/form-data">

@@ -7,6 +7,8 @@
 <header>
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
+
+{% if current_user.is_authenticated and current_user.type=="doctor" %}
 <h1 class="text-center text-primary fw-bold mt-3">Danh Sách Bệnh Nhân Đăng Ký</h1>
 <div>
     <div class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-top: 50px; margin-bottom: 100px">
@@ -41,4 +43,5 @@
         </div>
     </div>
 </div>
+{%endif%}
 {% endblock %}

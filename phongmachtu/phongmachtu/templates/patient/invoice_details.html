@@ -7,6 +7,8 @@
 <header>
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
+
+{% if current_user.is_authenticated and current_user.type=="patient" %}
 <h1 class="text-center text-primary fw-bold my-5">Chi Tiết Hóa Đơn</h1>
 
 <section style="margin-bottom: 100px">
@@ -70,5 +72,5 @@
         </div>
     </div>
 </section>
-
+{%endif%}
 {% endblock %}

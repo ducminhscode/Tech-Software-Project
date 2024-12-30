@@ -8,6 +8,7 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
+{% if current_user.is_authenticated and current_user.type=="cashier" %}
 <h1 class="text-center text-primary fw-bold mt-3">Tra cứu hóa đơn</h1>
 
 <form method="POST" id="phone-check-form" class="container shadow-lg rounded bg-white border border-2" style="margin-top: 50px; margin-bottom: 100px;">
@@ -58,4 +59,5 @@
         </div>
     </div>
 </form>
+{%endif%}
 {%endblock%}

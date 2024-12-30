@@ -8,6 +8,7 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
+{% if current_user.is_authenticated and current_user.type=="cashier" %}
 <h1 class="text-center text-primary fw-bold mt-3">Hóa Đơn Thanh Toán</h1>
 <div class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-bottom: 100px; margin-top: 50px">
     {%if err_msg%}
@@ -21,4 +22,5 @@
         <button class="btn btn-primary rounded-pill ms-3" style="width: 300px" type="submit">Tìm Kiếm</button>
     </form>
 </div>
+{%endif%}
 {% endblock %}

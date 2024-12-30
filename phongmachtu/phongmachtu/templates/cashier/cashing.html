@@ -8,6 +8,7 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
+{% if current_user.is_authenticated and current_user.type=="cashier" %}
 <h1 class="text-center text-primary fw-bold mt-3">Chi Tiết Hóa Đơn Thanh Toán</h1>
 
 <div id="invoiceDetails" class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-bottom: 100px">
@@ -95,4 +96,5 @@
     <p>Không có hóa đơn để hiển thị.</p>
     {% endif %}
 </div>
+{%endif%}
 {% endblock %}

@@ -7,6 +7,7 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
 </header>
 
+{% if current_user.is_authenticated and current_user.type=="doctor" %}
 <h1 class="text-center text-primary fw-bold mt-3">Phiếu Khám Bệnh</h1>
 <div class="container shadow-lg rounded p-5 bg-white border border-2" style="margin-top: 50px; margin-bottom: 100px">
     <form method="POST" enctype="multipart/form-data" >
@@ -119,6 +120,7 @@
         </div>
     </div>
 </div>
+{%endif%}
 <script>
     function filterMedicines() {
         const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Lấy giá trị tìm kiếm
