@@ -9,13 +9,12 @@
 </header>
 
 <h1 class="text-center text-primary fw-bold mt-3">Tra cứu hóa đơn</h1>
-{%if err_msg%}
-<div class="alert alert-danger">{{err_msg}}</div>
-{%endif%}
 
 <form method="POST" id="phone-check-form" class="container shadow-lg rounded bg-white border border-2" style="margin-top: 50px; margin-bottom: 100px;">
     <div class="container my-5">
-
+        {%if err_msg%}
+            <div class="alert alert-danger">{{err_msg}}</div>
+        {%endif%}
         <div class="d-flex justify-content-center">
             <div class="form-floating" style="width: 1700px">
                 <input type="text" class="form-control rounded-pill" id="patientPhone" name="patientPhone" placeholder="Nhập SDT Bệnh Nhân">
