@@ -74,22 +74,11 @@
 </div>
 {%endif%}
 
+<script src="{{ url_for('static', filename='js/doctor.js') }}"></script>
 <script>
-    function viewPrescription(button) {
 
-        const prescriptionsJson = button.getAttribute('data-prescriptions');
-        const prescriptions = JSON.parse(prescriptionsJson);
-
-        let content = `<ul>`;
-        prescriptions.forEach(prescription => {
-            content += `<li>${prescription.medicine_name}: ${prescription.quantity} ${prescription.unit} - ${prescription.guide}</li>`;
-        });
-        content += `</ul>`;
-
-        document.getElementById('prescriptionContent').innerHTML = content;
-
-        const modal = new bootstrap.Modal(document.getElementById('prescriptionModal'));
-        modal.show();
+    window.onload = function() {
+        viewPrescription(button);
     }
 
     document.addEventListener('DOMContentLoaded', () => {

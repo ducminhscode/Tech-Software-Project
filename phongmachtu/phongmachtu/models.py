@@ -282,8 +282,6 @@ if __name__ == "__main__":
         for medicine in medicines:
             db.session.add(medicine)
 
-
-
         re1 = Regulations(name='Số lượng bệnh nhân tối đa', value=40, admin_id=1)
         re2 = Regulations(name='Giá tiền khám', value=100000, admin_id=1)
 
