@@ -21,7 +21,7 @@ login = LoginManager(app)
 # api_key=
 # api_secret=
 # email=
-# password_email=
+# password_email=      #điền App Password của email
 # Chú ý: cần có email đã được xác thực 2 bước và đã có App Password
 
 
