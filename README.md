@@ -1,6 +1,6 @@
 # 🏥 Hệ thống Quản Lý Phòng Mạch Tư
 
-Ứng dụng hỗ trợ quản lý phòng mạch tư nhân một cách hiệu quả, bao gồm đăng ký khám bệnh, lập phiếu khám, thanh toán hóa đơn, và báo cáo thống kê. Hệ thống tự động gửi thông báo qua email và cung cấp giao diện thân thiện cho các vai trò như bệnh nhân, y tá, bác sĩ, thu ngân, và quản trị viên.
+Hệ thống hỗ trợ quản lý phòng mạch tư nhân một cách hiệu quả, bao gồm đăng ký khám bệnh, lập phiếu khám, thanh toán hóa đơn, và báo cáo thống kê. Hệ thống tự động gửi thông báo qua email và cung cấp giao diện thân thiện cho các vai trò như bệnh nhân, y tá, bác sĩ, thu ngân, và quản trị viên.
 
 ---
 
